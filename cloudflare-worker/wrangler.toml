@@ -9,4 +9,4 @@ database_id = "3c4d4ce9-f25c-4823-86ed-eea39b084c73"
 
 [[kv_namespaces]]
 binding = "SAJIYAS_CAKE_KV"
-id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id = "a99bf2b09d874f93a0607c3daaf4f868"
