@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Native Mobile Viewport: Auto-fits screen, respects notch/safe-area, prevents accidental pinch zoom -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#c93b71">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -56,16 +55,20 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-        html, body {
+        html {
             width: 100%;
-            max-width: 100vw;
-            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: clip;
+            overflow-y: visible;
+            touch-action: pan-y;
             background-color: #fff9fb;
             background-image: radial-gradient(#f9d8e4 1px, transparent 1px);
             background-size: 24px 24px;
-            overscroll-behavior-y: none;
-        }
-        body {
             padding-top: var(--safe-top);
             padding-bottom: calc(96px + var(--safe-bottom));
         }
@@ -102,12 +105,13 @@
             background: #ec85ad;
             border-radius: 9999px;
         }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
+            touch-action: pan-x pan-y;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
         /* Candle flame flicker animation */
         @keyframes flicker {
@@ -201,7 +205,7 @@
                         </span>
                     </div>
 
-                    <!-- Live SVG Cake Canvas (Auto-scaled for Mobile & Desktop) -->
+                    <!-- Live SVG Cake Canvas -->
                     <div class="relative flex items-center justify-center px-3 py-2 min-h-[280px] sm:min-h-[380px] lg:min-h-[410px] bg-gradient-to-b from-white via-bakery-50/50 to-bakery-100/40">
                         <div class="absolute w-52 h-52 sm:w-64 sm:h-64 rounded-full bg-bakery-200/30 blur-2xl pointer-events-none"></div>
 
@@ -285,7 +289,7 @@
             <!-- RIGHT COLUMN: Step-by-Step Customization Controls -->
             <div class="lg:col-span-7 space-y-5 sm:space-y-6 w-full min-w-0">
 
-                <!-- Step Navigation Pills (Sticky below header on mobile for effortless tab jumping) -->
+                <!-- Step Navigation Pills -->
                 <div class="sticky top-[56px] sm:top-[64px] lg:static z-20 bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-bakery-200 shadow-sm flex items-center gap-1.5 overflow-x-auto no-scrollbar">
                     <button onclick="scrollToSection('sec-tiers')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-bakery-600 text-white shadow-sm transition whitespace-nowrap">
                         1. Tier & Size
@@ -453,7 +457,7 @@
         </div>
     </main>
 
-    <!-- MOBILE STICKY BOTTOM BAR (With Android Safe-Area Bottom Padding) -->
+    <!-- MOBILE STICKY BOTTOM BAR -->
     <div class="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 backdrop-blur-md border-t border-bakery-200 px-4 pt-2.5 safe-bottom-bar shadow-[0_-6px_20px_rgba(74,27,45,0.08)]">
         <div class="max-w-lg mx-auto flex items-center justify-between gap-3">
             <div class="min-w-0">
@@ -1419,7 +1423,6 @@
             toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving order to Sajiya's Cake & opening WhatsApp...`;
             toast.classList.remove('hidden');
 
-            // Save order to Sajiya's Cake Cloudflare D1 + KV backend (non-blocking if offline)
             try {
                 await fetch(SAJIYAS_CAKE_CONFIG.apiEndpoint, {
                     method: 'POST',
