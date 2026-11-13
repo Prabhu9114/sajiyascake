@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS sajiyascake_orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id TEXT UNIQUE NOT NULL,
+    customer_name TEXT NOT NULL,
+    customer_phone TEXT NOT NULL,
+    delivery_date TEXT NOT NULL,
+    cake_message TEXT,
+    tiers INTEGER NOT NULL,
+    weight TEXT NOT NULL,
+    eggless INTEGER NOT NULL,
+    flavor TEXT NOT NULL,
+    tier_colors TEXT NOT NULL,
+    drip TEXT,
+    decorations TEXT,
+    topper TEXT,
+    total_amount INTEGER NOT NULL,
+    notes TEXT,
+    status TEXT DEFAULT 'PENDING',
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
