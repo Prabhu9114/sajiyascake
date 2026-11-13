@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#c93b71">
+    <meta name="theme-color" content="#7c1d5e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Sajiya's Cake | Custom Cake Studio</title>
-    <!-- Tailwind CSS -->
+    <title>Sajiya's Cake | Boutique & Custom Cake Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
         tailwind.config = {
@@ -24,16 +21,16 @@
                     },
                     colors: {
                         bakery: {
-                            50: '#fff9fb',
-                            100: '#fceef3',
-                            200: '#f9d8e4',
-                            300: '#f4b5cd',
-                            400: '#ec85ad',
-                            500: '#e0588d',
-                            600: '#c93b71',
-                            700: '#a82a59',
-                            800: '#8b244a',
-                            900: '#4a1b2d',
+                            50: '#fdf7fb',
+                            100: '#faebf5',
+                            200: '#f5d4ea',
+                            300: '#ecadd6',
+                            400: '#de7ab9',
+                            500: '#c74c9a',
+                            600: '#9e2a74',
+                            700: '#7c1d5e',
+                            800: '#63184b',
+                            900: '#451034',
                         },
                         choco: {
                             800: '#3d2314',
@@ -64,15 +61,13 @@
             overflow-x: clip;
             overflow-y: visible;
             touch-action: pan-y;
-            background-color: #fff9fb;
-            background-image: radial-gradient(#f9d8e4 1px, transparent 1px);
-            background-size: 24px 24px;
+            background-color: #fdf7fb;
             padding-top: var(--safe-top);
-            padding-bottom: calc(96px + var(--safe-bottom));
+            padding-bottom: calc(134px + var(--safe-bottom));
         }
         @media (min-width: 1024px) {
             body {
-                padding-bottom: 48px;
+                padding-bottom: 56px;
             }
         }
         input, textarea, select {
@@ -82,8 +77,8 @@
         .sticky-safe-header {
             top: var(--safe-top);
         }
-        .safe-bottom-bar {
-            padding-bottom: calc(12px + var(--safe-bottom));
+        .safe-bottom-nav {
+            padding-bottom: var(--safe-bottom);
         }
         .modal-safe-area {
             padding-top: calc(16px + var(--safe-top));
@@ -94,10 +89,10 @@
             height: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #fceef3;
+            background: #faebf5;
         }
         ::-webkit-scrollbar-thumb {
-            background: #ec85ad;
+            background: #de7ab9;
             border-radius: 9999px;
         }
         .no-scrollbar {
@@ -139,129 +134,219 @@
 <body class="text-slate-800 antialiased select-none">
 
     <!-- Top Status Bar Spacer for Android Notch -->
-    <div class="fixed top-0 inset-x-0 bg-white/95 backdrop-blur-md z-40" style="height: var(--safe-top);"></div>
+    <div class="fixed top-0 inset-x-0 bg-white z-40" style="height: var(--safe-top);"></div>
 
     <!-- Global Toast Notification -->
-    <div id="globalToast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 hidden bg-bakery-900 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-bakery-600 items-center gap-2 transition-all">
+    <div id="globalToast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 hidden bg-bakery-900 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-bakery-500 items-center gap-2 transition-all">
         <i class="fa-solid fa-sparkles text-amber-300"></i>
         <span id="globalToastText">Updated!</span>
     </div>
 
-    <!-- ========================================== -->
-    <!-- 3-LINE SIDEBAR DRAWER (MENU + ADMIN LOGIN) -->
-    <!-- ========================================== -->
+    <!-- ===================================================== -->
+    <!-- MIO AMORE STYLE SLIDE-OUT RIGHT DRAWER + ADMIN LOGIN  -->
+    <!-- ===================================================== -->
     <div id="sidebarBackdrop" onclick="closeSidebar()" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
-    <aside id="sideDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 max-w-[82vw] bg-white shadow-2xl border-r border-bakery-200 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
+    <aside id="sideDrawer" class="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] bg-white shadow-2xl border-l border-slate-200 transform translate-x-full transition-transform duration-300 flex flex-col justify-between overflow-y-auto" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
         <div>
-            <!-- Drawer Brand Header -->
-            <div class="p-4 bg-gradient-to-r from-bakery-600 to-bakery-800 text-white flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-cake-candles"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-serif font-bold text-lg leading-tight">Sajiya's Cake</h2>
-                        <span class="text-[11px] text-bakery-100">Custom Cake Studio</span>
-                    </div>
-                </div>
-                <button onclick="closeSidebar()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white">
+            <!-- Close Top Bar -->
+            <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+                <button onclick="closeSidebar()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-600 text-lg">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
+                <span class="text-xs font-bold uppercase tracking-wider text-bakery-700">Sajiya's Cake Menu</span>
             </div>
 
-            <!-- Navigation Links -->
-            <nav class="p-3 space-y-1.5">
-                <button onclick="closeSidebar(); scrollToSection('sec-tiers')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-bakery-50 hover:text-bakery-800 transition text-left">
-                    <i class="fa-solid fa-wand-magic-sparkles w-5 text-bakery-600"></i>
-                    <span>Design Custom Cake</span>
+            <!-- Categories Section -->
+            <div class="px-5 py-4 space-y-3 border-b border-slate-100">
+                <span class="text-xs font-semibold text-slate-400 block">Categories</span>
+
+                <button onclick="closeSidebar(); filterCatalogByCategory('all'); scrollToSection('sec-trending')" class="w-full flex items-center justify-between py-1.5 text-sm font-semibold text-slate-800 hover:text-bakery-700">
+                    <span>🔥 What's Trending</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </button>
-                <button onclick="closeSidebar(); freshResetCake()" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-rose-50 hover:text-rose-700 transition text-left">
-                    <i class="fa-solid fa-rotate-left w-5 text-rose-600"></i>
-                    <span>Reset & New Cake Design</span>
+
+                <button onclick="closeSidebar(); scrollToSection('sec-studio')" class="w-full flex items-center justify-between py-1.5 text-sm font-semibold text-bakery-700">
+                    <span>🎨 Custom 3D Cake Studio</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-bakery-500"></i>
                 </button>
-                <button onclick="closeSidebar(); scrollToSection('sec-reviews')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-bakery-50 hover:text-bakery-800 transition text-left">
-                    <i class="fa-solid fa-star w-5 text-amber-500"></i>
+
+                <!-- Expandable Accordion: Cake Types -->
+                <div>
+                    <button onclick="toggleDrawerAccordion('accCakes')" class="w-full flex items-center justify-between py-1.5 text-sm font-semibold text-slate-800 hover:text-bakery-700">
+                        <span>Signature & Theme Cakes</span>
+                        <i id="accCakesIcon" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="accCakes" class="hidden pl-3 pt-1.5 space-y-2 border-l-2 border-bakery-200 ml-1">
+                        <button onclick="closeSidebar(); filterCatalogByCategory('Signature Cakes'); scrollToSection('sec-trending')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Signature Cakes</button>
+                        <button onclick="closeSidebar(); filterCatalogByCategory('Occasional Cakes'); scrollToSection('sec-trending')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Occasional & Birthday</button>
+                        <button onclick="closeSidebar(); filterCatalogByCategory('Theme Cakes'); scrollToSection('sec-trending')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Theme & Royal Cakes</button>
+                    </div>
+                </div>
+
+                <button onclick="closeSidebar(); freshResetCake()" class="w-full flex items-center justify-between py-1.5 text-sm font-semibold text-rose-600">
+                    <span><i class="fa-solid fa-rotate-left mr-1.5"></i> Reset & Start New Cake</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-rose-400"></i>
+                </button>
+            </div>
+
+            <!-- Enquiries & Store Info -->
+            <div class="px-5 py-4 space-y-3">
+                <span class="text-xs font-semibold text-slate-400 block">Store & Reviews</span>
+
+                <button onclick="closeSidebar(); scrollToSection('sec-reviews')" class="w-full flex items-center justify-between py-1.5 text-sm font-medium text-slate-700 hover:text-bakery-700">
                     <span>Customer Reviews</span>
+                    <span class="text-xs font-bold text-amber-500">★ 4.9</span>
                 </button>
-                <button onclick="closeSidebar(); scrollToSection('sec-delivered-counter')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-bakery-50 hover:text-bakery-800 transition text-left">
-                    <i class="fa-solid fa-truck-fast w-5 text-emerald-600"></i>
+
+                <button onclick="closeSidebar(); scrollToSection('sec-delivered-counter')" class="w-full flex items-center justify-between py-1.5 text-sm font-medium text-slate-700 hover:text-bakery-700">
                     <span>Delivered Cakes Counter</span>
+                    <span id="sidebarDeliveredBadge" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">128+</span>
                 </button>
 
-                <div class="my-3 border-t border-bakery-100"></div>
-
-                <!-- Admin Login / Console Trigger -->
-                <button onclick="closeSidebar(); openAdminModal()" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-bold bg-bakery-900 text-white hover:bg-bakery-800 shadow-md transition text-left">
-                    <span class="flex items-center gap-3">
-                        <i class="fa-solid fa-user-shield text-amber-300 w-5"></i>
-                        <span>Admin Login & Price Chart</span>
-                    </span>
-                    <i class="fa-solid fa-chevron-right text-xs text-bakery-300"></i>
+                <button onclick="closeSidebar(); openWhatsAppSupport()" class="w-full flex items-center justify-between py-1.5 text-sm font-medium text-slate-700 hover:text-emerald-700">
+                    <span>Contact Us on WhatsApp</span>
+                    <i class="fa-brands fa-whatsapp text-emerald-600"></i>
                 </button>
-            </nav>
+
+                <div class="pt-3">
+                    <button onclick="closeSidebar(); openAdminModal()" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-bold bg-bakery-700 hover:bg-bakery-800 text-white shadow-md transition">
+                        <span class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-user-shield text-amber-300"></i>
+                            <span>Admin Console Login</span>
+                        </span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- Drawer Bottom Live Counter Pill -->
-        <div class="p-4 border-t border-bakery-100 bg-bakery-50/70">
-            <div class="flex items-center justify-between text-xs">
-                <span class="font-semibold text-slate-600">Successful Deliveries:</span>
-                <span id="sidebarDeliveredCount" class="font-extrabold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">128+ Cakes</span>
-            </div>
+        <div class="px-5 py-3 bg-bakery-50 border-t border-bakery-100 text-[11px] text-slate-500 flex items-center justify-between">
+            <span><i class="fa-solid fa-location-dot text-bakery-700 mr-1"></i> Rajgangpur, Odisha</span>
+            <span class="font-bold text-bakery-700">Fresh Daily</span>
         </div>
     </aside>
 
-    <!-- ========================================== -->
-    <!-- TOP NAVIGATION HEADER WITH 3-LINE SIDEBAR  -->
-    <!-- ========================================== -->
-    <header class="sticky sticky-safe-header z-30 bg-white/95 backdrop-blur-md border-b border-bakery-200 shadow-sm">
+    <!-- ===================================================== -->
+    <!-- MIO AMORE STYLE TOP BAR (LOGO + LOCATION + 3-LINE)    -->
+    <!-- ===================================================== -->
+    <header class="sticky sticky-safe-header z-30 bg-white border-b border-slate-200/80 shadow-xs">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5 min-w-0">
-                <!-- 3-Line Hamburger Sidebar Button -->
-                <button onclick="openSidebar()" aria-label="Open Menu" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-bakery-50 hover:bg-bakery-100 active:scale-95 border border-bakery-200 flex flex-col items-center justify-center gap-1.5 text-bakery-800 shrink-0 transition">
-                    <span class="w-4 h-0.5 bg-bakery-800 rounded-full"></span>
-                    <span class="w-4 h-0.5 bg-bakery-800 rounded-full"></span>
-                    <span class="w-4 h-0.5 bg-bakery-800 rounded-full"></span>
-                </button>
-
-                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-bakery-500 to-bakery-700 flex items-center justify-center text-white shadow-md shadow-bakery-200 shrink-0">
-                    <i class="fa-solid fa-cake-candles text-base sm:text-lg"></i>
-                </div>
-
-                <div class="min-w-0">
-                    <div class="flex items-center gap-1.5">
-                        <h1 class="font-serif text-base sm:text-2xl font-bold text-bakery-900 tracking-tight truncate">Sajiya's Cake</h1>
-                        <span class="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-wider bg-bakery-100 text-bakery-700 px-2.5 py-0.5 rounded-full border border-bakery-200 shrink-0">Custom Cake Studio</span>
-                    </div>
-                    <p class="text-[11px] sm:text-xs text-slate-500 truncate">Apna Manpasand Cake Khud Design Karein ✨</p>
+            <!-- Left: Round Emblem + City -->
+            <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                <a href="#top" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-bakery-600 to-bakery-800 flex flex-col items-center justify-center text-white shadow-sm shrink-0 leading-none">
+                    <span class="font-serif italic font-bold text-[11px] sm:text-xs">Sajiya's</span>
+                    <span class="text-[8px] uppercase tracking-widest text-bakery-200">Cake</span>
+                </a>
+                <div class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 truncate">
+                    <i class="fa-solid fa-location-dot text-bakery-700"></i>
+                    <span class="truncate">Rajgangpur</span>
+                    <span class="hidden sm:inline-block text-xs font-normal text-slate-400 ml-1">• Fresh Custom Bakery</span>
                 </div>
             </div>
 
-            <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-                <button onclick="surpriseMe()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium bg-amber-50 active:scale-95 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition shadow-sm" title="Generate a random cake design">
-                    <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
-                    <span class="hidden sm:inline">Surprise</span>
+            <!-- Right: Search Toggle, Reset, Desktop Total & 3-Line Menu -->
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button onclick="toggleSearchBar()" aria-label="Search Cakes" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-700 transition">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-                <button onclick="freshResetCake()" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold bg-rose-50 active:scale-95 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition shadow-sm" title="Reset selection to start a new cake design">
+                <button onclick="freshResetCake()" class="flex items-center gap-1 text-xs font-semibold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 py-1.5 rounded-full transition" title="Reset selection to design a new cake">
                     <i class="fa-solid fa-rotate-left"></i>
                     <span>Reset</span>
                 </button>
-                <div class="hidden md:flex items-center gap-2 bg-bakery-900 text-white px-4 py-2 rounded-xl shadow">
-                    <span class="text-xs text-bakery-200">Total:</span>
-                    <span id="headerTotalPrice" class="font-bold text-base">₹500</span>
+                <div class="hidden md:flex items-center gap-2 bg-bakery-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold">
+                    <span>Estimate:</span>
+                    <span id="headerTotalPrice">₹500</span>
                 </div>
+                <!-- 3-Line Hamburger Icon on Right (Mio Amore Style) -->
+                <button onclick="openSidebar()" aria-label="Open Menu" class="w-9 h-9 rounded-xl hover:bg-bakery-50 flex flex-col items-center justify-center gap-1.5 text-slate-800 transition">
+                    <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
+                    <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
+                    <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Expandable Quick Search Bar -->
+        <div id="topSearchBar" class="hidden border-t border-slate-100 bg-bakery-50/70 px-4 py-2.5">
+            <div class="max-w-xl mx-auto relative">
+                <input type="text" id="catalogSearchInput" oninput="filterCatalogBySearch(this.value)" placeholder="Search trending cakes, flavors (e.g. Truffle, Rasmalai, 2 Tier)..." class="w-full pl-9 pr-4 py-2 rounded-full border border-bakery-200 bg-white text-xs sm:text-sm outline-none focus:border-bakery-600">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
             </div>
         </div>
     </header>
 
-    <!-- ========================================== -->
-    <!-- MAIN STUDIO LAYOUT                         -->
-    <!-- ========================================== -->
-    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+    <!-- ===================================================== -->
+    <!-- HERO SPOTLIGHT BANNER (MIO AMORE STOREFRONT STYLE)    -->
+    <!-- ===================================================== -->
+    <section id="top" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4">
+        <div class="rounded-3xl overflow-hidden bg-gradient-to-r from-[#f6eadf] via-[#f9efe6] to-[#f3dfd1] border border-amber-200/70 shadow-sm p-5 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5 relative">
+            <div class="space-y-2.5 max-w-lg text-left z-10">
+                <span class="inline-block bg-[#6d4c3d] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-md">
+                    Custom 3D Cake Studio
+                </span>
+                <h2 class="font-serif text-2xl sm:text-4xl font-bold text-[#3d2314] leading-tight">
+                    Captured in a Slice,<br/>Designed by You
+                </h2>
+                <p class="text-xs sm:text-sm text-[#6d4c3d]/90 leading-relaxed">
+                    Choose tiers, flavors, frosting colors & toppings with live preview and instant design receipt slip.
+                </p>
+                <div class="pt-1 flex flex-wrap items-center gap-2.5">
+                    <button onclick="scrollToSection('sec-studio')" class="bg-[#6d4c3d] hover:bg-[#52372b] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-lg shadow transition active:scale-95">
+                        Design Your Cake
+                    </button>
+                    <button onclick="scrollToSection('sec-trending')" class="bg-white/80 hover:bg-white text-[#3d2314] border border-[#6d4c3d]/30 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg transition">
+                        Explore Trending
+                    </button>
+                </div>
+            </div>
+
+            <!-- Decorative Hero Cake Graphic -->
+            <div class="flex items-center justify-center shrink-0">
+                <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-white/70 border-4 border-white shadow-inner flex flex-col items-center justify-center text-center p-3">
+                    <i class="fa-solid fa-cake-candles text-4xl sm:text-5xl text-bakery-700 mb-1.5"></i>
+                    <span class="font-script text-sm sm:text-base text-bakery-800">Sajiya's Special</span>
+                    <span id="heroRateTag" class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full mt-1">Starts ₹450 / lb</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- WHAT'S TRENDING CATALOG GRID (2-COLUMN MIO AMORE CARD)-->
+    <!-- ===================================================== -->
+    <section id="sec-trending" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-7 sm:pt-9">
+        <div class="text-center max-w-xl mx-auto mb-4 sm:mb-6">
+            <h2 class="font-sans text-xl sm:text-3xl font-extrabold text-bakery-700 tracking-tight">What's Trending</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Explore our most popular cakes, fresh from the oven — tap any cake to customize or order!</p>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-2">
+            <button onclick="filterCatalogByCategory('all')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white shrink-0">All Cakes</button>
+            <button onclick="filterCatalogByCategory(&quot;What's Trending&quot;)" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0">What's Trending</button>
+            <button onclick="filterCatalogByCategory('Signature Cakes')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0">Signature Cakes</button>
+            <button onclick="filterCatalogByCategory('Occasional Cakes')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0">Occasional Cakes</button>
+            <button onclick="filterCatalogByCategory('Theme Cakes')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0">Theme Cakes</button>
+        </div>
+
+        <!-- 2-Column Mobile / 4-Column Desktop Product Cards -->
+        <div id="trendingProductsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5"></div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- MAIN CUSTOM CAKE STUDIO LAYOUT                        -->
+    <!-- ===================================================== -->
+    <main id="sec-studio" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-8 sm:pt-10">
+        <div class="text-center max-w-xl mx-auto mb-5">
+            <span class="text-[11px] font-bold uppercase tracking-widest text-bakery-600">Interactive Builder</span>
+            <h2 class="font-serif text-xl sm:text-3xl font-bold text-bakery-900">Customize Your Own Cake</h2>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
 
             <!-- LEFT COLUMN: Live Interactive Cake Visualizer -->
             <div class="lg:col-span-5 lg:sticky lg:top-20 space-y-4 w-full min-w-0">
-                <div class="bg-white rounded-3xl border border-bakery-200 shadow-xl shadow-bakery-100/60 overflow-hidden relative">
+                <div class="bg-white rounded-3xl border border-bakery-200 shadow-lg shadow-bakery-100/50 overflow-hidden relative">
                     
                     <!-- Top Badges inside Preview -->
                     <div class="p-3.5 sm:p-4 pb-0 flex items-center justify-between flex-wrap gap-1.5">
@@ -279,7 +364,7 @@
                     </div>
 
                     <!-- Live SVG Cake Canvas -->
-                    <div class="relative flex items-center justify-center px-3 py-2 min-h-[280px] sm:min-h-[380px] lg:min-h-[410px] bg-gradient-to-b from-white via-bakery-50/50 to-bakery-100/40">
+                    <div class="relative flex items-center justify-center px-3 py-2 min-h-[280px] sm:min-h-[380px] lg:min-h-[410px] bg-gradient-to-b from-white via-bakery-50/40 to-bakery-100/40">
                         <div class="absolute w-52 h-52 sm:w-64 sm:h-64 rounded-full bg-bakery-200/30 blur-2xl pointer-events-none"></div>
 
                         <svg id="cakeSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 430" class="w-full max-w-[270px] sm:max-w-[340px] lg:max-w-[360px] h-auto drop-shadow-md select-none">
@@ -325,9 +410,9 @@
                     </div>
 
                     <!-- Quick Tier Color Bar + Reset New Design inside Preview Card -->
-                    <div class="px-3.5 sm:px-4 py-2.5 sm:py-3 bg-bakery-50/90 border-t border-bakery-100 flex items-center justify-between text-xs text-slate-600 gap-2">
+                    <div class="px-3.5 sm:px-4 py-2.5 sm:py-3 bg-bakery-50 border-t border-bakery-100 flex items-center justify-between text-xs text-slate-600 gap-2">
                         <div class="flex items-center gap-2">
-                            <span class="font-semibold text-bakery-900"><i class="fa-solid fa-palette mr-1 text-bakery-500"></i>Colors:</span>
+                            <span class="font-semibold text-bakery-900"><i class="fa-solid fa-palette mr-1 text-bakery-600"></i>Colors:</span>
                             <div id="activeColorDots" class="flex items-center gap-1.5"></div>
                         </div>
                         <div class="flex items-center gap-2">
@@ -356,8 +441,8 @@
                             <span class="text-xs uppercase tracking-wider font-bold text-slate-400 block">Grand Total</span>
                             <span id="desktopTotalPrice" class="text-2xl font-extrabold text-bakery-700">₹500</span>
                         </div>
-                        <button onclick="openOrderModal()" class="bg-gradient-to-r from-bakery-600 to-bakery-700 hover:from-bakery-700 hover:to-bakery-800 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg shadow-bakery-200 transition flex items-center gap-2">
-                            <span>Order Confirm Karein</span>
+                        <button onclick="openOrderModal()" class="bg-bakery-700 hover:bg-bakery-800 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
+                            <span>Order & Receipt Image</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </button>
                     </div>
@@ -369,7 +454,7 @@
 
                 <!-- Step Navigation Pills -->
                 <div class="sticky top-[56px] sm:top-[64px] lg:static z-20 bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-bakery-200 shadow-sm flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                    <button onclick="scrollToSection('sec-tiers')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-bakery-600 text-white shadow-sm transition whitespace-nowrap">
+                    <button onclick="scrollToSection('sec-tiers')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-bakery-700 text-white shadow-sm transition whitespace-nowrap">
                         1. Tier & Pound
                     </button>
                     <button onclick="scrollToSection('sec-flavor')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-bakery-50 transition whitespace-nowrap">
@@ -508,7 +593,7 @@
                                     value="Happy Birthday"
                                     placeholder="e.g. Happy Birthday Aayat"
                                     oninput="updateMessage(this.value)"
-                                    class="w-full px-4 py-3 pr-14 rounded-xl border border-bakery-200 focus:border-bakery-500 focus:ring-2 focus:ring-bakery-200 outline-none text-base sm:text-sm font-medium"
+                                    class="w-full px-4 py-3 pr-14 rounded-xl border border-bakery-200 focus:border-bakery-600 focus:ring-2 focus:ring-bakery-200 outline-none text-base sm:text-sm font-medium"
                                 >
                                 <span id="charCount" class="absolute right-3 top-3.5 text-xs text-slate-400">14/24</span>
                             </div>
@@ -522,51 +607,49 @@
 
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Aapka Naam (Customer Name)</label>
-                            <input type="text" id="custName" placeholder="Apna naam likhein" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-500 outline-none text-base sm:text-sm">
+                            <input type="text" id="custName" placeholder="Apna naam likhein" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-600 outline-none text-base sm:text-sm">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Phone / WhatsApp Number</label>
-                            <input type="tel" id="custPhone" placeholder="10-digit mobile number" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-500 outline-none text-base sm:text-sm">
+                            <input type="tel" id="custPhone" placeholder="10-digit mobile number" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-600 outline-none text-base sm:text-sm">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Delivery / Pickup Date</label>
-                            <input type="date" id="custDate" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-500 outline-none text-base sm:text-sm bg-white">
+                            <input type="date" id="custDate" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-600 outline-none text-base sm:text-sm bg-white">
                         </div>
 
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Special Note (Optional)</label>
-                            <input type="text" id="custNotes" placeholder="e.g. Less sweet cream, evening 6 PM" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-500 outline-none text-base sm:text-sm">
+                            <input type="text" id="custNotes" placeholder="e.g. Less sweet cream, evening 6 PM" class="w-full px-4 py-2.5 rounded-xl border border-bakery-200 focus:border-bakery-600 outline-none text-base sm:text-sm">
                         </div>
                     </div>
                 </section>
 
-                <!-- ========================================== -->
-                <!-- BOTTOM SECTION: DELIVERED COUNTER & REVIEWS-->
-                <!-- ========================================== -->
-                <section id="sec-delivered-counter" class="bg-gradient-to-r from-bakery-900 via-bakery-800 to-bakery-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-bakery-700">
-                    <div class="grid grid-cols-3 gap-3 text-center divide-x divide-bakery-700/80">
+                <!-- DELIVERED COUNTER BANNER -->
+                <section id="sec-delivered-counter" class="bg-gradient-to-r from-bakery-900 via-bakery-700 to-bakery-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-bakery-600">
+                    <div class="grid grid-cols-3 gap-3 text-center divide-x divide-bakery-500/50">
                         <div class="px-2">
                             <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-amber-300">
                                 <i class="fa-solid fa-cake-candles"></i>
                             </div>
                             <div id="bottomDeliveredCounter" class="text-2xl sm:text-3xl font-extrabold text-white">128+</div>
-                            <div class="text-[11px] sm:text-xs text-bakery-200 font-medium">Successful Delivered Cakes</div>
+                            <div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Successful Delivered Cakes</div>
                         </div>
                         <div class="px-2">
                             <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-emerald-300">
                                 <i class="fa-solid fa-leaf"></i>
                             </div>
                             <div class="text-2xl sm:text-3xl font-extrabold text-white">100%</div>
-                            <div class="text-[11px] sm:text-xs text-bakery-200 font-medium">Freshly Baked Daily</div>
+                            <div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Freshly Baked Daily</div>
                         </div>
                         <div class="px-2">
                             <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-yellow-300">
                                 <i class="fa-solid fa-star"></i>
                             </div>
                             <div id="bottomAvgRating" class="text-2xl sm:text-3xl font-extrabold text-white">4.9★</div>
-                            <div class="text-[11px] sm:text-xs text-bakery-200 font-medium">Happy Customer Rating</div>
+                            <div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Happy Customer Rating</div>
                         </div>
                     </div>
                 </section>
@@ -583,7 +666,6 @@
                         </span>
                     </div>
 
-                    <!-- Write a Review Form -->
                     <div class="bg-bakery-50/80 rounded-2xl p-3.5 sm:p-4 border border-bakery-100 space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <span class="text-xs font-bold uppercase tracking-wider text-bakery-900">Write Your Review:</span>
@@ -596,8 +678,8 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                            <input type="text" id="revNameInput" placeholder="Your Name" class="px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-500">
-                            <input type="text" id="revCommentInput" placeholder="How was the cake design & taste?" class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-500">
+                            <input type="text" id="revNameInput" placeholder="Your Name" class="px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-600">
+                            <input type="text" id="revCommentInput" placeholder="How was the cake design & taste?" class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-600">
                         </div>
                         <div class="flex justify-end">
                             <button type="button" onclick="submitCustomerReview()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm active:scale-95 transition flex items-center gap-1.5">
@@ -606,103 +688,109 @@
                         </div>
                     </div>
 
-                    <!-- Reviews List -->
                     <div id="reviewsListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                 </section>
             </div>
         </div>
     </main>
 
-    <!-- MOBILE STICKY BOTTOM BAR -->
-    <div class="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 backdrop-blur-md border-t border-bakery-200 px-4 pt-2.5 safe-bottom-bar shadow-[0_-6px_20px_rgba(74,27,45,0.08)]">
-        <div class="max-w-lg mx-auto flex items-center justify-between gap-3">
+    <!-- FLOATING WHATSAPP QUICK CHAT BUTTON (MIO AMORE STYLE) -->
+    <button onclick="openWhatsAppSupport()" aria-label="Chat on WhatsApp" class="fixed right-4 bottom-[128px] lg:bottom-6 z-30 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center text-2xl active:scale-90 transition">
+        <i class="fa-brands fa-whatsapp"></i>
+    </button>
+
+    <!-- MOBILE STICKY PRICE BAR + 5-TAB BOTTOM NAVIGATION (MIO AMORE STYLE) -->
+    <div class="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white border-t border-slate-200 shadow-[0_-6px_20px_rgba(74,27,45,0.08)] safe-bottom-nav">
+        <!-- Live Estimate Strip -->
+        <div class="px-4 py-2 bg-bakery-50 border-b border-bakery-100 flex items-center justify-between gap-3">
             <div class="min-w-0">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Total Cake Price</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Selected Cake Estimate</span>
                 <div class="flex items-baseline gap-1.5 truncate">
-                    <span id="mobileTotalPrice" class="text-xl sm:text-2xl font-extrabold text-bakery-700">₹500</span>
+                    <span id="mobileTotalPrice" class="text-lg font-extrabold text-bakery-700">₹500</span>
                     <span id="mobileTierSummary" class="text-[11px] text-slate-500 truncate">1 Tier • 0.5 kg</span>
                 </div>
             </div>
-            <button onclick="openOrderModal()" class="bg-gradient-to-r from-bakery-600 to-bakery-700 text-white font-bold text-xs sm:text-sm px-4 sm:px-5 py-3 rounded-2xl shadow-lg shadow-bakery-300 flex items-center gap-2 active:scale-95 transition shrink-0">
-                <span>View Bill & Order</span>
+            <button onclick="openOrderModal()" class="bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow flex items-center gap-1.5 active:scale-95 transition shrink-0">
+                <span>Order & Image Slip</span>
                 <i class="fa-solid fa-receipt"></i>
+            </button>
+        </div>
+
+        <!-- 5-Tab Storefront Navigation Bar -->
+        <div class="grid grid-cols-5 py-1.5 text-center text-[10px] font-semibold text-slate-500">
+            <button onclick="scrollToSection('top')" class="flex flex-col items-center justify-center gap-0.5 text-bakery-700">
+                <i class="fa-solid fa-house text-sm"></i>
+                <span>Home</span>
+            </button>
+            <button onclick="scrollToSection('sec-trending')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
+                <i class="fa-solid fa-fire text-sm"></i>
+                <span>Trending</span>
+            </button>
+            <button onclick="scrollToSection('sec-studio')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
+                <i class="fa-solid fa-cake-candles text-sm"></i>
+                <span>Studio</span>
+            </button>
+            <button onclick="scrollToSection('sec-reviews')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
+                <i class="fa-solid fa-star text-sm"></i>
+                <span>Reviews</span>
+            </button>
+            <button onclick="openAdminModal()" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
+                <i class="fa-solid fa-user-shield text-sm"></i>
+                <span>Admin</span>
             </button>
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- ORDER CONFIRMATION & IMAGE PREVIEW MODAL   -->
-    <!-- ========================================== -->
+    <!-- ===================================================== -->
+    <!-- ORDER CONFIRMATION & FULL RECEIPT IMAGE MODAL         -->
+    <!-- ===================================================== -->
     <div id="orderModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/65 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
         <div id="printableSlip" class="bg-white rounded-3xl max-w-md w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
-            <div class="bg-gradient-to-r from-bakery-600 to-bakery-800 text-white p-4 sm:p-5 relative">
+            <div class="bg-gradient-to-r from-bakery-700 to-bakery-900 text-white p-4 sm:p-5 relative">
                 <button onclick="closeOrderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 active:scale-90 hover:bg-white/30 flex items-center justify-center text-white transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-white/15 flex items-center justify-center text-xl shrink-0">
+                    <div class="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center text-xl shrink-0">
                         <i class="fa-solid fa-cake-candles"></i>
                     </div>
                     <div>
                         <h3 class="font-serif font-bold text-lg sm:text-xl">Sajiya's Cake</h3>
-                        <p class="text-xs text-bakery-100">Selected Cake Design & Order Slip</p>
+                        <p class="text-xs text-bakery-100">Final Design Image & Complete Order Receipt</p>
                     </div>
                 </div>
             </div>
 
             <div class="p-4 sm:p-5 space-y-3.5">
-                <div class="flex items-center justify-between text-xs text-slate-500 border-b border-slate-100 pb-2">
-                    <span>Order ID: <strong id="modalOrderId" class="text-slate-800">#SC-1042</strong></span>
-                    <span id="modalOrderDate">Date: Today</span>
-                </div>
-
-                <!-- GENERATED CAKE DESIGN PREVIEW IMAGE -->
-                <div class="bg-gradient-to-b from-bakery-50 to-bakery-100/70 rounded-2xl border border-bakery-200 p-3 flex flex-col items-center">
-                    <div class="w-full flex items-center justify-between mb-1">
+                <!-- GENERATED COMPLETE RECEIPT IMAGE (CAKE SAMPLE + ALL SELECTED DETAILS) -->
+                <div class="bg-bakery-50 rounded-2xl border border-bakery-200 p-2.5 flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-1.5 px-1">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-bakery-800">
-                            <i class="fa-solid fa-image mr-1 text-bakery-600"></i> Selected Design Image
+                            <i class="fa-solid fa-image mr-1 text-bakery-700"></i> Final Cake & Details Image
                         </span>
-                        <button type="button" onclick="downloadCakeDesignImage()" class="text-[11px] font-bold bg-white hover:bg-bakery-50 text-bakery-700 border border-bakery-200 px-2.5 py-1 rounded-lg shadow-sm active:scale-95 transition flex items-center gap-1">
-                            <i class="fa-solid fa-download"></i> Save Image
+                        <button type="button" onclick="downloadCakeDesignImage()" class="text-[11px] font-bold bg-bakery-700 hover:bg-bakery-800 text-white px-3 py-1 rounded-full shadow-sm active:scale-95 transition flex items-center gap-1">
+                            <i class="fa-solid fa-download"></i> Download Image
                         </button>
                     </div>
-                    <img id="modalCakePreviewImg" alt="Your Custom Cake Design Preview" class="w-full max-w-[230px] h-auto rounded-xl object-contain drop-shadow-sm" />
-                </div>
-
-                <!-- Customer Info Summary -->
-                <div class="bg-bakery-50 rounded-2xl p-3 text-xs space-y-1 border border-bakery-100">
-                    <div class="flex justify-between gap-2"><span class="text-slate-500 shrink-0">Customer:</span> <strong id="modalCustName" class="text-slate-800 truncate">Guest Customer</strong></div>
-                    <div class="flex justify-between gap-2"><span class="text-slate-500 shrink-0">Phone:</span> <strong id="modalCustPhone" class="text-slate-800 truncate">Not Provided</strong></div>
-                    <div class="flex justify-between gap-2"><span class="text-slate-500 shrink-0">Message on Cake:</span> <strong id="modalCakeMsg" class="text-bakery-700 truncate">"Happy Birthday"</strong></div>
-                </div>
-
-                <!-- Design Specifications -->
-                <div>
-                    <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Selected Cake Details & Price</h4>
-                    <div id="modalBillItems" class="space-y-1.5 text-xs sm:text-sm border-y border-slate-100 py-2.5 max-h-40 overflow-y-auto"></div>
-                </div>
-
-                <div class="flex items-center justify-between pt-0.5">
-                    <span class="font-bold text-sm sm:text-base text-slate-700">Total Payable Amount</span>
-                    <span id="modalGrandTotal" class="text-xl sm:text-2xl font-extrabold text-bakery-700">₹500</span>
+                    <img id="modalCakePreviewImg" alt="Final Custom Cake Order Receipt Image" class="w-full h-auto rounded-xl border border-bakery-200 object-contain shadow-xs" />
                 </div>
 
                 <div id="orderStatusToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium px-3 py-2 rounded-xl text-center"></div>
 
-                <div class="space-y-2 pt-1">
-                    <button id="whatsappDirectBtn" onclick="submitAndSendWhatsApp()" class="w-full bg-emerald-600 active:scale-98 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition">
+                <div class="space-y-2">
+                    <button id="whatsappDirectBtn" onclick="submitAndSendWhatsApp()" class="w-full bg-emerald-600 active:scale-98 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-md flex items-center justify-center gap-2 transition">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
-                        <span>Confirm & Send on WhatsApp</span>
+                        <span>Confirm & Send Image on WhatsApp</span>
                     </button>
 
                     <div class="grid grid-cols-2 gap-2">
                         <button onclick="copyOrderForWhatsApp()" class="w-full bg-bakery-50 active:scale-98 hover:bg-bakery-100 text-bakery-800 border border-bakery-200 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition">
                             <i class="fa-regular fa-copy"></i>
-                            <span>Copy Details</span>
+                            <span>Copy Text Bill</span>
                         </button>
                         <button onclick="window.print()" class="w-full bg-slate-100 active:scale-98 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition">
                             <i class="fa-solid fa-print"></i>
-                            <span>Print / Save Slip</span>
+                            <span>Print Slip</span>
                         </button>
                     </div>
                 </div>
@@ -710,12 +798,11 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- ADMIN LOGIN & PRICE CHART CONSOLE MODAL    -->
-    <!-- ========================================== -->
+    <!-- ===================================================== -->
+    <!-- ADMIN CONSOLE: PRODUCTS, PRICE CHART, REVIEWS, ORDERS -->
+    <!-- ===================================================== -->
     <div id="adminModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/70 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
-        <div class="bg-white rounded-3xl max-w-2xl w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
-            <!-- Admin Modal Header -->
+        <div class="bg-white rounded-3xl max-w-3xl w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
             <div class="bg-bakery-900 text-white p-4 sm:p-5 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-amber-300 text-lg">
@@ -723,7 +810,7 @@
                     </div>
                     <div>
                         <h3 class="font-serif font-bold text-lg">Sajiya's Cake Admin Console</h3>
-                        <p class="text-xs text-bakery-200">Manage Per-Pound Price Chart, Toppings & Orders</p>
+                        <p class="text-xs text-bakery-200">Products, Price Chart, Customer Reviews & Orders</p>
                     </div>
                 </div>
                 <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white">
@@ -731,17 +818,17 @@
                 </button>
             </div>
 
-            <!-- STEP A: ADMIN PIN LOGIN SCREEN -->
+            <!-- STEP A: ADMIN PIN LOGIN -->
             <div id="adminLoginView" class="p-6 space-y-4">
                 <div class="text-center max-w-xs mx-auto space-y-2">
                     <div class="w-12 h-12 rounded-2xl bg-bakery-100 text-bakery-700 flex items-center justify-center mx-auto text-xl">
                         <i class="fa-solid fa-lock"></i>
                     </div>
                     <h4 class="font-bold text-base text-slate-800">Enter Admin PIN</h4>
-                    <p class="text-xs text-slate-500">Default PIN is <strong>1234</strong> (changeable in Cloudflare Worker environment)</p>
+                    <p class="text-xs text-slate-500">Enter your configured Admin PIN to manage store</p>
                 </div>
                 <div class="max-w-xs mx-auto space-y-3">
-                    <input type="password" id="adminPinInput" placeholder="••••" maxlength="12" onkeydown="if(event.key==='Enter') verifyAdminLogin()" class="w-full text-center tracking-widest text-lg font-bold px-4 py-3 rounded-xl border border-bakery-200 focus:border-bakery-600 outline-none">
+                    <input type="password" id="adminPinInput" placeholder="••••" maxlength="12" onkeydown="if(event.key==='Enter') verifyAdminLogin()" class="w-full text-center tracking-widest text-lg font-bold px-4 py-3 rounded-xl border border-bakery-200 focus:border-bakery-700 outline-none">
                     <div id="adminLoginError" class="hidden text-xs text-rose-600 font-semibold text-center"></div>
                     <button onclick="verifyAdminLogin()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow transition">
                         Unlock Admin Console
@@ -749,44 +836,74 @@
                 </div>
             </div>
 
-            <!-- STEP B: ADMIN DASHBOARD (PRICE CHART + ORDERS) -->
+            <!-- STEP B: ADMIN DASHBOARD -->
             <div id="adminDashboardView" class="hidden p-4 sm:p-5 space-y-4">
-                <!-- Tabs -->
-                <div class="flex gap-2 border-b border-slate-200 pb-2">
-                    <button id="tabBtnPricing" onclick="switchAdminTab('pricing')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-bakery-700 text-white">
-                        <i class="fa-solid fa-tags mr-1"></i> Cake Price Chart
+                <!-- 4 Admin Tabs -->
+                <div class="flex gap-1.5 overflow-x-auto no-scrollbar border-b border-slate-200 pb-2">
+                    <button id="tabBtnProducts" onclick="switchAdminTab('products')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-bakery-700 text-white shrink-0">
+                        <i class="fa-solid fa-cake-candles mr-1"></i> Products
                     </button>
-                    <button id="tabBtnOrders" onclick="switchAdminTab('orders')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">
-                        <i class="fa-solid fa-clipboard-list mr-1"></i> Orders & Deliveries
+                    <button id="tabBtnPricing" onclick="switchAdminTab('pricing')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
+                        <i class="fa-solid fa-tags mr-1"></i> Price Chart
+                    </button>
+                    <button id="tabBtnReviews" onclick="switchAdminTab('reviews')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
+                        <i class="fa-solid fa-star mr-1"></i> Reviews
+                    </button>
+                    <button id="tabBtnOrders" onclick="switchAdminTab('orders')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
+                        <i class="fa-solid fa-clipboard-list mr-1"></i> Orders
                     </button>
                 </div>
 
-                <!-- TAB 1: DYNAMIC PRICE CHART EDITOR -->
-                <div id="adminPricingTab" class="space-y-4 max-h-[62vh] overflow-y-auto pr-1">
-                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-3">
-                        <div class="flex items-center justify-between flex-wrap gap-2">
-                            <div>
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900">1. Per-Pound Base Rate Auto-Calculator</h4>
-                                <p class="text-[11px] text-amber-800">Set per-pound rate (1 Pound = 0.5 kg) to auto-fill all cake weights</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="adminPerPoundInput" value="450" class="w-24 px-3 py-1.5 rounded-lg border border-amber-300 bg-white text-sm font-bold text-slate-800">
-                                <button type="button" onclick="autoCalculateFromPerPound()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-lg">
-                                    Apply / Pound
-                                </button>
-                            </div>
+                <!-- TAB 1: ADD & REMOVE CATALOG PRODUCTS -->
+                <div id="adminProductsTab" class="space-y-4 max-h-[64vh] overflow-y-auto pr-1">
+                    <div class="bg-bakery-50/80 border border-bakery-200 rounded-2xl p-3.5 space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-bakery-900">Add New Cake Product to Storefront</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <input type="text" id="newProdName" placeholder="Cake Name (e.g. Butterfly Bliss Cake)" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                            <select id="newProdCategory" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                                <option value="What's Trending">What's Trending</option>
+                                <option value="Signature Cakes">Signature Cakes</option>
+                                <option value="Occasional Cakes">Occasional Cakes</option>
+                                <option value="Theme Cakes">Theme Cakes</option>
+                            </select>
+                            <input type="number" id="newProdPrice" placeholder="Display Price ₹ (e.g. 850)" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                            <input type="text" id="newProdTag" placeholder="Badge Tag (e.g. Bestseller, New)" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                            <input type="text" id="newProdDesc" placeholder="Short description (flavors, layers, toppings)" class="sm:col-span-2 px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                            <input type="url" id="newProdImage" placeholder="Optional Image URL (leave blank to use live 3D cake graphic)" class="sm:col-span-2 px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                        </div>
+                        <button type="button" onclick="adminAddProduct()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus"></i> Add Product & Sync Cloud
+                        </button>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Current Storefront Products (Click Remove to Delete)</h4>
+                        <div id="adminProductsList" class="space-y-2"></div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: DYNAMIC PRICE CHART EDITOR -->
+                <div id="adminPricingTab" class="hidden space-y-4 max-h-[64vh] overflow-y-auto pr-1">
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900">Per-Pound Rate Auto-Calculator</h4>
+                            <p class="text-[11px] text-amber-800">1 Pound = 0.5 kg — auto-calculates all tiers</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="adminPerPoundInput" value="450" class="w-24 px-3 py-1.5 rounded-lg border border-amber-300 bg-white text-sm font-bold text-slate-800">
+                            <button type="button" onclick="autoCalculateFromPerPound()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-lg">
+                                Apply / Pound
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Tier & Weight Price Chart Table -->
                     <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">2. Custom Tier & Pound Price Chart (₹)</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Tier & Pound Price Chart (₹)</h4>
                         <div id="adminWeightInputs" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
                     </div>
 
-                    <!-- Add-ons: Eggless, Drip & Delivered Counter Base -->
                     <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">3. Base Charges & Delivered Counter</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Base Charges & Delivered Counter</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                             <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
                                 <label class="text-[11px] font-semibold text-slate-500 block">Eggless Charge (₹)</label>
@@ -803,15 +920,13 @@
                         </div>
                     </div>
 
-                    <!-- Flavors Price Editor -->
                     <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">4. Flavor Extra Charges (₹)</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Flavor Extra Charges (₹)</h4>
                         <div id="adminFlavorInputs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
                     </div>
 
-                    <!-- Decorations Price Editor -->
                     <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">5. Decorations & Toppers Price (₹)</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Decorations & Toppers Price (₹)</h4>
                         <div id="adminDecorInputs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
                     </div>
 
@@ -822,8 +937,19 @@
                     </button>
                 </div>
 
-                <!-- TAB 2: ORDERS & DELIVERED STATUS MANAGER -->
-                <div id="adminOrdersTab" class="hidden space-y-3 max-h-[62vh] overflow-y-auto pr-1">
+                <!-- TAB 3: EDIT, MODIFY OR DELETE CUSTOMER REVIEWS -->
+                <div id="adminReviewsTab" class="hidden space-y-3 max-h-[64vh] overflow-y-auto pr-1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-600">Edit, Modify Star Rating, or Delete Customer Reviews</span>
+                        <button type="button" onclick="adminSaveAllReviews()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl shadow">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Save Review Changes
+                        </button>
+                    </div>
+                    <div id="adminReviewsEditorList" class="space-y-3"></div>
+                </div>
+
+                <!-- TAB 4: ORDERS & DELIVERED STATUS -->
+                <div id="adminOrdersTab" class="hidden space-y-3 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-slate-600">Recent Customer Orders (D1 Database)</span>
                         <button onclick="loadAdminOrders()" class="text-xs font-semibold text-bakery-700 hover:underline">
@@ -844,7 +970,7 @@
         // ==========================================
         const SAJIYAS_CAKE_CONFIG = {
             apiBase: 'https://sajiyascake-api.prabhu-y1211.workers.dev',
-            shopWhatsApp: '919777071440' // Replace with Sajiya's Cake official WhatsApp number if different
+            shopWhatsApp: '917873562312'
         };
 
         // ==========================================
@@ -893,6 +1019,45 @@
                 crown: 120
             }
         };
+
+        let CATALOG_PRODUCTS = [
+            {
+                id: 'prod-1',
+                name: 'Together Forever Royal',
+                category: 'Signature Cakes',
+                price: 1480,
+                tag: 'Bestseller',
+                desc: '2 Tier Rose Berry & Vanilla Truffle with Cream Roses',
+                preset: { tiers: 2, weightIndex: 0, flavorId: 'truffle', tierColors: ['#FB7185', '#FFFDF9', '#F9A8D4'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'anniversary', cakeMessage: 'Together Forever' }
+            },
+            {
+                id: 'prod-2',
+                name: 'Butterscotch Bliss',
+                category: "What's Trending",
+                price: 650,
+                tag: 'Trending',
+                desc: '1 Tier Golden Butterscotch with Caramel Drip & Sprinkles',
+                preset: { tiers: 1, weightIndex: 0, flavorId: 'butterscotch', tierColors: ['#FDE047', '#FFFDF9', '#FDE047'], dripId: 'caramel', decorations: ['sprinkles', 'cherries'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
+            },
+            {
+                id: 'prod-3',
+                name: 'Midnight Choco Truffle',
+                category: 'Occasional Cakes',
+                price: 780,
+                tag: 'Chef Special',
+                desc: 'Rich Dark Chocolate Truffle with Oreo & Choco Chips',
+                preset: { tiers: 1, weightIndex: 0, flavorId: 'truffle', tierColors: ['#5C3317', '#5C3317', '#5C3317'], dripId: 'choco', decorations: ['chocochips', 'goldflakes'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
+            },
+            {
+                id: 'prod-4',
+                name: 'Royal Rasmalai Crown',
+                category: 'Theme Cakes',
+                price: 1750,
+                tag: 'Festive',
+                desc: '2 Tier Kesar Rasmalai Fusion topped with Royal Gold Crown',
+                preset: { tiers: 2, weightIndex: 0, flavorId: 'rasmalai', tierColors: ['#FDBA74', '#FDE047', '#FFFDF9'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'crown', cakeMessage: 'Best Wishes' }
+            }
+        ];
 
         const TIER_META = {
             1: { name: '1 Tier Cake', hindi: 'Ek Manzil Cake', desc: 'Small celebrations & birthdays ke liye best' },
@@ -963,10 +1128,11 @@
             cakeMessage: 'Happy Birthday'
         };
 
+        let activeCatalogCategory = 'all';
+        let catalogSearchTerm = '';
         let currentOrderId = '#SC-1042';
         let latestCakeImageDataUrl = '';
         let deliveredCount = 128;
-        let deliveredBaseOffset = 128;
         let reviewsList = [];
         let selectedReviewRating = 5;
         let adminToken = '';
@@ -976,6 +1142,7 @@
         // ==========================================
         window.onload = async function () {
             setDefaultTomorrowDate();
+            renderCatalogProducts();
             renderAllControls();
             updateEverything();
             await fetchPublicCloudData();
@@ -986,15 +1153,12 @@
                 const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/public-data`);
                 const data = await res.json();
                 if (data.success) {
-                    if (data.pricing) {
-                        PRICING = { ...PRICING, ...data.pricing };
-                    }
-                    if (typeof data.deliveredCount === 'number') {
-                        deliveredCount = data.deliveredCount;
-                    }
-                    if (Array.isArray(data.reviews)) {
-                        reviewsList = data.reviews;
-                    }
+                    if (data.pricing) PRICING = { ...PRICING, ...data.pricing };
+                    if (Array.isArray(data.products) && data.products.length) CATALOG_PRODUCTS = data.products;
+                    if (typeof data.deliveredCount === 'number') deliveredCount = data.deliveredCount;
+                    if (Array.isArray(data.reviews)) reviewsList = data.reviews;
+
+                    renderCatalogProducts();
                     renderAllControls();
                     updateEverything();
                     renderDeliveredCounter();
@@ -1025,16 +1189,131 @@
         }
 
         // ==========================================
-        // SIDEBAR DRAWER CONTROLS
+        // MIO AMORE DRAWER, SEARCH & WHATSAPP SUPPORT
         // ==========================================
         function openSidebar() {
             document.getElementById('sidebarBackdrop').classList.remove('hidden');
-            document.getElementById('sideDrawer').classList.remove('-translate-x-full');
+            document.getElementById('sideDrawer').classList.remove('translate-x-full');
         }
 
         function closeSidebar() {
             document.getElementById('sidebarBackdrop').classList.add('hidden');
-            document.getElementById('sideDrawer').classList.add('-translate-x-full');
+            document.getElementById('sideDrawer').classList.add('translate-x-full');
+        }
+
+        function toggleDrawerAccordion(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(id + 'Icon');
+            el.classList.toggle('hidden');
+            if (icon) icon.classList.toggle('rotate-180');
+        }
+
+        function toggleSearchBar() {
+            const bar = document.getElementById('topSearchBar');
+            bar.classList.toggle('hidden');
+            if (!bar.classList.contains('hidden')) {
+                document.getElementById('catalogSearchInput').focus();
+            }
+        }
+
+        function openWhatsAppSupport() {
+            const msg = "Hello Sajiya's Cake! I would like to enquire about a custom cake order.";
+            window.open(`https://wa.me/${SAJIYAS_CAKE_CONFIG.shopWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // ==========================================
+        // TRENDING CATALOG GRID (2-COLUMN MIO AMORE CARDS)
+        // ==========================================
+        function filterCatalogByCategory(cat) {
+            activeCatalogCategory = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                if (btn.textContent.trim() === cat || (cat === 'all' && btn.textContent.trim() === 'All Cakes')) {
+                    btn.className = 'cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white shrink-0';
+                } else {
+                    btn.className = 'cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0';
+                }
+            });
+            renderCatalogProducts();
+        }
+
+        function filterCatalogBySearch(val) {
+            catalogSearchTerm = val.toLowerCase().trim();
+            renderCatalogProducts();
+        }
+
+        function renderCatalogProducts() {
+            const grid = document.getElementById('trendingProductsGrid');
+            const filtered = CATALOG_PRODUCTS.filter(p => {
+                const matchCat = activeCatalogCategory === 'all' || p.category === activeCatalogCategory;
+                const matchSearch = !catalogSearchTerm || p.name.toLowerCase().includes(catalogSearchTerm) || (p.desc || '').toLowerCase().includes(catalogSearchTerm);
+                return matchCat && matchSearch;
+            });
+
+            if (!filtered.length) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-slate-500 bg-white rounded-2xl border border-bakery-100">No matching cakes found. Try designing a custom cake below!</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(prod => {
+                const mainColor = (prod.preset && prod.preset.tierColors && prod.preset.tierColors[0]) || '#F9A8D4';
+                const visual = prod.imageUrl
+                    ? `<img src="${prod.imageUrl}" alt="${prod.name}" class="w-full h-36 sm:h-44 object-cover rounded-2xl" />`
+                    : `<div class="w-full h-36 sm:h-44 rounded-2xl bg-gradient-to-b from-bakery-50 to-bakery-100 flex flex-col items-center justify-center relative overflow-hidden">
+                         <div class="w-20 h-20 rounded-full flex items-center justify-center shadow-inner border-4 border-white" style="background-color: ${mainColor}">
+                            <i class="fa-solid fa-cake-candles text-3xl text-bakery-900/80"></i>
+                         </div>
+                         <span class="text-[10px] font-bold uppercase tracking-wider text-bakery-800 mt-2">${prod.category}</span>
+                       </div>`;
+
+                return `
+                    <div class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-2.5 sm:p-3.5 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+                        <div>
+                            <div class="relative">
+                                ${visual}
+                                ${prod.tag ? `<span class="absolute top-2 left-2 bg-bakery-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${prod.tag}</span>` : ''}
+                            </div>
+                            <div class="text-center mt-3 space-y-1 px-1">
+                                <h3 class="font-bold text-xs sm:text-sm text-slate-800 line-clamp-1">${prod.name}</h3>
+                                <p class="text-[11px] text-slate-500 line-clamp-2 min-h-[30px]">${prod.desc || ''}</p>
+                                <div class="font-extrabold text-sm sm:text-base text-bakery-700 pt-0.5">₹${Number(prod.price).toLocaleString('en-IN')}.00</div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="button" onclick="loadProductIntoStudio('${prod.id}')" class="w-full py-2 px-3 rounded-full border border-bakery-600 text-bakery-700 hover:bg-bakery-700 hover:text-white font-bold text-xs transition active:scale-95">
+                                Customize & Order
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadProductIntoStudio(prodId) {
+            const prod = CATALOG_PRODUCTS.find(p => p.id === prodId);
+            if (!prod) return;
+
+            if (prod.preset) {
+                state = {
+                    tiers: prod.preset.tiers || 1,
+                    weightIndex: prod.preset.weightIndex || 0,
+                    eggless: true,
+                    flavorId: prod.preset.flavorId || 'vanilla',
+                    tierColors: prod.preset.tierColors || ['#F9A8D4', '#FFFDF9', '#7DD3FC'],
+                    dripId: prod.preset.dripId || 'choco',
+                    decorations: [...(prod.preset.decorations || [])],
+                    topperId: prod.preset.topperId || 'hbd',
+                    cakeMessage: prod.preset.cakeMessage || prod.name
+                };
+            } else {
+                state.cakeMessage = prod.name.slice(0, 24);
+            }
+
+            document.getElementById('cakeMessageInput').value = state.cakeMessage;
+            document.getElementById('charCount').textContent = `${state.cakeMessage.length}/24`;
+            renderAllControls();
+            updateEverything();
+            scrollToSection('sec-studio');
+            showGlobalToast(`Loaded "${prod.name}" into Custom Studio!`);
         }
 
         // ==========================================
@@ -1042,6 +1321,7 @@
         // ==========================================
         function renderAllControls() {
             document.getElementById('perPoundBadge').textContent = `₹${PRICING.perPoundRate} / Pound`;
+            document.getElementById('heroRateTag').textContent = `Starts ₹${PRICING.perPoundRate} / lb`;
             document.getElementById('egglessPriceLabel').textContent = `+₹${PRICING.egglessCharge} extra`;
             document.getElementById('dripSubLabel').textContent = `Cake ke upar se behne wali delicious glaze (+₹${PRICING.dripCharge})`;
 
@@ -1077,13 +1357,13 @@
                     <button type="button" onclick="selectTierCount(${tierNum})"
                         class="text-left p-3.5 sm:p-4 rounded-2xl border-2 transition relative flex flex-col justify-between active:scale-98 ${
                             isSelected
-                                ? 'border-bakery-600 bg-bakery-50/70 shadow-md shadow-bakery-100'
+                                ? 'border-bakery-700 bg-bakery-50/70 shadow-md shadow-bakery-100'
                                 : 'border-slate-200 hover:border-bakery-300 bg-white'
                         }">
                         <div class="flex items-start justify-between w-full mb-1.5">
                             <div>
                                 <span class="font-bold text-sm sm:text-base text-bakery-900 block">${info.name}</span>
-                                <span class="text-xs font-medium text-bakery-600">${info.hindi}</span>
+                                <span class="text-xs font-medium text-bakery-700">${info.hindi}</span>
                             </div>
                             <div class="flex flex-col justify-end items-center h-9 pt-1">
                                 ${stackBars}
@@ -1130,7 +1410,7 @@
                     <button type="button" onclick="selectFlavor('${flv.id}')"
                         class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl border-2 text-left transition active:scale-98 gap-2 ${
                             active
-                                ? 'border-bakery-600 bg-bakery-50/70 shadow-sm'
+                                ? 'border-bakery-700 bg-bakery-50/70 shadow-sm'
                                 : 'border-slate-200 hover:border-bakery-300 bg-white'
                         }">
                         <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
@@ -1178,7 +1458,7 @@
                                 <span class="w-4 h-4 rounded-full border border-slate-400 inline-block shrink-0" style="background-color: ${currentColor}"></span>
                                 <span class="truncate">${tierLabels[t]}</span>
                             </span>
-                            <label class="text-xs font-semibold text-bakery-600 hover:underline cursor-pointer flex items-center gap-1 shrink-0">
+                            <label class="text-xs font-semibold text-bakery-700 hover:underline cursor-pointer flex items-center gap-1 shrink-0">
                                 <i class="fa-solid fa-eye-dropper"></i> Shade
                                 <input type="color" value="${currentColor}" onchange="setTierColor(${t}, this.value)" class="w-5 h-5 rounded cursor-pointer border-0 bg-transparent">
                             </label>
@@ -1200,7 +1480,7 @@
                 return `
                     <button type="button" onclick="selectDrip('${d.id}')"
                         class="p-2.5 rounded-xl border-2 text-center transition active:scale-95 flex flex-col items-center gap-1.5 ${
-                            active ? 'border-bakery-600 bg-bakery-50 shadow-sm' : 'border-slate-200 hover:border-bakery-300 bg-white'
+                            active ? 'border-bakery-700 bg-bakery-50 shadow-sm' : 'border-slate-200 hover:border-bakery-300 bg-white'
                         }">
                         <span class="w-7 h-7 rounded-full border border-slate-300 flex items-center justify-center"
                               style="background: ${d.id === 'none' ? '#f1f5f9' : d.color}">
@@ -1222,19 +1502,19 @@
                     <button type="button" onclick="toggleDecoration('${dec.id}')"
                         class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl border-2 text-left transition active:scale-98 gap-2 ${
                             isSelected
-                                ? 'border-bakery-600 bg-bakery-50/80 shadow-sm'
+                                ? 'border-bakery-700 bg-bakery-50/80 shadow-sm'
                                 : 'border-slate-200 hover:border-bakery-300 bg-white'
                         }">
                         <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
                             <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-sm sm:text-base transition shrink-0 ${
-                                isSelected ? 'bg-bakery-600 text-white' : 'bg-bakery-100 text-bakery-700'
+                                isSelected ? 'bg-bakery-700 text-white' : 'bg-bakery-100 text-bakery-700'
                             }">
                                 <i class="fa-solid ${dec.icon}"></i>
                             </div>
                             <div class="min-w-0">
                                 <div class="font-bold text-sm text-slate-800 flex items-center gap-1.5 truncate">
                                     <span class="truncate">${dec.name}</span>
-                                    ${isSelected ? '<i class="fa-solid fa-circle-check text-bakery-600 text-xs shrink-0"></i>' : ''}
+                                    ${isSelected ? '<i class="fa-solid fa-circle-check text-bakery-700 text-xs shrink-0"></i>' : ''}
                                 </div>
                                 <div class="text-[11px] text-slate-500 line-clamp-1">${dec.desc}</div>
                             </div>
@@ -1255,9 +1535,9 @@
                 return `
                     <button type="button" onclick="selectTopper('${top.id}')"
                         class="p-2.5 sm:p-3 rounded-xl border-2 text-center transition active:scale-95 flex flex-col items-center justify-between gap-1 ${
-                            active ? 'border-bakery-600 bg-bakery-50 shadow-sm' : 'border-slate-200 hover:border-bakery-300 bg-white'
+                            active ? 'border-bakery-700 bg-bakery-50 shadow-sm' : 'border-slate-200 hover:border-bakery-300 bg-white'
                         }">
-                        <i class="fa-solid ${top.id === 'crown' ? 'fa-crown text-amber-500' : (top.id === 'none' ? 'fa-ban text-slate-400' : 'fa-award text-bakery-600')} text-lg"></i>
+                        <i class="fa-solid ${top.id === 'crown' ? 'fa-crown text-amber-500' : (top.id === 'none' ? 'fa-ban text-slate-400' : 'fa-award text-bakery-700')} text-lg"></i>
                         <span class="text-xs font-bold text-slate-800 leading-tight">${top.name}</span>
                         <span class="text-[11px] font-semibold text-bakery-700">${price === 0 ? '₹0' : '+₹' + price}</span>
                     </button>
@@ -1471,9 +1751,10 @@
         }
 
         // ==========================================
-        // RENDER LIVE CAKE SVG TO PNG IMAGE CARD
+        // COMPLETE ORDER RECEIPT IMAGE GENERATOR
+        // (CAKE SAMPLE + ALL SELECTED DETAILS & BILL)
         // ==========================================
-        function generateCakeDesignImage(callback) {
+        function generateFullOrderReceiptImage(callback) {
             const svgEl = document.getElementById('cakeSvg');
             const serializer = new XMLSerializer();
             let svgStr = serializer.serializeToString(svgEl);
@@ -1487,45 +1768,102 @@
             const img = new Image();
 
             img.onload = function () {
-                const { total } = getBillBreakdown();
-                const flv = FLAVOR_META.find(f => f.id === state.flavorId);
-                const weightInfo = PRICING.tierWeights[state.tiers][state.weightIndex];
+                const { items, total } = getBillBreakdown();
+                const custName = document.getElementById('custName').value.trim() || 'Valued Customer';
+                const custPhone = document.getElementById('custPhone').value.trim() || 'Not provided';
+                const custDate = document.getElementById('custDate').value || 'Today';
+                const custNotes = document.getElementById('custNotes').value.trim() || 'None';
+                const displayMsg = state.cakeMessage.trim() || "Sajiya's Cake";
 
+                let colorSummary = [];
+                for (let i = 0; i < state.tiers; i++) {
+                    const match = FROSTING_COLORS.find(c => c.hex.toLowerCase() === state.tierColors[i].toLowerCase());
+                    colorSummary.push(`T${i+1}: ${match ? match.name : state.tierColors[i]}`);
+                }
+
+                const canvasHeight = 760 + (items.length * 28);
                 const canvas = document.createElement('canvas');
-                canvas.width = 640;
-                canvas.height = 760;
+                canvas.width = 680;
+                canvas.height = canvasHeight;
                 const ctx = canvas.getContext('2d');
 
-                ctx.fillStyle = '#fff9fb';
+                // White & Soft Pink Receipt Background
+                ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                ctx.fillStyle = '#c93b71';
-                ctx.fillRect(0, 0, canvas.width, 76);
+                // Top Header Banner
+                ctx.fillStyle = '#7c1d5e';
+                ctx.fillRect(0, 0, canvas.width, 84);
                 ctx.fillStyle = '#ffffff';
                 ctx.font = 'bold 28px Georgia, serif';
                 ctx.textAlign = 'center';
-                ctx.fillText("Sajiya's Cake — Selected Design", canvas.width / 2, 48);
+                ctx.fillText("Sajiya's Cake — Custom Order Slip", canvas.width / 2, 42);
+                ctx.font = '15px sans-serif';
+                ctx.fillStyle = '#f5d4ea';
+                ctx.fillText(`Order ID: ${currentOrderId}   |   Delivery Date: ${custDate}`, canvas.width / 2, 68);
 
-                ctx.drawImage(img, 100, 88, 440, 473);
+                // Cake Sample Box
+                ctx.fillStyle = '#fdf7fb';
+                ctx.fillRect(28, 100, canvas.width - 56, 360);
+                ctx.strokeStyle = '#f5d4ea';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(28, 100, canvas.width - 56, 360);
+
+                ctx.drawImage(img, 180, 108, 320, 344);
                 URL.revokeObjectURL(url);
 
-                ctx.fillStyle = '#fceef3';
-                ctx.fillRect(24, 574, canvas.width - 48, 160);
-                ctx.strokeStyle = '#f4b5cd';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(24, 574, canvas.width - 48, 160);
+                // Customer & Cake Details Box
+                let y = 482;
+                ctx.fillStyle = '#faebf5';
+                ctx.fillRect(28, y, canvas.width - 56, 132);
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#451034';
+                ctx.font = 'bold 16px sans-serif';
+                ctx.fillText(`Customer: ${custName}   |   Phone: ${custPhone}`, 44, y + 30);
+                ctx.fillText(`Message on Cake: "${displayMsg}"`, 44, y + 60);
+                ctx.font = '15px sans-serif';
+                ctx.fillStyle = '#334155';
+                ctx.fillText(`Tier Colors: ${colorSummary.join(' • ')}`, 44, y + 88);
+                ctx.fillText(`Notes: ${custNotes}`, 44, y + 114);
 
-                ctx.fillStyle = '#4a1b2d';
-                ctx.font = 'bold 22px sans-serif';
-                ctx.fillText(`${state.tiers} Tier (${weightInfo.label}) • ${flv.name}`, canvas.width / 2, 616);
+                // Itemized Bill Breakdown
+                y += 156;
+                ctx.fillStyle = '#7c1d5e';
+                ctx.font = 'bold 16px sans-serif';
+                ctx.fillText('SELECTED CAKE SPECIFICATIONS & PRICE:', 32, y);
+                y += 12;
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.beginPath();
+                ctx.moveTo(32, y);
+                ctx.lineTo(canvas.width - 32, y);
+                ctx.stroke();
 
-                ctx.fillStyle = '#64748b';
-                ctx.font = '19px sans-serif';
-                ctx.fillText(`${state.eggless ? '100% Eggless' : 'With Egg'} | Order ${currentOrderId}`, canvas.width / 2, 654);
+                y += 26;
+                items.forEach(item => {
+                    ctx.textAlign = 'left';
+                    ctx.fillStyle = '#1e293b';
+                    ctx.font = '16px sans-serif';
+                    ctx.fillText(`• ${item.label}`, 36, y);
 
-                ctx.fillStyle = '#a82a59';
-                ctx.font = 'bold 30px sans-serif';
-                ctx.fillText(`Total Estimate: ₹${total.toLocaleString('en-IN')}`, canvas.width / 2, 704);
+                    ctx.textAlign = 'right';
+                    ctx.font = 'bold 16px sans-serif';
+                    ctx.fillText(item.price === 0 ? 'Included' : `₹${item.price}`, canvas.width - 36, y);
+                    y += 28;
+                });
+
+                // Grand Total Footer
+                y += 8;
+                ctx.fillStyle = '#451034';
+                ctx.fillRect(28, y, canvas.width - 56, 62);
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 20px sans-serif';
+                ctx.fillText('GRAND TOTAL AMOUNT', 46, y + 39);
+
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#fde047';
+                ctx.font = 'bold 26px sans-serif';
+                ctx.fillText(`₹${total.toLocaleString('en-IN')}`, canvas.width - 46, y + 41);
 
                 latestCakeImageDataUrl = canvas.toDataURL('image/png');
                 if (callback) callback(latestCakeImageDataUrl);
@@ -1538,13 +1876,13 @@
             if (!latestCakeImageDataUrl) return;
             const link = document.createElement('a');
             link.href = latestCakeImageDataUrl;
-            link.download = `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`;
+            link.download = `Sajiyas-Cake-Order-${currentOrderId.replace('#', '')}.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
 
             const toast = document.getElementById('orderStatusToast');
-            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Cake Design Image saved to your gallery!`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Complete Order Receipt Image saved!`;
             toast.classList.remove('hidden');
         }
 
@@ -1633,24 +1971,6 @@
             updateMessage(msg);
         }
 
-        function surpriseMe() {
-            state.tiers = [1, 2, 3][Math.floor(Math.random() * 3)];
-            state.weightIndex = Math.floor(Math.random() * 2);
-            state.flavorId = FLAVOR_META[Math.floor(Math.random() * FLAVOR_META.length)].id;
-            state.tierColors = [
-                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex,
-                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex,
-                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex
-            ];
-            state.dripId = DRIP_META[Math.floor(Math.random() * DRIP_META.length)].id;
-            const shuffledDec = [...DECOR_META].sort(() => 0.5 - Math.random());
-            state.decorations = shuffledDec.slice(0, Math.floor(Math.random() * 3) + 2).map(d => d.id);
-            state.topperId = TOPPER_META[Math.floor(Math.random() * TOPPER_META.length)].id;
-
-            renderAllControls();
-            updateEverything();
-        }
-
         function freshResetCake() {
             state = {
                 tiers: 1,
@@ -1673,7 +1993,7 @@
 
             renderAllControls();
             updateEverything();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            scrollToSection('sec-studio');
             showGlobalToast('Selection reset! Start designing a new cake ✨');
         }
 
@@ -1743,7 +2063,7 @@
             const weightInfo = PRICING.tierWeights[state.tiers][state.weightIndex];
             const flv = FLAVOR_META.find(f => f.id === state.flavorId);
 
-            document.getElementById('previewTierBadge').innerHTML = `<i class="fa-solid fa-layer-group text-bakery-600"></i> ${state.tiers} Tier (${weightInfo.label.split(' ')[0]} kg)`;
+            document.getElementById('previewTierBadge').innerHTML = `<i class="fa-solid fa-layer-group text-bakery-700"></i> ${state.tiers} Tier (${weightInfo.label.split(' ')[0]} kg)`;
             document.getElementById('mobileTierSummary').textContent = `${state.tiers} Tier • ${weightInfo.label.split(' ')[0]} kg`;
             document.getElementById('previewFlavorBadge').textContent = `Flavor: ${flv.name}`;
 
@@ -1769,13 +2089,12 @@
         // ==========================================
         function renderDeliveredCounter() {
             document.getElementById('bottomDeliveredCounter').textContent = `${deliveredCount}+`;
-            document.getElementById('sidebarDeliveredCount').textContent = `${deliveredCount}+ Cakes`;
+            document.getElementById('sidebarDeliveredBadge').textContent = `${deliveredCount}+`;
         }
 
         function setReviewRating(stars) {
             selectedReviewRating = stars;
-            const btns = document.querySelectorAll('#starRatingPicker .star-btn');
-            btns.forEach((btn, idx) => {
+            document.querySelectorAll('#starRatingPicker .star-btn').forEach((btn, idx) => {
                 btn.className = idx < stars ? 'star-btn text-lg text-amber-400' : 'star-btn text-lg text-slate-300';
             });
         }
@@ -1784,15 +2103,15 @@
             const container = document.getElementById('reviewsListContainer');
             if (!reviewsList.length) {
                 reviewsList = [
-                    { name: 'Ananya Sharma', rating: 5, comment: 'Ordered a custom cake — looked identical to the preview image and tasted amazing!', date: 'Recently' }
+                    { id: 'rev-1', name: 'Ananya Sharma', rating: 5, comment: 'Ordered a custom cake — looked identical to the receipt image and tasted super fresh!', date: 'Recently' }
                 ];
             }
 
-            const avg = (reviewsList.reduce((acc, r) => acc + (r.rating || 5), 0) / reviewsList.length).toFixed(1);
+            const avg = (reviewsList.reduce((acc, r) => acc + (Number(r.rating) || 5), 0) / reviewsList.length).toFixed(1);
             document.getElementById('bottomAvgRating').textContent = `${avg}★`;
             document.getElementById('reviewTotalBadge').textContent = `★ ${avg} / 5 (${reviewsList.length})`;
 
-            container.innerHTML = reviewsList.slice(0, 6).map(rev => {
+            container.innerHTML = reviewsList.slice(0, 8).map(rev => {
                 const starsHtml = '★'.repeat(rev.rating || 5) + '☆'.repeat(5 - (rev.rating || 5));
                 return `
                     <div class="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-1.5">
@@ -1816,6 +2135,7 @@
             }
 
             const localRev = {
+                id: 'rev-' + Date.now(),
                 name,
                 rating: selectedReviewRating,
                 comment,
@@ -1838,7 +2158,7 @@
         }
 
         // ==========================================
-        // ORDER MODAL, DESIGN PREVIEW IMAGE & WHATSAPP
+        // ORDER MODAL, RECEIPT IMAGE & WHATSAPP
         // ==========================================
         function getFormattedOrderSummary() {
             const { items, total } = getBillBreakdown();
@@ -1894,41 +2214,10 @@
         }
 
         function openOrderModal() {
-            const { items, total } = getBillBreakdown();
-            const custName = document.getElementById('custName').value.trim() || 'Valued Customer';
-            const custPhone = document.getElementById('custPhone').value.trim() || 'Not specified';
-            const custDate = document.getElementById('custDate').value || 'Today';
-            const displayMsg = state.cakeMessage.trim() || "Sajiya's Cake";
-
             currentOrderId = '#SC-' + Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('modalOrderId').textContent = currentOrderId;
-            document.getElementById('modalOrderDate').textContent = 'Delivery: ' + custDate;
-            document.getElementById('modalCustName').textContent = custName;
-            document.getElementById('modalCustPhone').textContent = custPhone;
-            document.getElementById('modalCakeMsg').textContent = `"${displayMsg}"`;
-
-            let colorSummary = [];
-            for (let i = 0; i < state.tiers; i++) {
-                const match = FROSTING_COLORS.find(c => c.hex.toLowerCase() === state.tierColors[i].toLowerCase());
-                colorSummary.push(`Tier ${i+1}: ${match ? match.name : state.tierColors[i]}`);
-            }
-
-            const billHtml = `
-                <div class="text-xs text-bakery-700 bg-bakery-50/70 p-2.5 rounded-xl mb-2">
-                    <strong>Selected Colors:</strong> ${colorSummary.join(' | ')}
-                </div>
-            ` + items.map(item => `
-                <div class="flex justify-between py-1 gap-2">
-                    <span class="text-slate-600 truncate">${item.label}</span>
-                    <span class="font-bold text-slate-900 shrink-0">₹${item.price}</span>
-                </div>
-            `).join('');
-
-            document.getElementById('modalBillItems').innerHTML = billHtml;
-            document.getElementById('modalGrandTotal').textContent = `₹${total.toLocaleString('en-IN')}`;
             document.getElementById('orderStatusToast').classList.add('hidden');
 
-            generateCakeDesignImage((dataUrl) => {
+            generateFullOrderReceiptImage((dataUrl) => {
                 document.getElementById('modalCakePreviewImg').src = dataUrl;
             });
 
@@ -1948,7 +2237,7 @@
         async function submitAndSendWhatsApp() {
             const { text, payload } = getFormattedOrderSummary();
             const toast = document.getElementById('orderStatusToast');
-            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving order to D1 database & preparing WhatsApp...`;
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving order & preparing receipt image...`;
             toast.classList.remove('hidden');
 
             try {
@@ -1965,7 +2254,7 @@
                     const blob = await res.blob();
                     const file = new File([blob], `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`, { type: 'image/png' });
                     if (navigator.canShare({ files: [file] })) {
-                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Choose WhatsApp to send image & bill!`;
+                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Select WhatsApp to send complete receipt image!`;
                         await navigator.share({
                             files: [file],
                             title: "Sajiya's Cake Order",
@@ -2002,9 +2291,9 @@
             document.body.removeChild(tempTextArea);
         }
 
-        // ==========================================
-        // ADMIN CONSOLE: LOGIN, PRICE CHART & ORDERS
-        // ==========================================
+        // =====================================================
+        // ADMIN CONSOLE: PRODUCTS, PRICE CHART, REVIEWS, ORDERS
+        // =====================================================
         function openAdminModal() {
             const modal = document.getElementById('adminModal');
             modal.classList.remove('hidden');
@@ -2014,7 +2303,7 @@
             if (adminToken) {
                 document.getElementById('adminLoginView').classList.add('hidden');
                 document.getElementById('adminDashboardView').classList.remove('hidden');
-                populateAdminPriceEditor();
+                renderAdminProductsList();
             } else {
                 document.getElementById('adminLoginView').classList.remove('hidden');
                 document.getElementById('adminDashboardView').classList.add('hidden');
@@ -2046,51 +2335,185 @@
                     adminToken = pin;
                     document.getElementById('adminLoginView').classList.add('hidden');
                     document.getElementById('adminDashboardView').classList.remove('hidden');
-                    populateAdminPriceEditor();
+                    switchAdminTab('products');
                 } else {
                     errEl.textContent = 'Wrong PIN! Try again.';
                     errEl.classList.remove('hidden');
                 }
             } catch (e) {
-                if (pin === '1234') {
-                    adminToken = pin;
-                    document.getElementById('adminLoginView').classList.add('hidden');
-                    document.getElementById('adminDashboardView').classList.remove('hidden');
-                    populateAdminPriceEditor();
-                } else {
-                    errEl.textContent = 'Connection error or wrong PIN.';
-                    errEl.classList.remove('hidden');
-                }
+                errEl.textContent = 'Connection error or wrong PIN.';
+                errEl.classList.remove('hidden');
             }
         }
 
         function switchAdminTab(tab) {
-            const pTab = document.getElementById('adminPricingTab');
-            const oTab = document.getElementById('adminOrdersTab');
-            const pBtn = document.getElementById('tabBtnPricing');
-            const oBtn = document.getElementById('tabBtnOrders');
+            const tabs = ['products', 'pricing', 'reviews', 'orders'];
+            tabs.forEach(t => {
+                const panel = document.getElementById(`admin${t.charAt(0).toUpperCase() + t.slice(1)}Tab`);
+                const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                if (t === tab) {
+                    panel.classList.remove('hidden');
+                    btn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-bakery-700 text-white shrink-0';
+                } else {
+                    panel.classList.add('hidden');
+                    btn.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0';
+                }
+            });
 
-            if (tab === 'pricing') {
-                pTab.classList.remove('hidden');
-                oTab.classList.add('hidden');
-                pBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-bakery-700 text-white';
-                oBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
-            } else {
-                pTab.classList.add('hidden');
-                oTab.classList.remove('hidden');
-                oBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-bakery-700 text-white';
-                pBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
-                loadAdminOrders();
-            }
+            if (tab === 'products') renderAdminProductsList();
+            if (tab === 'pricing') populateAdminPriceEditor();
+            if (tab === 'reviews') renderAdminReviewsEditor();
+            if (tab === 'orders') loadAdminOrders();
         }
 
+        // --- ADMIN PRODUCTS ADD & REMOVE ---
+        function renderAdminProductsList() {
+            const container = document.getElementById('adminProductsList');
+            if (!CATALOG_PRODUCTS.length) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">No storefront products yet. Add one above!</p>`;
+                return;
+            }
+            container.innerHTML = CATALOG_PRODUCTS.map(prod => `
+                <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                    <div class="min-w-0">
+                        <div class="font-bold text-xs sm:text-sm text-slate-800 truncate">${prod.name} <span class="text-bakery-700">(₹${prod.price})</span></div>
+                        <div class="text-[11px] text-slate-500 truncate">${prod.category} • ${prod.desc || ''}</div>
+                    </div>
+                    <button type="button" onclick="adminRemoveProduct('${prod.id}')" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl shrink-0">
+                        <i class="fa-solid fa-trash mr-1"></i> Remove
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function adminAddProduct() {
+            const name = document.getElementById('newProdName').value.trim();
+            const category = document.getElementById('newProdCategory').value;
+            const price = Number(document.getElementById('newProdPrice').value) || 500;
+            const tag = document.getElementById('newProdTag').value.trim() || 'Special';
+            const desc = document.getElementById('newProdDesc').value.trim() || 'Fresh custom baked cake';
+            const imageUrl = document.getElementById('newProdImage').value.trim();
+
+            if (!name) {
+                showGlobalToast('Please enter a Cake Name!');
+                return;
+            }
+
+            const newProd = {
+                id: 'prod-' + Date.now(),
+                name,
+                category,
+                price,
+                tag,
+                desc,
+                imageUrl,
+                preset: { ...state }
+            };
+
+            CATALOG_PRODUCTS.unshift(newProd);
+            renderCatalogProducts();
+            renderAdminProductsList();
+
+            document.getElementById('newProdName').value = '';
+            document.getElementById('newProdPrice').value = '';
+            document.getElementById('newProdTag').value = '';
+            document.getElementById('newProdDesc').value = '';
+            document.getElementById('newProdImage').value = '';
+
+            await syncProductsToCloud();
+            showGlobalToast(`Added "${name}" to Storefront!`);
+        }
+
+        async function adminRemoveProduct(prodId) {
+            CATALOG_PRODUCTS = CATALOG_PRODUCTS.filter(p => p.id !== prodId);
+            renderCatalogProducts();
+            renderAdminProductsList();
+            await syncProductsToCloud();
+            showGlobalToast('Product removed from Storefront!');
+        }
+
+        async function syncProductsToCloud() {
+            try {
+                await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ products: CATALOG_PRODUCTS })
+                });
+            } catch (e) {}
+        }
+
+        // --- ADMIN REVIEWS EDIT, MODIFY & DELETE ---
+        function renderAdminReviewsEditor() {
+            const container = document.getElementById('adminReviewsEditorList');
+            if (!reviewsList.length) {
+                container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">No customer reviews yet.</p>`;
+                return;
+            }
+            container.innerHTML = reviewsList.map((rev, idx) => `
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <input type="text" id="editRevName_${idx}" value="${rev.name}" class="px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-xs font-bold text-slate-800 w-44">
+                        <div class="flex items-center gap-2">
+                            <select id="editRevRating_${idx}" class="px-2 py-1 rounded-lg border border-slate-300 bg-white text-xs font-bold text-amber-600">
+                                <option value="5" ${rev.rating == 5 ? 'selected' : ''}>5 ★</option>
+                                <option value="4" ${rev.rating == 4 ? 'selected' : ''}>4 ★</option>
+                                <option value="3" ${rev.rating == 3 ? 'selected' : ''}>3 ★</option>
+                                <option value="2" ${rev.rating == 2 ? 'selected' : ''}>2 ★</option>
+                                <option value="1" ${rev.rating == 1 ? 'selected' : ''}>1 ★</option>
+                            </select>
+                            <button type="button" onclick="adminDeleteReview(${idx})" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-lg">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="editRevComment_${idx}" rows="2" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-xs text-slate-700">${rev.comment}</textarea>
+                </div>
+            `).join('');
+        }
+
+        async function adminDeleteReview(idx) {
+            reviewsList.splice(idx, 1);
+            renderReviews();
+            renderAdminReviewsEditor();
+            await syncReviewsToCloud();
+            showGlobalToast('Customer review deleted!');
+        }
+
+        async function adminSaveAllReviews() {
+            reviewsList = reviewsList.map((rev, idx) => ({
+                ...rev,
+                name: document.getElementById(`editRevName_${idx}`).value.trim() || rev.name,
+                rating: Number(document.getElementById(`editRevRating_${idx}`).value) || 5,
+                comment: document.getElementById(`editRevComment_${idx}`).value.trim() || rev.comment
+            }));
+            renderReviews();
+            await syncReviewsToCloud();
+            showGlobalToast('All customer review edits saved to cloud!');
+        }
+
+        async function syncReviewsToCloud() {
+            try {
+                await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/reviews`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ reviews: reviewsList })
+                });
+            } catch (e) {}
+        }
+
+        // --- ADMIN DYNAMIC PRICE CHART ---
         function populateAdminPriceEditor() {
             document.getElementById('adminPerPoundInput').value = PRICING.perPoundRate;
             document.getElementById('adminEgglessInput').value = PRICING.egglessCharge;
             document.getElementById('adminDripInput').value = PRICING.dripCharge;
             document.getElementById('adminDeliveredOffsetInput').value = deliveredCount;
 
-            // 1. Tier & Weight Inputs
             let weightHtml = '';
             [1, 2, 3].forEach(tierNum => {
                 PRICING.tierWeights[tierNum].forEach((w, idx) => {
@@ -2105,7 +2528,6 @@
             });
             document.getElementById('adminWeightInputs').innerHTML = weightHtml;
 
-            // 2. Flavor Inputs
             document.getElementById('adminFlavorInputs').innerHTML = FLAVOR_META.map(flv => `
                 <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
                     <label class="text-[11px] font-semibold text-slate-600 block truncate">${flv.name}</label>
@@ -2114,7 +2536,6 @@
                 </div>
             `).join('');
 
-            // 3. Decorations & Toppers Inputs
             let decorHtml = DECOR_META.map(dec => `
                 <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
                     <label class="text-[11px] font-semibold text-slate-600 block truncate">${dec.name}</label>
@@ -2153,19 +2574,14 @@
             PRICING.dripCharge = Number(document.getElementById('adminDripInput').value) || 0;
 
             document.querySelectorAll('.admin-weight-price').forEach(inp => {
-                const t = Number(inp.dataset.tier);
-                const i = Number(inp.dataset.idx);
-                PRICING.tierWeights[t][i].price = Number(inp.value) || 0;
+                PRICING.tierWeights[Number(inp.dataset.tier)][Number(inp.dataset.idx)].price = Number(inp.value) || 0;
             });
-
             document.querySelectorAll('.admin-flavor-price').forEach(inp => {
                 PRICING.flavors[inp.dataset.flavor] = Number(inp.value) || 0;
             });
-
             document.querySelectorAll('.admin-decor-price').forEach(inp => {
                 PRICING.decorations[inp.dataset.decor] = Number(inp.value) || 0;
             });
-
             document.querySelectorAll('.admin-topper-price').forEach(inp => {
                 PRICING.toppers[inp.dataset.topper] = Number(inp.value) || 0;
             });
@@ -2192,15 +2608,14 @@
                 });
                 const data = await res.json();
                 if (data.success) {
-                    toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Live Price Chart & Delivered Counter updated for all users!`;
-                } else {
-                    toast.innerHTML = `Error: ${data.error || 'Failed to save'}`;
+                    toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Live Price Chart & Delivered Counter updated!`;
                 }
             } catch (e) {
-                toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Updated locally (check network to sync cloud).`;
+                toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Updated locally!`;
             }
         }
 
+        // --- ADMIN ORDERS & DELIVERED STATUS ---
         async function loadAdminOrders() {
             const container = document.getElementById('adminOrdersList');
             container.innerHTML = `<p class="text-slate-500 text-center py-6"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading D1 orders...</p>`;
