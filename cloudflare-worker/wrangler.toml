@@ -5,7 +5,7 @@ compatibility_date = "2026-11-01"
 [[d1_databases]]
 binding = "SAJIYAS_CAKE_DB"
 database_name = "sajiyascake-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "3c4d4ce9-f25c-4823-86ed-eea39b084c73"
 
 [[kv_namespaces]]
 binding = "SAJIYAS_CAKE_KV"
