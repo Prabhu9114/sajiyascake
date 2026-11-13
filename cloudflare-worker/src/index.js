@@ -54,6 +54,14 @@ export default {
         anniversary: 70,
         congrats: 70,
         crown: 120
+      },
+      accessories: {
+        sparkle_candle: 40,
+        number_candle: 35,
+        knife_set: 30,
+        party_popper: 60,
+        hbd_banner: 90,
+        foil_balloons: 150
       }
     };
 
@@ -101,7 +109,7 @@ export default {
         id: 'rev-1',
         name: 'Ananya Sharma',
         rating: 5,
-        comment: 'Ordered a 2-tier Rose Berry Truffle cake — looked identical to the preview slip and tasted super fresh!',
+        comment: 'Ordered a 2-tier Rose Berry Truffle cake — looked identical to the receipt slip and tasted super fresh!',
         date: '2 days ago'
       },
       {
@@ -121,11 +129,10 @@ export default {
 
     const isAuthorized = (req) => (req.headers.get('Authorization') || '') === `Bearer ${ADMIN_PIN}`;
 
-    // 1. GET PUBLIC STORE DATA (PRICING, PRODUCTS, REVIEWS, DELIVERED COUNTER)
     if (url.pathname === '/api/public-data' && request.method === 'GET') {
       try {
         const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config');
-        const pricing = storedPricing ? JSON.parse(storedPricing) : DEFAULT_PRICING;
+        const pricing = storedPricing ? { ...DEFAULT_PRICING, ...JSON.parse(storedPricing) } : DEFAULT_PRICING;
 
         const storedProducts = await env.SAJIYAS_CAKE_KV.get('catalog_products');
         const products = storedProducts ? JSON.parse(storedProducts) : DEFAULT_PRODUCTS;
@@ -155,7 +162,6 @@ export default {
       }
     }
 
-    // 2. CUSTOMER SUBMIT REVIEW
     if (url.pathname === '/api/reviews' && request.method === 'POST') {
       try {
         const body = await request.json();
@@ -179,7 +185,6 @@ export default {
       }
     }
 
-    // 3. ADMIN LOGIN
     if (url.pathname === '/api/admin/login' && request.method === 'POST') {
       const { pin } = await request.json();
       if (String(pin) === String(ADMIN_PIN)) {
@@ -188,7 +193,6 @@ export default {
       return jsonResponse({ success: false, error: 'Invalid Admin PIN' }, 401);
     }
 
-    // 4. ADMIN SAVE PRODUCTS LIST (ADD / REMOVE / UPDATE)
     if (url.pathname === '/api/admin/products' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { products } = await request.json();
@@ -198,7 +202,6 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 5. ADMIN SAVE REVIEWS LIST (EDIT / MODIFY / DELETE)
     if (url.pathname === '/api/admin/reviews' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { reviews } = await request.json();
@@ -208,7 +211,6 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 6. ADMIN SAVE PRICE CHART & DELIVERED OFFSET
     if (url.pathname === '/api/admin/pricing' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { pricing, deliveredOffset } = await request.json();
@@ -221,7 +223,6 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 7. ADMIN UPDATE ORDER STATUS
     if (url.pathname === '/api/admin/order-status' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { orderId, status } = await request.json();
@@ -231,7 +232,6 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 8. PLACE NEW ORDER (POST)
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       try {
         const data = await request.json();
@@ -251,7 +251,7 @@ export default {
           data.flavor,
           JSON.stringify(data.tierColors || []),
           data.drip,
-          JSON.stringify(data.decorations || []),
+          JSON.stringify([...(data.decorations || []), ...(data.accessories || [])]),
           data.topper,
           data.totalAmount,
           data.notes || ''
@@ -264,7 +264,6 @@ export default {
       }
     }
 
-    // 9. LIST ORDERS (GET)
     if (url.pathname === '/api/orders' && request.method === 'GET') {
       const { results } = await env.SAJIYAS_CAKE_DB.prepare(
         'SELECT * FROM sajiyascake_orders ORDER BY id DESC LIMIT 50'
