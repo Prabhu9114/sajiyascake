@@ -1,0 +1,15 @@
+{
+  "appId": "com.sajiyascake.app",
+  "appName": "Sajiya's Cake",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "LIGHT",
+      "backgroundColor": "#c93b71"
+    }
+  }
+}
