@@ -3,14 +3,6 @@
   "version": "1.0.0",
   "description": "Sajiya's Cake - Custom Cake Studio Mobile App",
   "scripts": {
-    "build": "echo 'Sajiya\'s Cake web assets ready'"
-  },
-  "dependencies": {
-    "@capacitor/android": "^6.0.0",
-    "@capacitor/core": "^6.0.0",
-    "@capacitor/status-bar": "^6.0.0"
-  },
-  "devDependencies": {
-    "@capacitor/cli": "^6.0.0"
+    "build": "echo 'Sajiya Cake ready'"
   }
 }
