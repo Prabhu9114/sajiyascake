@@ -143,7 +143,7 @@
     </div>
 
     <!-- ===================================================== -->
-    <!-- MIO AMORE STYLE SLIDE-OUT RIGHT DRAWER + ADMIN LOGIN  -->
+    <!-- MIO AMORE STYLE SLIDE-OUT RIGHT DRAWER + ACCESSORIES  -->
     <!-- ===================================================== -->
     <div id="sidebarBackdrop" onclick="closeSidebar()" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
     <aside id="sideDrawer" class="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] bg-white shadow-2xl border-l border-slate-200 transform translate-x-full transition-transform duration-300 flex flex-col justify-between overflow-y-auto" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
@@ -180,6 +180,23 @@
                         <button onclick="closeSidebar(); filterCatalogByCategory('Signature Cakes'); scrollToSection('sec-trending')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Signature Cakes</button>
                         <button onclick="closeSidebar(); filterCatalogByCategory('Occasional Cakes'); scrollToSection('sec-trending')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Occasional & Birthday</button>
                         <button onclick="closeSidebar(); filterCatalogByCategory('Theme Cakes'); scrollToSection('sec-trending')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Theme & Royal Cakes</button>
+                    </div>
+                </div>
+
+                <!-- Expandable Party Accessories Section in 3-Line Menu -->
+                <div>
+                    <button onclick="toggleDrawerAccordion('accAccessories')" class="w-full flex items-center justify-between py-1.5 text-sm font-semibold text-slate-800 hover:text-bakery-700">
+                        <span class="flex items-center gap-1.5">
+                            <span>🎈 Party Accessories</span>
+                            <span id="drawerAccCountBadge" class="text-[10px] font-bold bg-bakery-100 text-bakery-700 px-2 py-0.5 rounded-full">0</span>
+                        </span>
+                        <i id="accAccessoriesIcon" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform"></i>
+                    </button>
+                    <div id="accAccessories" class="hidden pl-2 pt-2 space-y-2 border-l-2 border-bakery-200 ml-1">
+                        <div id="drawerAccessoriesList" class="space-y-1.5"></div>
+                        <button onclick="closeSidebar(); scrollToSection('sec-accessories')" class="text-[11px] font-bold text-bakery-700 hover:underline pt-1 block">
+                            View Full Accessories Section →
+                        </button>
                     </div>
                 </div>
 
@@ -257,8 +274,8 @@
                     <span>Estimate:</span>
                     <span id="headerTotalPrice">₹500</span>
                 </div>
-                <!-- 3-Line Hamburger Icon on Right (Mio Amore Style) -->
-                <button onclick="openSidebar()" aria-label="Open Menu" class="w-9 h-9 rounded-xl hover:bg-bakery-50 flex flex-col items-center justify-center gap-1.5 text-slate-800 transition">
+                <!-- 3-Line Hamburger Icon on Right -->
+                <button onclick="openSidebar()" aria-label="Open Menu" class="w-9 h-9 rounded-xl hover:bg-bakery-50 flex flex-col items-center justify-center gap-1.5 text-slate-800 transition relative">
                     <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
                     <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
                     <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
@@ -288,19 +305,18 @@
                     Captured in a Slice,<br/>Designed by You
                 </h2>
                 <p class="text-xs sm:text-sm text-[#6d4c3d]/90 leading-relaxed">
-                    Choose tiers, flavors, frosting colors & toppings with live preview and instant design receipt slip.
+                    Choose tiers, flavors, frosting colors, party accessories & toppings with live preview and downloadable receipt image.
                 </p>
                 <div class="pt-1 flex flex-wrap items-center gap-2.5">
                     <button onclick="scrollToSection('sec-studio')" class="bg-[#6d4c3d] hover:bg-[#52372b] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-lg shadow transition active:scale-95">
                         Design Your Cake
                     </button>
-                    <button onclick="scrollToSection('sec-trending')" class="bg-white/80 hover:bg-white text-[#3d2314] border border-[#6d4c3d]/30 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg transition">
-                        Explore Trending
+                    <button onclick="scrollToSection('sec-accessories')" class="bg-white/80 hover:bg-white text-[#3d2314] border border-[#6d4c3d]/30 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg transition">
+                        🎈 Party Accessories
                     </button>
                 </div>
             </div>
 
-            <!-- Decorative Hero Cake Graphic -->
             <div class="flex items-center justify-center shrink-0">
                 <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-white/70 border-4 border-white shadow-inner flex flex-col items-center justify-center text-center p-3">
                     <i class="fa-solid fa-cake-candles text-4xl sm:text-5xl text-bakery-700 mb-1.5"></i>
@@ -320,7 +336,6 @@
             <p class="text-xs sm:text-sm text-slate-500 mt-1">Explore our most popular cakes, fresh from the oven — tap any cake to customize or order!</p>
         </div>
 
-        <!-- Category Filter Pills -->
         <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-2">
             <button onclick="filterCatalogByCategory('all')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white shrink-0">All Cakes</button>
             <button onclick="filterCatalogByCategory(&quot;What's Trending&quot;)" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0">What's Trending</button>
@@ -329,7 +344,6 @@
             <button onclick="filterCatalogByCategory('Theme Cakes')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0">Theme Cakes</button>
         </div>
 
-        <!-- 2-Column Mobile / 4-Column Desktop Product Cards -->
         <div id="trendingProductsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5"></div>
     </section>
 
@@ -348,7 +362,6 @@
             <div class="lg:col-span-5 lg:sticky lg:top-20 space-y-4 w-full min-w-0">
                 <div class="bg-white rounded-3xl border border-bakery-200 shadow-lg shadow-bakery-100/50 overflow-hidden relative">
                     
-                    <!-- Top Badges inside Preview -->
                     <div class="p-3.5 sm:p-4 pb-0 flex items-center justify-between flex-wrap gap-1.5">
                         <div class="flex items-center gap-1.5 flex-wrap">
                             <span id="previewTierBadge" class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold bg-bakery-100 text-bakery-800 px-2.5 sm:px-3 py-1 rounded-full">
@@ -367,7 +380,7 @@
                     <div class="relative flex items-center justify-center px-3 py-2 min-h-[280px] sm:min-h-[380px] lg:min-h-[410px] bg-gradient-to-b from-white via-bakery-50/40 to-bakery-100/40">
                         <div class="absolute w-52 h-52 sm:w-64 sm:h-64 rounded-full bg-bakery-200/30 blur-2xl pointer-events-none"></div>
 
-                        <svg id="cakeSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 430" class="w-full max-w-[270px] sm:max-w-[340px] lg:max-w-[360px] h-auto drop-shadow-md select-none">
+                        <svg id="cakeSvg" xmlns="http://www.w3.org/2000/svg" width="400" height="430" viewBox="0 0 400 430" class="w-full max-w-[270px] sm:max-w-[340px] lg:max-w-[360px] h-auto drop-shadow-md select-none">
                             <defs>
                                 <linearGradient id="standGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                                     <stop offset="0%" stop-color="#e2e8f0" />
@@ -429,7 +442,7 @@
                     <div class="flex items-center justify-between border-b border-bakery-100 pb-3 mb-3">
                         <div>
                             <h3 class="font-serif font-bold text-lg text-bakery-900">Live Price Estimate</h3>
-                            <p class="text-xs text-slate-500">Per-pound rate & custom toppings live calculation</p>
+                            <p class="text-xs text-slate-500">Per-pound rate, toppings & party accessories</p>
                         </div>
                         <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-emerald-200">Live Bill</span>
                     </div>
@@ -466,8 +479,11 @@
                     <button onclick="scrollToSection('sec-decor')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-bakery-50 transition whitespace-nowrap">
                         4. Decorations
                     </button>
+                    <button onclick="scrollToSection('sec-accessories')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-bakery-50 transition whitespace-nowrap">
+                        5. Accessories
+                    </button>
                     <button onclick="scrollToSection('sec-message')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-bakery-50 transition whitespace-nowrap">
-                        5. Name & Order
+                        6. Name & Order
                     </button>
                 </div>
 
@@ -570,10 +586,28 @@
                     </div>
                 </section>
 
-                <!-- SECTION 5: MESSAGE ON CAKE & CUSTOMER DETAILS -->
+                <!-- SECTION 5: PARTY ACCESSORIES & CELEBRATION ADD-ONS -->
+                <section id="sec-accessories" class="scroll-mt-32 bg-white rounded-3xl border border-bakery-200 p-4 sm:p-6 shadow-sm">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">5</span>
+                            <div>
+                                <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Party Accessories & Celebration Kit</h2>
+                                <p class="text-xs text-slate-500">Sparkle candles, party poppers, banners & knife set add karein</p>
+                            </div>
+                        </div>
+                        <span id="accSelectedBadge" class="text-[11px] font-bold bg-bakery-100 text-bakery-800 px-2.5 py-1 rounded-lg shrink-0">
+                            0 Selected
+                        </span>
+                    </div>
+
+                    <div id="accessoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </section>
+
+                <!-- SECTION 6: MESSAGE ON CAKE & CUSTOMER DETAILS -->
                 <section id="sec-message" class="scroll-mt-32 bg-white rounded-3xl border border-bakery-200 p-4 sm:p-6 shadow-sm">
                     <div class="flex items-center gap-2.5 mb-4">
-                        <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">5</span>
+                        <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">6</span>
                         <div>
                             <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Cake Name & Order Details</h2>
                             <p class="text-xs text-slate-500">Cake plate par likhne ke liye naam aur delivery jankari</p>
@@ -694,14 +728,13 @@
         </div>
     </main>
 
-    <!-- FLOATING WHATSAPP QUICK CHAT BUTTON (MIO AMORE STYLE) -->
+    <!-- FLOATING WHATSAPP QUICK CHAT BUTTON -->
     <button onclick="openWhatsAppSupport()" aria-label="Chat on WhatsApp" class="fixed right-4 bottom-[128px] lg:bottom-6 z-30 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center text-2xl active:scale-90 transition">
         <i class="fa-brands fa-whatsapp"></i>
     </button>
 
-    <!-- MOBILE STICKY PRICE BAR + 5-TAB BOTTOM NAVIGATION (MIO AMORE STYLE) -->
+    <!-- MOBILE STICKY PRICE BAR + 5-TAB BOTTOM NAVIGATION -->
     <div class="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white border-t border-slate-200 shadow-[0_-6px_20px_rgba(74,27,45,0.08)] safe-bottom-nav">
-        <!-- Live Estimate Strip -->
         <div class="px-4 py-2 bg-bakery-50 border-b border-bakery-100 flex items-center justify-between gap-3">
             <div class="min-w-0">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Selected Cake Estimate</span>
@@ -716,7 +749,6 @@
             </button>
         </div>
 
-        <!-- 5-Tab Storefront Navigation Bar -->
         <div class="grid grid-cols-5 py-1.5 text-center text-[10px] font-semibold text-slate-500">
             <button onclick="scrollToSection('top')" class="flex flex-col items-center justify-center gap-0.5 text-bakery-700">
                 <i class="fa-solid fa-house text-sm"></i>
@@ -730,9 +762,9 @@
                 <i class="fa-solid fa-cake-candles text-sm"></i>
                 <span>Studio</span>
             </button>
-            <button onclick="scrollToSection('sec-reviews')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
-                <i class="fa-solid fa-star text-sm"></i>
-                <span>Reviews</span>
+            <button onclick="scrollToSection('sec-accessories')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
+                <i class="fa-solid fa-gift text-sm"></i>
+                <span>Accessories</span>
             </button>
             <button onclick="openAdminModal()" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
                 <i class="fa-solid fa-user-shield text-sm"></i>
@@ -762,7 +794,7 @@
             </div>
 
             <div class="p-4 sm:p-5 space-y-3.5">
-                <!-- GENERATED COMPLETE RECEIPT IMAGE (CAKE SAMPLE + ALL SELECTED DETAILS) -->
+                <!-- GENERATED COMPLETE RECEIPT IMAGE -->
                 <div class="bg-bakery-50 rounded-2xl border border-bakery-200 p-2.5 flex flex-col items-center">
                     <div class="w-full flex items-center justify-between mb-1.5 px-1">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-bakery-800">
@@ -810,7 +842,7 @@
                     </div>
                     <div>
                         <h3 class="font-serif font-bold text-lg">Sajiya's Cake Admin Console</h3>
-                        <p class="text-xs text-bakery-200">Products, Price Chart, Customer Reviews & Orders</p>
+                        <p class="text-xs text-bakery-200">Products, Price Chart, Accessories, Reviews & Orders</p>
                     </div>
                 </div>
                 <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white">
@@ -838,7 +870,6 @@
 
             <!-- STEP B: ADMIN DASHBOARD -->
             <div id="adminDashboardView" class="hidden p-4 sm:p-5 space-y-4">
-                <!-- 4 Admin Tabs -->
                 <div class="flex gap-1.5 overflow-x-auto no-scrollbar border-b border-slate-200 pb-2">
                     <button id="tabBtnProducts" onclick="switchAdminTab('products')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-bakery-700 text-white shrink-0">
                         <i class="fa-solid fa-cake-candles mr-1"></i> Products
@@ -926,7 +957,7 @@
                     </div>
 
                     <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Decorations & Toppers Price (₹)</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Decorations, Toppers & Accessories Price (₹)</h4>
                         <div id="adminDecorInputs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
                     </div>
 
@@ -970,7 +1001,7 @@
         // ==========================================
         const SAJIYAS_CAKE_CONFIG = {
             apiBase: 'https://sajiyascake-api.prabhu-y1211.workers.dev',
-            shopWhatsApp: '919777071440'
+            shopWhatsApp: '917873562312'
         };
 
         // ==========================================
@@ -1017,6 +1048,14 @@
                 anniversary: 70,
                 congrats: 70,
                 crown: 120
+            },
+            accessories: {
+                sparkle_candle: 40,
+                number_candle: 35,
+                knife_set: 30,
+                party_popper: 60,
+                hbd_banner: 90,
+                foil_balloons: 150
             }
         };
 
@@ -1113,6 +1152,15 @@
             { id: 'crown', name: 'Royal Crown', label: 'CROWN' }
         ];
 
+        const ACCESSORY_META = [
+            { id: 'sparkle_candle', name: 'Sparkle Fountain Candle', icon: 'fa-wand-sparkles', desc: 'Golden firework sparkle candle' },
+            { id: 'number_candle', name: 'Golden Number Candle', icon: 'fa-1', desc: 'Age digit candle (specify in note)' },
+            { id: 'knife_set', name: 'Cake Knife & Server Set', icon: 'fa-utensils', desc: 'Reusable party cake cutting set' },
+            { id: 'party_popper', name: 'Confetti Party Popper', icon: 'fa-explosion', desc: 'Color paper confetti shooter' },
+            { id: 'hbd_banner', name: 'Happy Birthday Banner', icon: 'fa-flag', desc: 'Metallic wall celebration banner' },
+            { id: 'foil_balloons', name: 'Foil Balloons Combo', icon: 'fa-balloon', desc: 'Set of 5 glossy celebration balloons' }
+        ];
+
         // ==========================================
         // APPLICATION STATE
         // ==========================================
@@ -1125,6 +1173,7 @@
             dripId: 'choco',
             decorations: ['sprinkles', 'cherries'],
             topperId: 'hbd',
+            accessories: [],
             cakeMessage: 'Happy Birthday'
         };
 
@@ -1132,6 +1181,7 @@
         let catalogSearchTerm = '';
         let currentOrderId = '#SC-1042';
         let latestCakeImageDataUrl = '';
+        let latestCakeImageBlob = null;
         let deliveredCount = 128;
         let reviewsList = [];
         let selectedReviewRating = 5;
@@ -1189,9 +1239,10 @@
         }
 
         // ==========================================
-        // MIO AMORE DRAWER, SEARCH & WHATSAPP SUPPORT
+        // SIDEBAR DRAWER & ACCESSORIES IN 3-LINE MENU
         // ==========================================
         function openSidebar() {
+            renderDrawerAccessories();
             document.getElementById('sidebarBackdrop').classList.remove('hidden');
             document.getElementById('sideDrawer').classList.remove('translate-x-full');
         }
@@ -1208,6 +1259,24 @@
             if (icon) icon.classList.toggle('rotate-180');
         }
 
+        function renderDrawerAccessories() {
+            const listEl = document.getElementById('drawerAccessoriesList');
+            if (!listEl) return;
+            listEl.innerHTML = ACCESSORY_META.map(acc => {
+                const checked = state.accessories.includes(acc.id);
+                const price = Number((PRICING.accessories && PRICING.accessories[acc.id]) || 0);
+                return `
+                    <label class="flex items-center justify-between gap-2 text-xs py-1 px-1.5 rounded-lg hover:bg-bakery-50 cursor-pointer">
+                        <span class="flex items-center gap-2 truncate">
+                            <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleAccessory('${acc.id}')" class="accent-bakery-700 rounded">
+                            <span class="truncate text-slate-700 font-medium">${acc.name}</span>
+                        </span>
+                        <span class="font-bold text-bakery-700 shrink-0">+₹${price}</span>
+                    </label>
+                `;
+            }).join('');
+        }
+
         function toggleSearchBar() {
             const bar = document.getElementById('topSearchBar');
             bar.classList.toggle('hidden');
@@ -1222,7 +1291,7 @@
         }
 
         // ==========================================
-        // TRENDING CATALOG GRID (2-COLUMN MIO AMORE CARDS)
+        // TRENDING CATALOG GRID
         // ==========================================
         function filterCatalogByCategory(cat) {
             activeCatalogCategory = cat;
@@ -1302,6 +1371,7 @@
                     dripId: prod.preset.dripId || 'choco',
                     decorations: [...(prod.preset.decorations || [])],
                     topperId: prod.preset.topperId || 'hbd',
+                    accessories: [...(prod.preset.accessories || state.accessories)],
                     cakeMessage: prod.preset.cakeMessage || prod.name
                 };
             } else {
@@ -1332,6 +1402,8 @@
             renderDripOptions();
             renderDecorations();
             renderToppers();
+            renderAccessories();
+            renderDrawerAccessories();
         }
 
         function updateEverything() {
@@ -1545,6 +1617,44 @@
             }).join('');
         }
 
+        function renderAccessories() {
+            const container = document.getElementById('accessoriesGrid');
+            container.innerHTML = ACCESSORY_META.map(acc => {
+                const isSelected = state.accessories.includes(acc.id);
+                const price = Number((PRICING.accessories && PRICING.accessories[acc.id]) || 0);
+                return `
+                    <button type="button" onclick="toggleAccessory('${acc.id}')"
+                        class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl border-2 text-left transition active:scale-98 gap-2 ${
+                            isSelected
+                                ? 'border-bakery-700 bg-bakery-50/80 shadow-sm'
+                                : 'border-slate-200 hover:border-bakery-300 bg-white'
+                        }">
+                        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-sm sm:text-base transition shrink-0 ${
+                                isSelected ? 'bg-bakery-700 text-white' : 'bg-amber-50 text-amber-700 border border-amber-200'
+                            }">
+                                <i class="fa-solid ${acc.icon}"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="font-bold text-sm text-slate-800 flex items-center gap-1.5 truncate">
+                                    <span class="truncate">${acc.name}</span>
+                                    ${isSelected ? '<i class="fa-solid fa-circle-check text-bakery-700 text-xs shrink-0"></i>' : ''}
+                                </div>
+                                <div class="text-[11px] text-slate-500 line-clamp-1">${acc.desc}</div>
+                            </div>
+                        </div>
+                        <span class="text-xs font-extrabold text-bakery-700 bg-bakery-100 px-2.5 py-1 rounded-lg shrink-0">
+                            +₹${price}
+                        </span>
+                    </button>
+                `;
+            }).join('');
+
+            const count = state.accessories.length;
+            document.getElementById('accSelectedBadge').textContent = `${count} Selected`;
+            document.getElementById('drawerAccCountBadge').textContent = `${count}`;
+        }
+
         // ==========================================
         // INTERACTIVE SVG CAKE GENERATOR
         // ==========================================
@@ -1751,21 +1861,26 @@
         }
 
         // ==========================================
-        // COMPLETE ORDER RECEIPT IMAGE GENERATOR
-        // (CAKE SAMPLE + ALL SELECTED DETAILS & BILL)
+        // FIXED PNG RECEIPT IMAGE GENERATOR & DOWNLOAD
         // ==========================================
         function generateFullOrderReceiptImage(callback) {
             const svgEl = document.getElementById('cakeSvg');
-            const serializer = new XMLSerializer();
-            let svgStr = serializer.serializeToString(svgEl);
+            const clonedSvg = svgEl.cloneNode(true);
+            clonedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            clonedSvg.setAttribute('width', '400');
+            clonedSvg.setAttribute('height', '430');
 
-            if (!svgStr.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
-                svgStr = svgStr.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+            const msgNode = clonedSvg.querySelector('#svgCakeMessage');
+            if (msgNode) {
+                msgNode.setAttribute('font-family', 'Georgia, cursive, serif');
             }
 
-            const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(svgBlob);
+            const serializer = new XMLSerializer();
+            const svgStr = serializer.serializeToString(clonedSvg);
+            const svgDataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgStr);
+
             const img = new Image();
+            img.crossOrigin = 'anonymous';
 
             img.onload = function () {
                 const { items, total } = getBillBreakdown();
@@ -1787,11 +1902,9 @@
                 canvas.height = canvasHeight;
                 const ctx = canvas.getContext('2d');
 
-                // White & Soft Pink Receipt Background
                 ctx.fillStyle = '#ffffff';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // Top Header Banner
                 ctx.fillStyle = '#7c1d5e';
                 ctx.fillRect(0, 0, canvas.width, 84);
                 ctx.fillStyle = '#ffffff';
@@ -1802,7 +1915,6 @@
                 ctx.fillStyle = '#f5d4ea';
                 ctx.fillText(`Order ID: ${currentOrderId}   |   Delivery Date: ${custDate}`, canvas.width / 2, 68);
 
-                // Cake Sample Box
                 ctx.fillStyle = '#fdf7fb';
                 ctx.fillRect(28, 100, canvas.width - 56, 360);
                 ctx.strokeStyle = '#f5d4ea';
@@ -1810,9 +1922,7 @@
                 ctx.strokeRect(28, 100, canvas.width - 56, 360);
 
                 ctx.drawImage(img, 180, 108, 320, 344);
-                URL.revokeObjectURL(url);
 
-                // Customer & Cake Details Box
                 let y = 482;
                 ctx.fillStyle = '#faebf5';
                 ctx.fillRect(28, y, canvas.width - 56, 132);
@@ -1826,11 +1936,10 @@
                 ctx.fillText(`Tier Colors: ${colorSummary.join(' • ')}`, 44, y + 88);
                 ctx.fillText(`Notes: ${custNotes}`, 44, y + 114);
 
-                // Itemized Bill Breakdown
                 y += 156;
                 ctx.fillStyle = '#7c1d5e';
                 ctx.font = 'bold 16px sans-serif';
-                ctx.fillText('SELECTED CAKE SPECIFICATIONS & PRICE:', 32, y);
+                ctx.fillText('SELECTED CAKE, ACCESSORIES & PRICE:', 32, y);
                 y += 12;
                 ctx.strokeStyle = '#e2e8f0';
                 ctx.beginPath();
@@ -1851,7 +1960,6 @@
                     y += 28;
                 });
 
-                // Grand Total Footer
                 y += 8;
                 ctx.fillStyle = '#451034';
                 ctx.fillRect(28, y, canvas.width - 56, 62);
@@ -1866,24 +1974,59 @@
                 ctx.fillText(`₹${total.toLocaleString('en-IN')}`, canvas.width - 46, y + 41);
 
                 latestCakeImageDataUrl = canvas.toDataURL('image/png');
-                if (callback) callback(latestCakeImageDataUrl);
+                canvas.toBlob((blob) => {
+                    latestCakeImageBlob = blob;
+                    if (callback) callback(latestCakeImageDataUrl);
+                }, 'image/png');
             };
 
-            img.src = url;
+            img.src = svgDataUrl;
         }
 
-        function downloadCakeDesignImage() {
-            if (!latestCakeImageDataUrl) return;
-            const link = document.createElement('a');
-            link.href = latestCakeImageDataUrl;
-            link.download = `Sajiyas-Cake-Order-${currentOrderId.replace('#', '')}.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
+        async function downloadCakeDesignImage() {
             const toast = document.getElementById('orderStatusToast');
-            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Complete Order Receipt Image saved!`;
-            toast.classList.remove('hidden');
+            if (!latestCakeImageBlob && !latestCakeImageDataUrl) {
+                toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Generating receipt image...`;
+                toast.classList.remove('hidden');
+                return;
+            }
+
+            const fileName = `Sajiyas-Cake-Order-${currentOrderId.replace('#', '')}.png`;
+
+            try {
+                const blobUrl = latestCakeImageBlob ? URL.createObjectURL(latestCakeImageBlob) : latestCakeImageDataUrl;
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = fileName;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                if (latestCakeImageBlob) {
+                    setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+                }
+
+                const isAndroidWebView = /wv|Android.*Version\/[\d.]+/i.test(navigator.userAgent);
+                if (isAndroidWebView && latestCakeImageBlob && navigator.canShare) {
+                    const file = new File([latestCakeImageBlob], fileName, { type: 'image/png' });
+                    if (navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            files: [file],
+                            title: fileName
+                        });
+                    }
+                }
+
+                toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Receipt Image saved! Check Downloads or Gallery.`;
+                toast.classList.remove('hidden');
+            } catch (err) {
+                const win = window.open();
+                if (win) {
+                    win.document.write(`<img src="${latestCakeImageDataUrl}" style="max-width:100%;height:auto;" />`);
+                }
+                toast.innerHTML = `<i class="fa-solid fa-circle-info mr-1"></i> Long-press the receipt image to save it.`;
+                toast.classList.remove('hidden');
+            }
         }
 
         // ==========================================
@@ -1942,6 +2085,15 @@
             updateEverything();
         }
 
+        function toggleAccessory(accId) {
+            const idx = state.accessories.indexOf(accId);
+            if (idx > -1) state.accessories.splice(idx, 1);
+            else state.accessories.push(accId);
+            renderAccessories();
+            renderDrawerAccessories();
+            updateEverything();
+        }
+
         function clearDecorationsOnly() {
             state.decorations = [];
             state.topperId = 'none';
@@ -1981,6 +2133,7 @@
                 dripId: 'none',
                 decorations: [],
                 topperId: 'none',
+                accessories: [],
                 cakeMessage: ''
             };
             document.getElementById('egglessToggle').checked = true;
@@ -2038,6 +2191,14 @@
                 items.push({ label: `Topper: ${topper.name}`, price: Number(PRICING.toppers[topper.id] || 0) });
             }
 
+            state.accessories.forEach(accId => {
+                const acc = ACCESSORY_META.find(a => a.id === accId);
+                if (acc) {
+                    const price = Number((PRICING.accessories && PRICING.accessories[accId]) || 0);
+                    items.push({ label: `Accessory: ${acc.name}`, price });
+                }
+            });
+
             const total = items.reduce((sum, item) => sum + item.price, 0);
             return { items, total };
         }
@@ -2081,7 +2242,7 @@
                 dotsHtml += `<span class="w-4 h-4 rounded-full border border-slate-400 shadow-sm inline-block" style="background-color: ${state.tierColors[i]}" title="Tier ${i+1}"></span>`;
             }
             document.getElementById('activeColorDots').innerHTML = dotsHtml;
-            document.getElementById('decorationCountBadge').textContent = `${state.decorations.length} Decor${state.decorations.length === 1 ? '' : 's'}`;
+            document.getElementById('decorationCountBadge').textContent = `${state.decorations.length} Decor • ${state.accessories.length} Acc`;
         }
 
         // ==========================================
@@ -2184,7 +2345,7 @@
                 `✍️ *Message on Cake:* "${displayMsg}"`,
                 `🎨 *Tier Colors:* ${colorSummary.join(', ')}`,
                 `--------------------------------`,
-                `*ITEMIZED BILL:*`,
+                `*ITEMIZED BILL & ACCESSORIES:*`,
                 ...items.map(i => `• ${i.label}: ₹${i.price}`),
                 `--------------------------------`,
                 `💰 *GRAND TOTAL: ₹${total}*`,
@@ -2206,6 +2367,7 @@
                     tierColors: colorSummary,
                     drip: DRIP_META.find(d => d.id === state.dripId).name,
                     decorations: state.decorations,
+                    accessories: state.accessories,
                     topper: TOPPER_META.find(t => t.id === state.topperId).name,
                     totalAmount: total,
                     notes: custNotes
@@ -2216,6 +2378,7 @@
         function openOrderModal() {
             currentOrderId = '#SC-' + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('orderStatusToast').classList.add('hidden');
+            latestCakeImageBlob = null;
 
             generateFullOrderReceiptImage((dataUrl) => {
                 document.getElementById('modalCakePreviewImg').src = dataUrl;
@@ -2248,13 +2411,13 @@
                 });
             } catch (err) {}
 
-            if (latestCakeImageDataUrl && navigator.canShare) {
+            const fileName = `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`;
+
+            if (latestCakeImageBlob && navigator.share) {
                 try {
-                    const res = await fetch(latestCakeImageDataUrl);
-                    const blob = await res.blob();
-                    const file = new File([blob], `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`, { type: 'image/png' });
-                    if (navigator.canShare({ files: [file] })) {
-                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Select WhatsApp to send complete receipt image!`;
+                    const file = new File([latestCakeImageBlob], fileName, { type: 'image/png' });
+                    if (!navigator.canShare || navigator.canShare({ files: [file] })) {
+                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Select WhatsApp to send the Receipt Image + Details!`;
                         await navigator.share({
                             files: [file],
                             title: "Sajiya's Cake Order",
@@ -2262,10 +2425,13 @@
                         });
                         return;
                     }
-                } catch (shareErr) {}
+                } catch (shareErr) {
+                    if (shareErr.name === 'AbortError') return;
+                }
             }
 
-            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Order Saved! Opening WhatsApp...`;
+            await downloadCakeDesignImage();
+            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Receipt Image downloaded! Attach it in WhatsApp.`;
             const waUrl = `https://wa.me/${SAJIYAS_CAKE_CONFIG.shopWhatsApp}?text=${encodeURIComponent(text)}`;
             window.open(waUrl, '_blank');
         }
@@ -2366,7 +2532,6 @@
             if (tab === 'orders') loadAdminOrders();
         }
 
-        // --- ADMIN PRODUCTS ADD & REMOVE ---
         function renderAdminProductsList() {
             const container = document.getElementById('adminProductsList');
             if (!CATALOG_PRODUCTS.length) {
@@ -2445,7 +2610,6 @@
             } catch (e) {}
         }
 
-        // --- ADMIN REVIEWS EDIT, MODIFY & DELETE ---
         function renderAdminReviewsEditor() {
             const container = document.getElementById('adminReviewsEditorList');
             if (!reviewsList.length) {
@@ -2507,7 +2671,6 @@
             } catch (e) {}
         }
 
-        // --- ADMIN DYNAMIC PRICE CHART ---
         function populateAdminPriceEditor() {
             document.getElementById('adminPerPoundInput').value = PRICING.perPoundRate;
             document.getElementById('adminEgglessInput').value = PRICING.egglessCharge;
@@ -2552,6 +2715,14 @@
                 </div>
             `).join('');
 
+            decorHtml += ACCESSORY_META.map(acc => `
+                <div class="bg-amber-50/70 p-2 rounded-xl border border-amber-200">
+                    <label class="text-[11px] font-semibold text-amber-900 block truncate">Acc: ${acc.name}</label>
+                    <input type="number" data-accessory="${acc.id}" value="${(PRICING.accessories && PRICING.accessories[acc.id]) || 0}"
+                        class="admin-accessory-price w-full mt-1 px-2 py-1 rounded-lg border border-amber-300 text-xs font-bold">
+                </div>
+            `).join('');
+
             document.getElementById('adminDecorInputs').innerHTML = decorHtml;
         }
 
@@ -2585,6 +2756,10 @@
             document.querySelectorAll('.admin-topper-price').forEach(inp => {
                 PRICING.toppers[inp.dataset.topper] = Number(inp.value) || 0;
             });
+            if (!PRICING.accessories) PRICING.accessories = {};
+            document.querySelectorAll('.admin-accessory-price').forEach(inp => {
+                PRICING.accessories[inp.dataset.accessory] = Number(inp.value) || 0;
+            });
 
             const newDeliveredVal = Number(document.getElementById('adminDeliveredOffsetInput').value) || 0;
             deliveredCount = newDeliveredVal;
@@ -2608,14 +2783,13 @@
                 });
                 const data = await res.json();
                 if (data.success) {
-                    toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Live Price Chart & Delivered Counter updated!`;
+                    toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Live Price Chart & Accessories updated!`;
                 }
             } catch (e) {
                 toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Updated locally!`;
             }
         }
 
-        // --- ADMIN ORDERS & DELIVERED STATUS ---
         async function loadAdminOrders() {
             const container = document.getElementById('adminOrdersList');
             container.innerHTML = `<p class="text-slate-500 text-center py-6"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading D1 orders...</p>`;
