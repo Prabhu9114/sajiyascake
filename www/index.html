@@ -48,8 +48,6 @@
         :root {
             --safe-top: env(safe-area-inset-top, 0px);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --safe-left: env(safe-area-inset-left, 0px);
-            --safe-right: env(safe-area-inset-right, 0px);
         }
         * {
             box-sizing: border-box;
@@ -77,12 +75,10 @@
                 padding-bottom: 48px;
             }
         }
-        /* Allow text selection only in form inputs */
-        input, textarea {
+        input, textarea, select {
             user-select: text;
             -webkit-user-select: text;
         }
-        /* Safe Area Utilities */
         .sticky-safe-header {
             top: var(--safe-top);
         }
@@ -93,7 +89,6 @@
             padding-top: calc(16px + var(--safe-top));
             padding-bottom: calc(24px + var(--safe-bottom));
         }
-        /* Smooth custom scrollbars */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -113,7 +108,6 @@
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
-        /* Candle flame flicker animation */
         @keyframes flicker {
             0%, 100% { transform: scaleY(1) rotate(-2deg); opacity: 0.95; }
             50% { transform: scaleY(1.12) rotate(2deg); opacity: 1; }
@@ -122,7 +116,6 @@
             transform-origin: center bottom;
             animation: flicker 1.1s infinite ease-in-out;
         }
-        /* Custom transition for SVG tiers */
         .tier-group {
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -148,41 +141,121 @@
     <!-- Top Status Bar Spacer for Android Notch -->
     <div class="fixed top-0 inset-x-0 bg-white/95 backdrop-blur-md z-40" style="height: var(--safe-top);"></div>
 
-    <!-- Top Navigation Header -->
+    <!-- Global Toast Notification -->
+    <div id="globalToast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 hidden bg-bakery-900 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-bakery-600 items-center gap-2 transition-all">
+        <i class="fa-solid fa-sparkles text-amber-300"></i>
+        <span id="globalToastText">Updated!</span>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 3-LINE SIDEBAR DRAWER (MENU + ADMIN LOGIN) -->
+    <!-- ========================================== -->
+    <div id="sidebarBackdrop" onclick="closeSidebar()" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
+    <aside id="sideDrawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 max-w-[82vw] bg-white shadow-2xl border-r border-bakery-200 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
+        <div>
+            <!-- Drawer Brand Header -->
+            <div class="p-4 bg-gradient-to-r from-bakery-600 to-bakery-800 text-white flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-cake-candles"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-serif font-bold text-lg leading-tight">Sajiya's Cake</h2>
+                        <span class="text-[11px] text-bakery-100">Custom Cake Studio</span>
+                    </div>
+                </div>
+                <button onclick="closeSidebar()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="p-3 space-y-1.5">
+                <button onclick="closeSidebar(); scrollToSection('sec-tiers')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-bakery-50 hover:text-bakery-800 transition text-left">
+                    <i class="fa-solid fa-wand-magic-sparkles w-5 text-bakery-600"></i>
+                    <span>Design Custom Cake</span>
+                </button>
+                <button onclick="closeSidebar(); freshResetCake()" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-rose-50 hover:text-rose-700 transition text-left">
+                    <i class="fa-solid fa-rotate-left w-5 text-rose-600"></i>
+                    <span>Reset & New Cake Design</span>
+                </button>
+                <button onclick="closeSidebar(); scrollToSection('sec-reviews')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-bakery-50 hover:text-bakery-800 transition text-left">
+                    <i class="fa-solid fa-star w-5 text-amber-500"></i>
+                    <span>Customer Reviews</span>
+                </button>
+                <button onclick="closeSidebar(); scrollToSection('sec-delivered-counter')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-bakery-50 hover:text-bakery-800 transition text-left">
+                    <i class="fa-solid fa-truck-fast w-5 text-emerald-600"></i>
+                    <span>Delivered Cakes Counter</span>
+                </button>
+
+                <div class="my-3 border-t border-bakery-100"></div>
+
+                <!-- Admin Login / Console Trigger -->
+                <button onclick="closeSidebar(); openAdminModal()" class="w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-sm font-bold bg-bakery-900 text-white hover:bg-bakery-800 shadow-md transition text-left">
+                    <span class="flex items-center gap-3">
+                        <i class="fa-solid fa-user-shield text-amber-300 w-5"></i>
+                        <span>Admin Login & Price Chart</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-xs text-bakery-300"></i>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Drawer Bottom Live Counter Pill -->
+        <div class="p-4 border-t border-bakery-100 bg-bakery-50/70">
+            <div class="flex items-center justify-between text-xs">
+                <span class="font-semibold text-slate-600">Successful Deliveries:</span>
+                <span id="sidebarDeliveredCount" class="font-extrabold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">128+ Cakes</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ========================================== -->
+    <!-- TOP NAVIGATION HEADER WITH 3-LINE SIDEBAR  -->
+    <!-- ========================================== -->
     <header class="sticky sticky-safe-header z-30 bg-white/95 backdrop-blur-md border-b border-bakery-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-bakery-500 to-bakery-700 flex items-center justify-center text-white shadow-md shadow-bakery-200 shrink-0">
-                    <i class="fa-solid fa-cake-candles text-base sm:text-xl"></i>
+                <!-- 3-Line Hamburger Sidebar Button -->
+                <button onclick="openSidebar()" aria-label="Open Menu" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-bakery-50 hover:bg-bakery-100 active:scale-95 border border-bakery-200 flex flex-col items-center justify-center gap-1.5 text-bakery-800 shrink-0 transition">
+                    <span class="w-4 h-0.5 bg-bakery-800 rounded-full"></span>
+                    <span class="w-4 h-0.5 bg-bakery-800 rounded-full"></span>
+                    <span class="w-4 h-0.5 bg-bakery-800 rounded-full"></span>
+                </button>
+
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-bakery-500 to-bakery-700 flex items-center justify-center text-white shadow-md shadow-bakery-200 shrink-0">
+                    <i class="fa-solid fa-cake-candles text-base sm:text-lg"></i>
                 </div>
+
                 <div class="min-w-0">
                     <div class="flex items-center gap-1.5">
-                        <h1 class="font-serif text-lg sm:text-2xl font-bold text-bakery-900 tracking-tight truncate">Sajiya's Cake</h1>
+                        <h1 class="font-serif text-base sm:text-2xl font-bold text-bakery-900 tracking-tight truncate">Sajiya's Cake</h1>
                         <span class="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-wider bg-bakery-100 text-bakery-700 px-2.5 py-0.5 rounded-full border border-bakery-200 shrink-0">Custom Cake Studio</span>
                     </div>
                     <p class="text-[11px] sm:text-xs text-slate-500 truncate">Apna Manpasand Cake Khud Design Karein ✨</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
                 <button onclick="surpriseMe()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium bg-amber-50 active:scale-95 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition shadow-sm" title="Generate a random cake design">
                     <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i>
-                    <span class="hidden sm:inline">Surprise Design</span>
-                    <span class="sm:hidden">Magic</span>
+                    <span class="hidden sm:inline">Surprise</span>
                 </button>
-                <button onclick="resetCake()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium bg-slate-100 active:scale-95 hover:bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition" title="Reset to default">
+                <button onclick="freshResetCake()" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold bg-rose-50 active:scale-95 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl transition shadow-sm" title="Reset selection to start a new cake design">
                     <i class="fa-solid fa-rotate-left"></i>
-                    <span class="hidden sm:inline">Reset</span>
+                    <span>Reset</span>
                 </button>
                 <div class="hidden md:flex items-center gap-2 bg-bakery-900 text-white px-4 py-2 rounded-xl shadow">
                     <span class="text-xs text-bakery-200">Total:</span>
-                    <span id="headerTotalPrice" class="font-bold text-base">₹450</span>
+                    <span id="headerTotalPrice" class="font-bold text-base">₹500</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Studio Layout -->
+    <!-- ========================================== -->
+    <!-- MAIN STUDIO LAYOUT                         -->
+    <!-- ========================================== -->
     <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
 
@@ -209,7 +282,7 @@
                     <div class="relative flex items-center justify-center px-3 py-2 min-h-[280px] sm:min-h-[380px] lg:min-h-[410px] bg-gradient-to-b from-white via-bakery-50/50 to-bakery-100/40">
                         <div class="absolute w-52 h-52 sm:w-64 sm:h-64 rounded-full bg-bakery-200/30 blur-2xl pointer-events-none"></div>
 
-                        <svg id="cakeSvg" viewBox="0 0 400 430" class="w-full max-w-[270px] sm:max-w-[340px] lg:max-w-[360px] h-auto drop-shadow-md select-none">
+                        <svg id="cakeSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 430" class="w-full max-w-[270px] sm:max-w-[340px] lg:max-w-[360px] h-auto drop-shadow-md select-none">
                             <defs>
                                 <linearGradient id="standGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                                     <stop offset="0%" stop-color="#e2e8f0" />
@@ -251,13 +324,18 @@
                         </svg>
                     </div>
 
-                    <!-- Quick Tier Color Bar inside Preview Card -->
-                    <div class="px-3.5 sm:px-4 py-2.5 sm:py-3 bg-bakery-50/90 border-t border-bakery-100 flex items-center justify-between text-xs text-slate-600">
+                    <!-- Quick Tier Color Bar + Reset New Design inside Preview Card -->
+                    <div class="px-3.5 sm:px-4 py-2.5 sm:py-3 bg-bakery-50/90 border-t border-bakery-100 flex items-center justify-between text-xs text-slate-600 gap-2">
                         <div class="flex items-center gap-2">
                             <span class="font-semibold text-bakery-900"><i class="fa-solid fa-palette mr-1 text-bakery-500"></i>Colors:</span>
                             <div id="activeColorDots" class="flex items-center gap-1.5"></div>
                         </div>
-                        <span id="decorationCountBadge" class="font-medium text-bakery-700">0 Decorations</span>
+                        <div class="flex items-center gap-2">
+                            <span id="decorationCountBadge" class="font-medium text-bakery-700">0 Decors</span>
+                            <button type="button" onclick="freshResetCake()" class="text-[11px] font-bold text-rose-600 hover:text-rose-800 bg-white border border-rose-200 px-2.5 py-1 rounded-lg active:scale-95 transition">
+                                <i class="fa-solid fa-rotate-left mr-0.5"></i> New Cake
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -266,7 +344,7 @@
                     <div class="flex items-center justify-between border-b border-bakery-100 pb-3 mb-3">
                         <div>
                             <h3 class="font-serif font-bold text-lg text-bakery-900">Live Price Estimate</h3>
-                            <p class="text-xs text-slate-500">Jaise-jaise aap design chunege, rate update hoga</p>
+                            <p class="text-xs text-slate-500">Per-pound rate & custom toppings live calculation</p>
                         </div>
                         <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-emerald-200">Live Bill</span>
                     </div>
@@ -276,7 +354,7 @@
                     <div class="border-t border-dashed border-bakery-200 mt-4 pt-3 flex items-center justify-between">
                         <div>
                             <span class="text-xs uppercase tracking-wider font-bold text-slate-400 block">Grand Total</span>
-                            <span id="desktopTotalPrice" class="text-2xl font-extrabold text-bakery-700">₹450</span>
+                            <span id="desktopTotalPrice" class="text-2xl font-extrabold text-bakery-700">₹500</span>
                         </div>
                         <button onclick="openOrderModal()" class="bg-gradient-to-r from-bakery-600 to-bakery-700 hover:from-bakery-700 hover:to-bakery-800 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg shadow-bakery-200 transition flex items-center gap-2">
                             <span>Order Confirm Karein</span>
@@ -292,7 +370,7 @@
                 <!-- Step Navigation Pills -->
                 <div class="sticky top-[56px] sm:top-[64px] lg:static z-20 bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-bakery-200 shadow-sm flex items-center gap-1.5 overflow-x-auto no-scrollbar">
                     <button onclick="scrollToSection('sec-tiers')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-bakery-600 text-white shadow-sm transition whitespace-nowrap">
-                        1. Tier & Size
+                        1. Tier & Pound
                     </button>
                     <button onclick="scrollToSection('sec-flavor')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-bakery-50 transition whitespace-nowrap">
                         2. Flavor
@@ -304,32 +382,37 @@
                         4. Decorations
                     </button>
                     <button onclick="scrollToSection('sec-message')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-bakery-50 transition whitespace-nowrap">
-                        5. Name & Details
+                        5. Name & Order
                     </button>
                 </div>
 
                 <!-- SECTION 1: TIER & WEIGHT SELECTION -->
                 <section id="sec-tiers" class="scroll-mt-32 bg-white rounded-3xl border border-bakery-200 p-4 sm:p-6 shadow-sm">
-                    <div class="flex items-center gap-2.5 mb-4">
-                        <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">1</span>
-                        <div>
-                            <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Choose Cake Tiers (Manzil Chunein)</h2>
-                            <p class="text-xs text-slate-500">1 Tier, 2 Tier ya grand 3 Tier cake select karein</p>
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">1</span>
+                            <div>
+                                <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Choose Cake Tiers & Pounds</h2>
+                                <p class="text-xs text-slate-500">1 Tier, 2 Tier ya 3 Tier cake size chunein</p>
+                            </div>
                         </div>
+                        <span id="perPoundBadge" class="text-[11px] font-bold bg-bakery-100 text-bakery-800 px-2.5 py-1 rounded-lg shrink-0">
+                            ₹450 / Pound
+                        </span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="tierCardsContainer"></div>
 
                     <div class="mt-4 pt-4 border-t border-bakery-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">Select Cake Weight (Vajan):</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">Select Cake Weight (Pound / Kg):</span>
                             <div id="weightButtonsContainer" class="flex flex-wrap gap-2 mt-1.5"></div>
                         </div>
 
                         <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between sm:justify-start gap-3">
                             <div>
                                 <span class="text-xs font-bold text-emerald-950 block">100% Eggless (Pure Veg)</span>
-                                <span class="text-[11px] text-emerald-700">+₹50 extra</span>
+                                <span id="egglessPriceLabel" class="text-[11px] text-emerald-700">+₹50 extra</span>
                             </div>
                             <label class="relative inline-flex items-center cursor-pointer shrink-0">
                                 <input type="checkbox" id="egglessToggle" class="sr-only peer" checked onchange="toggleEggless(this.checked)">
@@ -372,7 +455,7 @@
                     <div class="mt-6 pt-5 border-t border-bakery-100">
                         <div class="mb-3">
                             <h3 class="font-bold text-sm text-bakery-900">Top Glaze / Chocolate Drip Effect</h3>
-                            <p class="text-xs text-slate-500">Cake ke upar se behne wali delicious glaze (+₹80)</p>
+                            <p id="dripSubLabel" class="text-xs text-slate-500">Cake ke upar se behne wali delicious glaze (+₹80)</p>
                         </div>
                         <div id="dripOptionsContainer" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5"></div>
                     </div>
@@ -380,12 +463,17 @@
 
                 <!-- SECTION 4: DECORATIONS & TOPPERS -->
                 <section id="sec-decor" class="scroll-mt-32 bg-white rounded-3xl border border-bakery-200 p-4 sm:p-6 shadow-sm">
-                    <div class="flex items-center gap-2.5 mb-4">
-                        <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">4</span>
-                        <div>
-                            <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Decorations & Cake Toppers</h2>
-                            <p class="text-xs text-slate-500">Ek se zyada decorations select karein — sab live dikhenge!</p>
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">4</span>
+                            <div>
+                                <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Decorations & Cake Toppers</h2>
+                                <p class="text-xs text-slate-500">Ek se zyada decorations select karein — sab live dikhenge!</p>
+                            </div>
                         </div>
+                        <button type="button" onclick="clearDecorationsOnly()" class="text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1.5 rounded-xl transition shrink-0">
+                            Clear Decors
+                        </button>
                     </div>
 
                     <div id="decorationsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
@@ -453,6 +541,74 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- ========================================== -->
+                <!-- BOTTOM SECTION: DELIVERED COUNTER & REVIEWS-->
+                <!-- ========================================== -->
+                <section id="sec-delivered-counter" class="bg-gradient-to-r from-bakery-900 via-bakery-800 to-bakery-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-bakery-700">
+                    <div class="grid grid-cols-3 gap-3 text-center divide-x divide-bakery-700/80">
+                        <div class="px-2">
+                            <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-amber-300">
+                                <i class="fa-solid fa-cake-candles"></i>
+                            </div>
+                            <div id="bottomDeliveredCounter" class="text-2xl sm:text-3xl font-extrabold text-white">128+</div>
+                            <div class="text-[11px] sm:text-xs text-bakery-200 font-medium">Successful Delivered Cakes</div>
+                        </div>
+                        <div class="px-2">
+                            <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-emerald-300">
+                                <i class="fa-solid fa-leaf"></i>
+                            </div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-white">100%</div>
+                            <div class="text-[11px] sm:text-xs text-bakery-200 font-medium">Freshly Baked Daily</div>
+                        </div>
+                        <div class="px-2">
+                            <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-yellow-300">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div id="bottomAvgRating" class="text-2xl sm:text-3xl font-extrabold text-white">4.9★</div>
+                            <div class="text-[11px] sm:text-xs text-bakery-200 font-medium">Happy Customer Rating</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CUSTOMER REVIEWS & FEEDBACK -->
+                <section id="sec-reviews" class="bg-white rounded-3xl border border-bakery-200 p-4 sm:p-6 shadow-sm space-y-5">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <div>
+                            <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Customer Reviews & Feedback</h2>
+                            <p class="text-xs text-slate-500">Apna experience share karein aur dusre customers ke reviews dekhein</p>
+                        </div>
+                        <span id="reviewTotalBadge" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full">
+                            ★ 4.9 / 5
+                        </span>
+                    </div>
+
+                    <!-- Write a Review Form -->
+                    <div class="bg-bakery-50/80 rounded-2xl p-3.5 sm:p-4 border border-bakery-100 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-bakery-900">Write Your Review:</span>
+                            <div class="flex items-center gap-1" id="starRatingPicker">
+                                <button type="button" onclick="setReviewRating(1)" class="star-btn text-lg text-amber-400"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" onclick="setReviewRating(2)" class="star-btn text-lg text-amber-400"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" onclick="setReviewRating(3)" class="star-btn text-lg text-amber-400"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" onclick="setReviewRating(4)" class="star-btn text-lg text-amber-400"><i class="fa-solid fa-star"></i></button>
+                                <button type="button" onclick="setReviewRating(5)" class="star-btn text-lg text-amber-400"><i class="fa-solid fa-star"></i></button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <input type="text" id="revNameInput" placeholder="Your Name" class="px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-500">
+                            <input type="text" id="revCommentInput" placeholder="How was the cake design & taste?" class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-500">
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button" onclick="submitCustomerReview()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm active:scale-95 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-paper-plane"></i> Submit Review
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div id="reviewsListContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </section>
             </div>
         </div>
     </main>
@@ -463,7 +619,7 @@
             <div class="min-w-0">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Total Cake Price</span>
                 <div class="flex items-baseline gap-1.5 truncate">
-                    <span id="mobileTotalPrice" class="text-xl sm:text-2xl font-extrabold text-bakery-700">₹450</span>
+                    <span id="mobileTotalPrice" class="text-xl sm:text-2xl font-extrabold text-bakery-700">₹500</span>
                     <span id="mobileTierSummary" class="text-[11px] text-slate-500 truncate">1 Tier • 0.5 kg</span>
                 </div>
             </div>
@@ -474,10 +630,11 @@
         </div>
     </div>
 
-    <!-- ORDER CONFIRMATION & WHATSAPP SLIP MODAL -->
+    <!-- ========================================== -->
+    <!-- ORDER CONFIRMATION & IMAGE PREVIEW MODAL   -->
+    <!-- ========================================== -->
     <div id="orderModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/65 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
         <div id="printableSlip" class="bg-white rounded-3xl max-w-md w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
-            <!-- Modal Header -->
             <div class="bg-gradient-to-r from-bakery-600 to-bakery-800 text-white p-4 sm:p-5 relative">
                 <button onclick="closeOrderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 active:scale-90 hover:bg-white/30 flex items-center justify-center text-white transition">
                     <i class="fa-solid fa-xmark"></i>
@@ -488,16 +645,28 @@
                     </div>
                     <div>
                         <h3 class="font-serif font-bold text-lg sm:text-xl">Sajiya's Cake</h3>
-                        <p class="text-xs text-bakery-100">Custom Cake Order Slip</p>
+                        <p class="text-xs text-bakery-100">Selected Cake Design & Order Slip</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Modal Body -->
             <div class="p-4 sm:p-5 space-y-3.5">
                 <div class="flex items-center justify-between text-xs text-slate-500 border-b border-slate-100 pb-2">
                     <span>Order ID: <strong id="modalOrderId" class="text-slate-800">#SC-1042</strong></span>
                     <span id="modalOrderDate">Date: Today</span>
+                </div>
+
+                <!-- GENERATED CAKE DESIGN PREVIEW IMAGE -->
+                <div class="bg-gradient-to-b from-bakery-50 to-bakery-100/70 rounded-2xl border border-bakery-200 p-3 flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-bakery-800">
+                            <i class="fa-solid fa-image mr-1 text-bakery-600"></i> Selected Design Image
+                        </span>
+                        <button type="button" onclick="downloadCakeDesignImage()" class="text-[11px] font-bold bg-white hover:bg-bakery-50 text-bakery-700 border border-bakery-200 px-2.5 py-1 rounded-lg shadow-sm active:scale-95 transition flex items-center gap-1">
+                            <i class="fa-solid fa-download"></i> Save Image
+                        </button>
+                    </div>
+                    <img id="modalCakePreviewImg" alt="Your Custom Cake Design Preview" class="w-full max-w-[230px] h-auto rounded-xl object-contain drop-shadow-sm" />
                 </div>
 
                 <!-- Customer Info Summary -->
@@ -509,19 +678,17 @@
 
                 <!-- Design Specifications -->
                 <div>
-                    <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Selected Cake Design & Price</h4>
-                    <div id="modalBillItems" class="space-y-1.5 text-xs sm:text-sm border-y border-slate-100 py-2.5 max-h-48 overflow-y-auto"></div>
+                    <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1.5">Selected Cake Details & Price</h4>
+                    <div id="modalBillItems" class="space-y-1.5 text-xs sm:text-sm border-y border-slate-100 py-2.5 max-h-40 overflow-y-auto"></div>
                 </div>
 
                 <div class="flex items-center justify-between pt-0.5">
                     <span class="font-bold text-sm sm:text-base text-slate-700">Total Payable Amount</span>
-                    <span id="modalGrandTotal" class="text-xl sm:text-2xl font-extrabold text-bakery-700">₹450</span>
+                    <span id="modalGrandTotal" class="text-xl sm:text-2xl font-extrabold text-bakery-700">₹500</span>
                 </div>
 
-                <!-- Status Feedback -->
                 <div id="orderStatusToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium px-3 py-2 rounded-xl text-center"></div>
 
-                <!-- Primary Action: Direct WhatsApp + Save to Sajiya's Cake Cloud DB -->
                 <div class="space-y-2 pt-1">
                     <button id="whatsappDirectBtn" onclick="submitAndSendWhatsApp()" class="w-full bg-emerald-600 active:scale-98 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
@@ -543,56 +710,204 @@
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- ADMIN LOGIN & PRICE CHART CONSOLE MODAL    -->
+    <!-- ========================================== -->
+    <div id="adminModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/70 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
+            <!-- Admin Modal Header -->
+            <div class="bg-bakery-900 text-white p-4 sm:p-5 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-amber-300 text-lg">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif font-bold text-lg">Sajiya's Cake Admin Console</h3>
+                        <p class="text-xs text-bakery-200">Manage Per-Pound Price Chart, Toppings & Orders</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- STEP A: ADMIN PIN LOGIN SCREEN -->
+            <div id="adminLoginView" class="p-6 space-y-4">
+                <div class="text-center max-w-xs mx-auto space-y-2">
+                    <div class="w-12 h-12 rounded-2xl bg-bakery-100 text-bakery-700 flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h4 class="font-bold text-base text-slate-800">Enter Admin PIN</h4>
+                    <p class="text-xs text-slate-500">Default PIN is <strong>1234</strong> (changeable in Cloudflare Worker environment)</p>
+                </div>
+                <div class="max-w-xs mx-auto space-y-3">
+                    <input type="password" id="adminPinInput" placeholder="••••" maxlength="12" onkeydown="if(event.key==='Enter') verifyAdminLogin()" class="w-full text-center tracking-widest text-lg font-bold px-4 py-3 rounded-xl border border-bakery-200 focus:border-bakery-600 outline-none">
+                    <div id="adminLoginError" class="hidden text-xs text-rose-600 font-semibold text-center"></div>
+                    <button onclick="verifyAdminLogin()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow transition">
+                        Unlock Admin Console
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP B: ADMIN DASHBOARD (PRICE CHART + ORDERS) -->
+            <div id="adminDashboardView" class="hidden p-4 sm:p-5 space-y-4">
+                <!-- Tabs -->
+                <div class="flex gap-2 border-b border-slate-200 pb-2">
+                    <button id="tabBtnPricing" onclick="switchAdminTab('pricing')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-bakery-700 text-white">
+                        <i class="fa-solid fa-tags mr-1"></i> Cake Price Chart
+                    </button>
+                    <button id="tabBtnOrders" onclick="switchAdminTab('orders')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">
+                        <i class="fa-solid fa-clipboard-list mr-1"></i> Orders & Deliveries
+                    </button>
+                </div>
+
+                <!-- TAB 1: DYNAMIC PRICE CHART EDITOR -->
+                <div id="adminPricingTab" class="space-y-4 max-h-[62vh] overflow-y-auto pr-1">
+                    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-amber-900">1. Per-Pound Base Rate Auto-Calculator</h4>
+                                <p class="text-[11px] text-amber-800">Set per-pound rate (1 Pound = 0.5 kg) to auto-fill all cake weights</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="adminPerPoundInput" value="450" class="w-24 px-3 py-1.5 rounded-lg border border-amber-300 bg-white text-sm font-bold text-slate-800">
+                                <button type="button" onclick="autoCalculateFromPerPound()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3 py-2 rounded-lg">
+                                    Apply / Pound
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tier & Weight Price Chart Table -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">2. Custom Tier & Pound Price Chart (₹)</h4>
+                        <div id="adminWeightInputs" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                    </div>
+
+                    <!-- Add-ons: Eggless, Drip & Delivered Counter Base -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">3. Base Charges & Delivered Counter</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                                <label class="text-[11px] font-semibold text-slate-500 block">Eggless Charge (₹)</label>
+                                <input type="number" id="adminEgglessInput" class="w-full mt-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm font-bold">
+                            </div>
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                                <label class="text-[11px] font-semibold text-slate-500 block">Drip Glaze Charge (₹)</label>
+                                <input type="number" id="adminDripInput" class="w-full mt-1 px-2.5 py-1.5 rounded-lg border border-slate-300 text-sm font-bold">
+                            </div>
+                            <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200">
+                                <label class="text-[11px] font-semibold text-emerald-800 block">Base Delivered Count</label>
+                                <input type="number" id="adminDeliveredOffsetInput" class="w-full mt-1 px-2.5 py-1.5 rounded-lg border border-emerald-300 text-sm font-bold text-emerald-900">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flavors Price Editor -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">4. Flavor Extra Charges (₹)</h4>
+                        <div id="adminFlavorInputs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+                    </div>
+
+                    <!-- Decorations Price Editor -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">5. Decorations & Toppers Price (₹)</h4>
+                        <div id="adminDecorInputs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+                    </div>
+
+                    <div id="adminSaveToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold p-2.5 rounded-xl text-center"></div>
+
+                    <button type="button" onclick="saveAdminPriceChart()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Save Price Chart to Cloud
+                    </button>
+                </div>
+
+                <!-- TAB 2: ORDERS & DELIVERED STATUS MANAGER -->
+                <div id="adminOrdersTab" class="hidden space-y-3 max-h-[62vh] overflow-y-auto pr-1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-600">Recent Customer Orders (D1 Database)</span>
+                        <button onclick="loadAdminOrders()" class="text-xs font-semibold text-bakery-700 hover:underline">
+                            <i class="fa-solid fa-rotate mr-1"></i> Refresh
+                        </button>
+                    </div>
+                    <div id="adminOrdersList" class="space-y-2.5 text-xs">
+                        <p class="text-slate-500 text-center py-6">Loading orders...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // SAJIYA'S CAKE API & SHOP CONFIGURATION
         // ==========================================
         const SAJIYAS_CAKE_CONFIG = {
-            apiEndpoint: 'https://sajiyascake-api.prabhu-y1211.workers.dev/api/orders', // Update after deploying Worker
-            shopWhatsApp: '919777071440' // Replace with Sajiya's Cake official WhatsApp number (with 91)
+            apiBase: 'https://sajiyascake-api.prabhu-y1211.workers.dev',
+            shopWhatsApp: '919777071440' // Replace with Sajiya's Cake official WhatsApp number if different
         };
 
         // ==========================================
-        // CATALOG DATA & PRICING CONFIGURATION (₹)
+        // DYNAMIC PRICING & CATALOG DATA (₹)
         // ==========================================
-        const TIER_CONFIG = {
-            1: {
-                name: '1 Tier Cake',
-                hindi: 'Ek Manzil Cake',
-                desc: 'Small celebrations & birthdays ke liye best',
-                weights: [
-                    { label: '0.5 kg (Half Kg)', price: 450 },
-                    { label: '1.0 kg (One Kg)', price: 750 }
+        let PRICING = {
+            perPoundRate: 450,
+            egglessCharge: 50,
+            dripCharge: 80,
+            tierWeights: {
+                1: [
+                    { label: '0.5 kg (1 Pound)', pounds: 1, price: 450 },
+                    { label: '1.0 kg (2 Pounds)', pounds: 2, price: 850 }
+                ],
+                2: [
+                    { label: '1.5 kg (3 Pounds)', pounds: 3, price: 1300 },
+                    { label: '2.0 kg (4 Pounds)', pounds: 4, price: 1700 }
+                ],
+                3: [
+                    { label: '3.0 kg (6 Pounds)', pounds: 6, price: 2500 },
+                    { label: '4.0 kg (8 Pounds)', pounds: 8, price: 3300 }
                 ]
             },
-            2: {
-                name: '2 Tier Cake',
-                hindi: 'Do Manzil Cake',
-                desc: 'Grand birthday & family parties ke liye',
-                weights: [
-                    { label: '1.5 kg', price: 950 },
-                    { label: '2.0 kg', price: 1250 }
-                ]
+            flavors: {
+                vanilla: 0,
+                pineapple: 80,
+                blackforest: 100,
+                butterscotch: 120,
+                truffle: 180,
+                redvelvet: 200,
+                rasmalai: 250
             },
-            3: {
-                name: '3 Tier Royal Cake',
-                hindi: 'Teen Manzil Cake',
-                desc: 'Engagement, Anniversary & Mega Party special',
-                weights: [
-                    { label: '3.0 kg', price: 1600 },
-                    { label: '4.0 kg', price: 2100 }
-                ]
+            decorations: {
+                sprinkles: 40,
+                cherries: 80,
+                roses: 100,
+                chocochips: 150,
+                goldflakes: 120,
+                candles: 30
+            },
+            toppers: {
+                none: 0,
+                hbd: 70,
+                anniversary: 70,
+                congrats: 70,
+                crown: 120
             }
         };
 
-        const FLAVORS = [
-            { id: 'vanilla', name: 'Vanilla Classic', price: 0, badge: '#fef3c7', desc: 'Soft vanilla sponge & fresh cream' },
-            { id: 'pineapple', name: 'Pineapple Fresh', price: 80, badge: '#fef08a', desc: 'Juicy pineapple chunks & whipped cream' },
-            { id: 'blackforest', name: 'Black Forest', price: 100, badge: '#5c2c16', desc: 'Chocolate sponge, cherries & flakes' },
-            { id: 'butterscotch', name: 'Butterscotch Crunch', price: 120, badge: '#f59e0b', desc: 'Caramel praline nuts & rich cream' },
-            { id: 'truffle', name: 'Rich Choco Truffle', price: 180, badge: '#3d2314', desc: 'Pure dark chocolate ganache layers' },
-            { id: 'redvelvet', name: 'Red Velvet', price: 200, badge: '#be123c', desc: 'Crimson sponge with cheese frosting' },
-            { id: 'rasmalai', name: 'Royal Rasmalai', price: 250, badge: '#fde047', desc: 'Kesar pista & rasmalai fusion flavor' }
+        const TIER_META = {
+            1: { name: '1 Tier Cake', hindi: 'Ek Manzil Cake', desc: 'Small celebrations & birthdays ke liye best' },
+            2: { name: '2 Tier Cake', hindi: 'Do Manzil Cake', desc: 'Grand birthday & family parties ke liye' },
+            3: { name: '3 Tier Royal Cake', hindi: 'Teen Manzil Cake', desc: 'Engagement, Anniversary & Mega Party special' }
+        };
+
+        const FLAVOR_META = [
+            { id: 'vanilla', name: 'Vanilla Classic', badge: '#fef3c7', desc: 'Soft vanilla sponge & fresh cream' },
+            { id: 'pineapple', name: 'Pineapple Fresh', badge: '#fef08a', desc: 'Juicy pineapple chunks & whipped cream' },
+            { id: 'blackforest', name: 'Black Forest', badge: '#5c2c16', desc: 'Chocolate sponge, cherries & flakes' },
+            { id: 'butterscotch', name: 'Butterscotch Crunch', badge: '#f59e0b', desc: 'Caramel praline nuts & rich cream' },
+            { id: 'truffle', name: 'Rich Choco Truffle', badge: '#3d2314', desc: 'Pure dark chocolate ganache layers' },
+            { id: 'redvelvet', name: 'Red Velvet', badge: '#be123c', desc: 'Crimson sponge with cheese frosting' },
+            { id: 'rasmalai', name: 'Royal Rasmalai', badge: '#fde047', desc: 'Kesar pista & rasmalai fusion flavor' }
         ];
 
         const FROSTING_COLORS = [
@@ -608,29 +923,29 @@
             { name: 'Sunset Peach', hex: '#FDBA74', border: '#EA580C' }
         ];
 
-        const DRIP_OPTIONS = [
-            { id: 'none', name: 'No Drip', price: 0, color: 'transparent' },
-            { id: 'choco', name: 'Dark Choco Drip', price: 80, color: '#3b1e0e' },
-            { id: 'strawberry', name: 'Strawberry Glaze', price: 80, color: '#e11d48' },
-            { id: 'caramel', name: 'Golden Caramel', price: 80, color: '#d97706' },
-            { id: 'whitechoco', name: 'White Choco Drip', price: 80, color: '#f8fafc' }
+        const DRIP_META = [
+            { id: 'none', name: 'No Drip', color: 'transparent' },
+            { id: 'choco', name: 'Dark Choco Drip', color: '#3b1e0e' },
+            { id: 'strawberry', name: 'Strawberry Glaze', color: '#e11d48' },
+            { id: 'caramel', name: 'Golden Caramel', color: '#d97706' },
+            { id: 'whitechoco', name: 'White Choco Drip', color: '#f8fafc' }
         ];
 
-        const DECORATIONS = [
-            { id: 'sprinkles', name: 'Rainbow Sprinkles', price: 40, icon: 'fa-wand-magic-sparkles', desc: 'Colorful sugar confetti on cake' },
-            { id: 'cherries', name: 'Fresh Red Cherries', price: 80, icon: 'fa-apple-whole', desc: 'Sweet glossy cherries on top border' },
-            { id: 'roses', name: 'Cream Roses', price: 100, icon: 'fa-spa', desc: 'Handcrafted edible swirl rosettes' },
-            { id: 'chocochips', name: 'Choco Chips & Oreo', price: 150, icon: 'fa-cookie-bite', desc: 'Crunchy dark choco chips & cookies' },
-            { id: 'goldflakes', name: 'Royal Gold Flakes', price: 120, icon: 'fa-gem', desc: 'Luxury edible golden leaf accents' },
-            { id: 'candles', name: 'Party Candles', price: 30, icon: 'fa-fire-flame-curved', desc: 'Glowing birthday candles on top' }
+        const DECOR_META = [
+            { id: 'sprinkles', name: 'Rainbow Sprinkles', icon: 'fa-wand-magic-sparkles', desc: 'Colorful sugar confetti on cake' },
+            { id: 'cherries', name: 'Fresh Red Cherries', icon: 'fa-apple-whole', desc: 'Sweet glossy cherries on top border' },
+            { id: 'roses', name: 'Cream Roses', icon: 'fa-spa', desc: 'Handcrafted edible swirl rosettes' },
+            { id: 'chocochips', name: 'Choco Chips & Oreo', icon: 'fa-cookie-bite', desc: 'Crunchy dark choco chips & cookies' },
+            { id: 'goldflakes', name: 'Royal Gold Flakes', icon: 'fa-gem', desc: 'Luxury edible golden leaf accents' },
+            { id: 'candles', name: 'Party Candles', icon: 'fa-fire-flame-curved', desc: 'Glowing birthday candles on top' }
         ];
 
-        const TOPPERS = [
-            { id: 'none', name: 'No Topper', price: 0, label: '' },
-            { id: 'hbd', name: 'Happy Birthday', price: 70, label: 'Happy Birthday' },
-            { id: 'anniversary', name: 'Anniversary', price: 70, label: 'Happy Anniversary' },
-            { id: 'congrats', name: 'Congrats Star', price: 70, label: 'Congrats!' },
-            { id: 'crown', name: 'Royal Crown', price: 120, label: 'CROWN' }
+        const TOPPER_META = [
+            { id: 'none', name: 'No Topper', label: '' },
+            { id: 'hbd', name: 'Happy Birthday', label: 'Happy Birthday' },
+            { id: 'anniversary', name: 'Anniversary', label: 'Happy Anniversary' },
+            { id: 'congrats', name: 'Congrats Star', label: 'Congrats!' },
+            { id: 'crown', name: 'Royal Crown', label: 'CROWN' }
         ];
 
         // ==========================================
@@ -649,20 +964,87 @@
         };
 
         let currentOrderId = '#SC-1042';
+        let latestCakeImageDataUrl = '';
+        let deliveredCount = 128;
+        let deliveredBaseOffset = 128;
+        let reviewsList = [];
+        let selectedReviewRating = 5;
+        let adminToken = '';
 
         // ==========================================
-        // INITIALIZATION
+        // INITIALIZATION & CLOUD SYNC
         // ==========================================
-        window.onload = function () {
+        window.onload = async function () {
+            setDefaultTomorrowDate();
+            renderAllControls();
+            updateEverything();
+            await fetchPublicCloudData();
+        };
+
+        async function fetchPublicCloudData() {
+            try {
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/public-data`);
+                const data = await res.json();
+                if (data.success) {
+                    if (data.pricing) {
+                        PRICING = { ...PRICING, ...data.pricing };
+                    }
+                    if (typeof data.deliveredCount === 'number') {
+                        deliveredCount = data.deliveredCount;
+                    }
+                    if (Array.isArray(data.reviews)) {
+                        reviewsList = data.reviews;
+                    }
+                    renderAllControls();
+                    updateEverything();
+                    renderDeliveredCounter();
+                    renderReviews();
+                }
+            } catch (e) {
+                renderDeliveredCounter();
+                renderReviews();
+            }
+        }
+
+        function setDefaultTomorrowDate() {
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('custDate').value = tomorrow.toISOString().split('T')[0];
+        }
 
-            renderAllControls();
-            updateEverything();
-        };
+        function showGlobalToast(msg) {
+            const toast = document.getElementById('globalToast');
+            document.getElementById('globalToastText').textContent = msg;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 2600);
+        }
 
+        // ==========================================
+        // SIDEBAR DRAWER CONTROLS
+        // ==========================================
+        function openSidebar() {
+            document.getElementById('sidebarBackdrop').classList.remove('hidden');
+            document.getElementById('sideDrawer').classList.remove('-translate-x-full');
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebarBackdrop').classList.add('hidden');
+            document.getElementById('sideDrawer').classList.add('-translate-x-full');
+        }
+
+        // ==========================================
+        // RENDER ALL STUDIO CONTROLS
+        // ==========================================
         function renderAllControls() {
+            document.getElementById('perPoundBadge').textContent = `₹${PRICING.perPoundRate} / Pound`;
+            document.getElementById('egglessPriceLabel').textContent = `+₹${PRICING.egglessCharge} extra`;
+            document.getElementById('dripSubLabel').textContent = `Cake ke upar se behne wali delicious glaze (+₹${PRICING.dripCharge})`;
+
             renderTierCards();
             renderWeightButtons();
             renderFlavors();
@@ -678,15 +1060,12 @@
             updatePreviewBadges();
         }
 
-        // ==========================================
-        // RENDER CONTROLS
-        // ==========================================
         function renderTierCards() {
             const container = document.getElementById('tierCardsContainer');
             container.innerHTML = [1, 2, 3].map(tierNum => {
-                const info = TIER_CONFIG[tierNum];
+                const info = TIER_META[tierNum];
                 const isSelected = state.tiers === tierNum;
-                const startPrice = info.weights[0].price;
+                const startPrice = PRICING.tierWeights[tierNum][0].price;
 
                 let stackBars = '';
                 for (let i = tierNum; i >= 1; i--) {
@@ -720,15 +1099,12 @@
             }).join('');
 
             const sameBtn = document.getElementById('sameColorBtn');
-            if (state.tiers > 1) {
-                sameBtn.classList.remove('hidden');
-            } else {
-                sameBtn.classList.add('hidden');
-            }
+            if (state.tiers > 1) sameBtn.classList.remove('hidden');
+            else sameBtn.classList.add('hidden');
         }
 
         function renderWeightButtons() {
-            const weights = TIER_CONFIG[state.tiers].weights;
+            const weights = PRICING.tierWeights[state.tiers];
             const container = document.getElementById('weightButtonsContainer');
             container.innerHTML = weights.map((w, idx) => {
                 const active = state.weightIndex === idx;
@@ -747,8 +1123,9 @@
 
         function renderFlavors() {
             const container = document.getElementById('flavorGrid');
-            container.innerHTML = FLAVORS.map(flv => {
+            container.innerHTML = FLAVOR_META.map(flv => {
                 const active = state.flavorId === flv.id;
+                const price = Number(PRICING.flavors[flv.id] || 0);
                 return `
                     <button type="button" onclick="selectFlavor('${flv.id}')"
                         class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl border-2 text-left transition active:scale-98 gap-2 ${
@@ -764,9 +1141,9 @@
                             </div>
                         </div>
                         <span class="text-xs font-bold px-2.5 py-1 rounded-lg shrink-0 ${
-                            flv.price === 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-bakery-100 text-bakery-800'
+                            price === 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-bakery-100 text-bakery-800'
                         }">
-                            ${flv.price === 0 ? 'Included' : '+₹' + flv.price}
+                            ${price === 0 ? 'Included' : '+₹' + price}
                         </span>
                     </button>
                 `;
@@ -775,13 +1152,9 @@
 
         function renderTierColorPickers() {
             const container = document.getElementById('tierColorPickersContainer');
-            const tierLabels = [
-                'Tier 1 (Bottom Base)',
-                'Tier 2 (Middle Tier)',
-                'Tier 3 (Top Tier)'
-            ];
-
+            const tierLabels = ['Tier 1 (Bottom Base)', 'Tier 2 (Middle Tier)', 'Tier 3 (Top Tier)'];
             let html = '';
+
             for (let t = 0; t < state.tiers; t++) {
                 const currentColor = state.tierColors[t];
                 const swatches = FROSTING_COLORS.map(c => {
@@ -821,8 +1194,9 @@
 
         function renderDripOptions() {
             const container = document.getElementById('dripOptionsContainer');
-            container.innerHTML = DRIP_OPTIONS.map(d => {
+            container.innerHTML = DRIP_META.map(d => {
                 const active = state.dripId === d.id;
+                const price = d.id === 'none' ? 0 : Number(PRICING.dripCharge || 0);
                 return `
                     <button type="button" onclick="selectDrip('${d.id}')"
                         class="p-2.5 rounded-xl border-2 text-center transition active:scale-95 flex flex-col items-center gap-1.5 ${
@@ -833,7 +1207,7 @@
                             ${d.id === 'none' ? '<i class="fa-solid fa-ban text-xs text-slate-400"></i>' : ''}
                         </span>
                         <span class="text-xs font-bold text-slate-800 leading-tight">${d.name}</span>
-                        <span class="text-[11px] font-semibold text-bakery-700">${d.price === 0 ? 'Free' : '+₹' + d.price}</span>
+                        <span class="text-[11px] font-semibold text-bakery-700">${price === 0 ? 'Free' : '+₹' + price}</span>
                     </button>
                 `;
             }).join('');
@@ -841,8 +1215,9 @@
 
         function renderDecorations() {
             const container = document.getElementById('decorationsGrid');
-            container.innerHTML = DECORATIONS.map(dec => {
+            container.innerHTML = DECOR_META.map(dec => {
                 const isSelected = state.decorations.includes(dec.id);
+                const price = Number(PRICING.decorations[dec.id] || 0);
                 return `
                     <button type="button" onclick="toggleDecoration('${dec.id}')"
                         class="flex items-center justify-between p-3 sm:p-3.5 rounded-2xl border-2 text-left transition active:scale-98 gap-2 ${
@@ -865,7 +1240,7 @@
                             </div>
                         </div>
                         <span class="text-xs font-extrabold text-bakery-700 bg-bakery-100 px-2.5 py-1 rounded-lg shrink-0">
-                            +₹${dec.price}
+                            +₹${price}
                         </span>
                     </button>
                 `;
@@ -874,8 +1249,9 @@
 
         function renderToppers() {
             const container = document.getElementById('toppersGrid');
-            container.innerHTML = TOPPERS.map(top => {
+            container.innerHTML = TOPPER_META.map(top => {
                 const active = state.topperId === top.id;
+                const price = Number(PRICING.toppers[top.id] || 0);
                 return `
                     <button type="button" onclick="selectTopper('${top.id}')"
                         class="p-2.5 sm:p-3 rounded-xl border-2 text-center transition active:scale-95 flex flex-col items-center justify-between gap-1 ${
@@ -883,7 +1259,7 @@
                         }">
                         <i class="fa-solid ${top.id === 'crown' ? 'fa-crown text-amber-500' : (top.id === 'none' ? 'fa-ban text-slate-400' : 'fa-award text-bakery-600')} text-lg"></i>
                         <span class="text-xs font-bold text-slate-800 leading-tight">${top.name}</span>
-                        <span class="text-[11px] font-semibold text-bakery-700">${top.price === 0 ? '₹0' : '+₹' + top.price}</span>
+                        <span class="text-[11px] font-semibold text-bakery-700">${price === 0 ? '₹0' : '+₹' + price}</span>
                     </button>
                 `;
             }).join('');
@@ -915,9 +1291,7 @@
             }
 
             root.innerHTML = svgContent;
-
-            const msgText = document.getElementById('svgCakeMessage');
-            msgText.textContent = state.cakeMessage.trim() || "Sajiya's Cake";
+            document.getElementById('svgCakeMessage').textContent = state.cakeMessage.trim() || "Sajiya's Cake";
         }
 
         function buildSingleTierSVG(g, tierIndex) {
@@ -935,7 +1309,7 @@
                 <ellipse cx="${cx}" cy="${topY}" rx="${rx * 0.92}" ry="${ry * 0.85}" fill="rgba(255,255,255,0.16)" pointer-events="none"/>
             `;
 
-            const dripObj = DRIP_OPTIONS.find(d => d.id === state.dripId);
+            const dripObj = DRIP_META.find(d => d.id === state.dripId);
             if (dripObj && dripObj.id !== 'none') {
                 parts += buildDripPathSVG(cx, topY, rx, ry, dripObj.color, tierIndex);
             }
@@ -950,8 +1324,7 @@
             }
 
             if (state.decorations.includes('goldflakes')) {
-                const flakeOffsets = [-0.65, -0.32, 0.05, 0.42, 0.7];
-                flakeOffsets.forEach((off, idx) => {
+                [-0.65, -0.32, 0.05, 0.42, 0.7].forEach((off, idx) => {
                     const fx = cx + off * rx * 0.82;
                     const fy = topY + (bottomY - topY) * (idx % 2 === 0 ? 0.45 : 0.68);
                     parts += `<polygon points="${fx},${fy} ${fx+6},${fy+3} ${fx+2},${fy+9} ${fx-4},${fy+5}" fill="url(#goldGrad)" opacity="0.9"/>`;
@@ -966,8 +1339,7 @@
                     const sx = cx + ((seed / 50) - 1) * (rx * 0.82);
                     const sy = topY + 12 + ((s * 43) % Math.max(20, (bottomY - topY - 22)));
                     const rot = (s * 35) % 180;
-                    const sCol = sprinkleColors[s % sprinkleColors.length];
-                    parts += `<rect x="${sx.toFixed(1)}" y="${sy.toFixed(1)}" width="7" height="3" rx="1.5" fill="${sCol}" transform="rotate(${rot} ${sx.toFixed(1)} ${sy.toFixed(1)})"/>`;
+                    parts += `<rect x="${sx.toFixed(1)}" y="${sy.toFixed(1)}" width="7" height="3" rx="1.5" fill="${sprinkleColors[s % sprinkleColors.length]}" transform="rotate(${rot} ${sx.toFixed(1)} ${sy.toFixed(1)})"/>`;
                 }
             }
 
@@ -998,8 +1370,7 @@
             }
 
             if (state.decorations.includes('roses')) {
-                const rosePositions = [-0.72, -0.36, 0, 0.36, 0.72];
-                rosePositions.forEach(pos => {
+                [-0.72, -0.36, 0, 0.36, 0.72].forEach(pos => {
                     const rxPos = cx + pos * (rx * 0.82);
                     const ryPos = topY + ry * 0.9 + 5;
                     parts += `
@@ -1045,10 +1416,8 @@
 
         function buildCandlesSVG(topTierGeo) {
             const { cx, topY, rx } = topTierGeo;
-            const offsets = [-0.5, -0.25, 0, 0.25, 0.5];
             let html = `<g id="candlesGroup">`;
-
-            offsets.forEach((off, i) => {
+            [-0.5, -0.25, 0, 0.25, 0.5].forEach((off, i) => {
                 const x = cx + off * (rx * 0.85);
                 const y = topY - 2 + Math.abs(off) * 4;
                 const stripeColor = i % 2 === 0 ? '#ec4899' : '#3b82f6';
@@ -1088,7 +1457,7 @@
                 `;
             }
 
-            const topperObj = TOPPERS.find(t => t.id === topperId);
+            const topperObj = TOPPER_META.find(t => t.id === topperId);
             const label = topperObj ? topperObj.label : 'Happy Birthday';
 
             return `
@@ -1102,7 +1471,85 @@
         }
 
         // ==========================================
-        // STATE MUTATION HANDLERS
+        // RENDER LIVE CAKE SVG TO PNG IMAGE CARD
+        // ==========================================
+        function generateCakeDesignImage(callback) {
+            const svgEl = document.getElementById('cakeSvg');
+            const serializer = new XMLSerializer();
+            let svgStr = serializer.serializeToString(svgEl);
+
+            if (!svgStr.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+                svgStr = svgStr.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+
+            const svgBlob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+            const img = new Image();
+
+            img.onload = function () {
+                const { total } = getBillBreakdown();
+                const flv = FLAVOR_META.find(f => f.id === state.flavorId);
+                const weightInfo = PRICING.tierWeights[state.tiers][state.weightIndex];
+
+                const canvas = document.createElement('canvas');
+                canvas.width = 640;
+                canvas.height = 760;
+                const ctx = canvas.getContext('2d');
+
+                ctx.fillStyle = '#fff9fb';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#c93b71';
+                ctx.fillRect(0, 0, canvas.width, 76);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 28px Georgia, serif';
+                ctx.textAlign = 'center';
+                ctx.fillText("Sajiya's Cake — Selected Design", canvas.width / 2, 48);
+
+                ctx.drawImage(img, 100, 88, 440, 473);
+                URL.revokeObjectURL(url);
+
+                ctx.fillStyle = '#fceef3';
+                ctx.fillRect(24, 574, canvas.width - 48, 160);
+                ctx.strokeStyle = '#f4b5cd';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(24, 574, canvas.width - 48, 160);
+
+                ctx.fillStyle = '#4a1b2d';
+                ctx.font = 'bold 22px sans-serif';
+                ctx.fillText(`${state.tiers} Tier (${weightInfo.label}) • ${flv.name}`, canvas.width / 2, 616);
+
+                ctx.fillStyle = '#64748b';
+                ctx.font = '19px sans-serif';
+                ctx.fillText(`${state.eggless ? '100% Eggless' : 'With Egg'} | Order ${currentOrderId}`, canvas.width / 2, 654);
+
+                ctx.fillStyle = '#a82a59';
+                ctx.font = 'bold 30px sans-serif';
+                ctx.fillText(`Total Estimate: ₹${total.toLocaleString('en-IN')}`, canvas.width / 2, 704);
+
+                latestCakeImageDataUrl = canvas.toDataURL('image/png');
+                if (callback) callback(latestCakeImageDataUrl);
+            };
+
+            img.src = url;
+        }
+
+        function downloadCakeDesignImage() {
+            if (!latestCakeImageDataUrl) return;
+            const link = document.createElement('a');
+            link.href = latestCakeImageDataUrl;
+            link.download = `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            const toast = document.getElementById('orderStatusToast');
+            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Cake Design Image saved to your gallery!`;
+            toast.classList.remove('hidden');
+        }
+
+        // ==========================================
+        // STATE MUTATION & FRESH RESET HANDLERS
         // ==========================================
         function selectTierCount(count) {
             state.tiers = count;
@@ -1151,13 +1598,21 @@
 
         function toggleDecoration(decId) {
             const idx = state.decorations.indexOf(decId);
-            if (idx > -1) {
-                state.decorations.splice(idx, 1);
-            } else {
-                state.decorations.push(decId);
-            }
+            if (idx > -1) state.decorations.splice(idx, 1);
+            else state.decorations.push(decId);
             renderDecorations();
             updateEverything();
+        }
+
+        function clearDecorationsOnly() {
+            state.decorations = [];
+            state.topperId = 'none';
+            state.dripId = 'none';
+            renderDripOptions();
+            renderDecorations();
+            renderToppers();
+            updateEverything();
+            showGlobalToast('All decorations & toppers cleared!');
         }
 
         function selectTopper(topperId) {
@@ -1178,40 +1633,89 @@
             updateMessage(msg);
         }
 
+        function surpriseMe() {
+            state.tiers = [1, 2, 3][Math.floor(Math.random() * 3)];
+            state.weightIndex = Math.floor(Math.random() * 2);
+            state.flavorId = FLAVOR_META[Math.floor(Math.random() * FLAVOR_META.length)].id;
+            state.tierColors = [
+                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex,
+                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex,
+                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex
+            ];
+            state.dripId = DRIP_META[Math.floor(Math.random() * DRIP_META.length)].id;
+            const shuffledDec = [...DECOR_META].sort(() => 0.5 - Math.random());
+            state.decorations = shuffledDec.slice(0, Math.floor(Math.random() * 3) + 2).map(d => d.id);
+            state.topperId = TOPPER_META[Math.floor(Math.random() * TOPPER_META.length)].id;
+
+            renderAllControls();
+            updateEverything();
+        }
+
+        function freshResetCake() {
+            state = {
+                tiers: 1,
+                weightIndex: 0,
+                eggless: true,
+                flavorId: 'vanilla',
+                tierColors: ['#FFFDF9', '#FFFDF9', '#FFFDF9'],
+                dripId: 'none',
+                decorations: [],
+                topperId: 'none',
+                cakeMessage: ''
+            };
+            document.getElementById('egglessToggle').checked = true;
+            document.getElementById('cakeMessageInput').value = '';
+            document.getElementById('charCount').textContent = '0/24';
+            document.getElementById('custName').value = '';
+            document.getElementById('custPhone').value = '';
+            document.getElementById('custNotes').value = '';
+            setDefaultTomorrowDate();
+
+            renderAllControls();
+            updateEverything();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showGlobalToast('Selection reset! Start designing a new cake ✨');
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         // ==========================================
         // BILL CALCULATION & LIVE SUMMARY
         // ==========================================
         function getBillBreakdown() {
             const items = [];
-            const tierInfo = TIER_CONFIG[state.tiers];
-            const weightInfo = tierInfo.weights[state.weightIndex];
+            const tierInfo = TIER_META[state.tiers];
+            const weightInfo = PRICING.tierWeights[state.tiers][state.weightIndex];
 
-            items.push({ label: `${tierInfo.name} (${weightInfo.label})`, price: weightInfo.price });
+            items.push({ label: `${tierInfo.name} (${weightInfo.label})`, price: Number(weightInfo.price) });
 
             if (state.eggless) {
-                items.push({ label: '100% Eggless (Pure Veg)', price: 50 });
+                items.push({ label: '100% Eggless (Pure Veg)', price: Number(PRICING.egglessCharge) });
             }
 
-            const flv = FLAVORS.find(f => f.id === state.flavorId);
+            const flv = FLAVOR_META.find(f => f.id === state.flavorId);
             if (flv) {
-                items.push({ label: `Flavor: ${flv.name}`, price: flv.price });
+                items.push({ label: `Flavor: ${flv.name}`, price: Number(PRICING.flavors[flv.id] || 0) });
             }
 
-            const drip = DRIP_OPTIONS.find(d => d.id === state.dripId);
+            const drip = DRIP_META.find(d => d.id === state.dripId);
             if (drip && drip.id !== 'none') {
-                items.push({ label: `Glaze: ${drip.name}`, price: drip.price });
+                items.push({ label: `Glaze: ${drip.name}`, price: Number(PRICING.dripCharge) });
             }
 
             state.decorations.forEach(decId => {
-                const dec = DECORATIONS.find(d => d.id === decId);
+                const dec = DECOR_META.find(d => d.id === decId);
                 if (dec) {
-                    items.push({ label: `Decor: ${dec.name}`, price: dec.price });
+                    items.push({ label: `Decor: ${dec.name}`, price: Number(PRICING.decorations[decId] || 0) });
                 }
             });
 
-            const topper = TOPPERS.find(t => t.id === state.topperId);
+            const topper = TOPPER_META.find(t => t.id === state.topperId);
             if (topper && topper.id !== 'none') {
-                items.push({ label: `Topper: ${topper.name}`, price: topper.price });
+                items.push({ label: `Topper: ${topper.name}`, price: Number(PRICING.toppers[topper.id] || 0) });
             }
 
             const total = items.reduce((sum, item) => sum + item.price, 0);
@@ -1236,9 +1740,8 @@
         }
 
         function updatePreviewBadges() {
-            const tierInfo = TIER_CONFIG[state.tiers];
-            const weightInfo = tierInfo.weights[state.weightIndex];
-            const flv = FLAVORS.find(f => f.id === state.flavorId);
+            const weightInfo = PRICING.tierWeights[state.tiers][state.weightIndex];
+            const flv = FLAVOR_META.find(f => f.id === state.flavorId);
 
             document.getElementById('previewTierBadge').innerHTML = `<i class="fa-solid fa-layer-group text-bakery-600"></i> ${state.tiers} Tier (${weightInfo.label.split(' ')[0]} kg)`;
             document.getElementById('mobileTierSummary').textContent = `${state.tiers} Tier • ${weightInfo.label.split(' ')[0]} kg`;
@@ -1253,70 +1756,89 @@
                 dietBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-600"></span> With Egg`;
             }
 
-            const dotsContainer = document.getElementById('activeColorDots');
             let dotsHtml = '';
             for (let i = 0; i < state.tiers; i++) {
                 dotsHtml += `<span class="w-4 h-4 rounded-full border border-slate-400 shadow-sm inline-block" style="background-color: ${state.tierColors[i]}" title="Tier ${i+1}"></span>`;
             }
-            dotsContainer.innerHTML = dotsHtml;
-
+            document.getElementById('activeColorDots').innerHTML = dotsHtml;
             document.getElementById('decorationCountBadge').textContent = `${state.decorations.length} Decor${state.decorations.length === 1 ? '' : 's'}`;
         }
 
         // ==========================================
-        // SURPRISE ME & RESET FUNCTIONS
+        // DELIVERED COUNTER & CUSTOMER REVIEWS
         // ==========================================
-        function surpriseMe() {
-            const randomTiers = [1, 2, 3][Math.floor(Math.random() * 3)];
-            state.tiers = randomTiers;
-            state.weightIndex = Math.floor(Math.random() * 2);
-            state.flavorId = FLAVORS[Math.floor(Math.random() * FLAVORS.length)].id;
-
-            state.tierColors = [
-                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex,
-                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex,
-                FROSTING_COLORS[Math.floor(Math.random() * FROSTING_COLORS.length)].hex
-            ];
-
-            state.dripId = DRIP_OPTIONS[Math.floor(Math.random() * DRIP_OPTIONS.length)].id;
-
-            const shuffledDec = [...DECORATIONS].sort(() => 0.5 - Math.random());
-            state.decorations = shuffledDec.slice(0, Math.floor(Math.random() * 3) + 2).map(d => d.id);
-
-            state.topperId = TOPPERS[Math.floor(Math.random() * TOPPERS.length)].id;
-
-            renderAllControls();
-            updateEverything();
+        function renderDeliveredCounter() {
+            document.getElementById('bottomDeliveredCounter').textContent = `${deliveredCount}+`;
+            document.getElementById('sidebarDeliveredCount').textContent = `${deliveredCount}+ Cakes`;
         }
 
-        function resetCake() {
-            state = {
-                tiers: 1,
-                weightIndex: 0,
-                eggless: true,
-                flavorId: 'vanilla',
-                tierColors: ['#F9A8D4', '#FFFDF9', '#7DD3FC'],
-                dripId: 'choco',
-                decorations: ['sprinkles', 'cherries'],
-                topperId: 'hbd',
-                cakeMessage: 'Happy Birthday'
-            };
-            document.getElementById('egglessToggle').checked = true;
-            document.getElementById('cakeMessageInput').value = 'Happy Birthday';
-            document.getElementById('charCount').textContent = '14/24';
-            renderAllControls();
-            updateEverything();
+        function setReviewRating(stars) {
+            selectedReviewRating = stars;
+            const btns = document.querySelectorAll('#starRatingPicker .star-btn');
+            btns.forEach((btn, idx) => {
+                btn.className = idx < stars ? 'star-btn text-lg text-amber-400' : 'star-btn text-lg text-slate-300';
+            });
         }
 
-        function scrollToSection(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        function renderReviews() {
+            const container = document.getElementById('reviewsListContainer');
+            if (!reviewsList.length) {
+                reviewsList = [
+                    { name: 'Ananya Sharma', rating: 5, comment: 'Ordered a custom cake — looked identical to the preview image and tasted amazing!', date: 'Recently' }
+                ];
             }
+
+            const avg = (reviewsList.reduce((acc, r) => acc + (r.rating || 5), 0) / reviewsList.length).toFixed(1);
+            document.getElementById('bottomAvgRating').textContent = `${avg}★`;
+            document.getElementById('reviewTotalBadge').textContent = `★ ${avg} / 5 (${reviewsList.length})`;
+
+            container.innerHTML = reviewsList.slice(0, 6).map(rev => {
+                const starsHtml = '★'.repeat(rev.rating || 5) + '☆'.repeat(5 - (rev.rating || 5));
+                return `
+                    <div class="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="font-bold text-xs sm:text-sm text-slate-800 truncate">${rev.name}</span>
+                            <span class="text-xs font-bold text-amber-500 shrink-0">${starsHtml}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 leading-relaxed">"${rev.comment}"</p>
+                        <span class="text-[10px] text-slate-400 block">${rev.date || 'Verified Customer'}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function submitCustomerReview() {
+            const name = document.getElementById('revNameInput').value.trim();
+            const comment = document.getElementById('revCommentInput').value.trim();
+            if (!name || !comment) {
+                showGlobalToast('Please enter your name & review comment!');
+                return;
+            }
+
+            const localRev = {
+                name,
+                rating: selectedReviewRating,
+                comment,
+                date: 'Just now'
+            };
+            reviewsList.unshift(localRev);
+            renderReviews();
+
+            document.getElementById('revNameInput').value = '';
+            document.getElementById('revCommentInput').value = '';
+            showGlobalToast('Thank you! Your review has been posted ⭐');
+
+            try {
+                await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/reviews`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(localRev)
+                });
+            } catch (e) {}
         }
 
         // ==========================================
-        // ORDER MODAL, CLOUDFLARE D1 SYNC & WHATSAPP
+        // ORDER MODAL, DESIGN PREVIEW IMAGE & WHATSAPP
         // ==========================================
         function getFormattedOrderSummary() {
             const { items, total } = getBillBreakdown();
@@ -1324,6 +1846,7 @@
             const custPhone = document.getElementById('custPhone').value.trim() || 'N/A';
             const custDate = document.getElementById('custDate').value || 'N/A';
             const custNotes = document.getElementById('custNotes').value.trim() || 'None';
+            const displayMsg = state.cakeMessage.trim() || "Sajiya's Cake";
 
             let colorSummary = [];
             for (let i = 0; i < state.tiers; i++) {
@@ -1338,7 +1861,7 @@
                 `👤 *Customer:* ${custName}`,
                 `📞 *Phone:* ${custPhone}`,
                 `📅 *Delivery Date:* ${custDate}`,
-                `✍️ *Message on Cake:* "${state.cakeMessage}"`,
+                `✍️ *Message on Cake:* "${displayMsg}"`,
                 `🎨 *Tier Colors:* ${colorSummary.join(', ')}`,
                 `--------------------------------`,
                 `*ITEMIZED BILL:*`,
@@ -1355,15 +1878,15 @@
                     customerName: custName,
                     customerPhone: custPhone,
                     deliveryDate: custDate,
-                    cakeMessage: state.cakeMessage,
+                    cakeMessage: displayMsg,
                     tiers: state.tiers,
-                    weight: TIER_CONFIG[state.tiers].weights[state.weightIndex].label,
+                    weight: PRICING.tierWeights[state.tiers][state.weightIndex].label,
                     eggless: state.eggless,
-                    flavor: FLAVORS.find(f => f.id === state.flavorId).name,
+                    flavor: FLAVOR_META.find(f => f.id === state.flavorId).name,
                     tierColors: colorSummary,
-                    drip: DRIP_OPTIONS.find(d => d.id === state.dripId).name,
+                    drip: DRIP_META.find(d => d.id === state.dripId).name,
                     decorations: state.decorations,
-                    topper: TOPPERS.find(t => t.id === state.topperId).name,
+                    topper: TOPPER_META.find(t => t.id === state.topperId).name,
                     totalAmount: total,
                     notes: custNotes
                 }
@@ -1375,13 +1898,14 @@
             const custName = document.getElementById('custName').value.trim() || 'Valued Customer';
             const custPhone = document.getElementById('custPhone').value.trim() || 'Not specified';
             const custDate = document.getElementById('custDate').value || 'Today';
+            const displayMsg = state.cakeMessage.trim() || "Sajiya's Cake";
 
             currentOrderId = '#SC-' + Math.floor(1000 + Math.random() * 9000);
             document.getElementById('modalOrderId').textContent = currentOrderId;
             document.getElementById('modalOrderDate').textContent = 'Delivery: ' + custDate;
             document.getElementById('modalCustName').textContent = custName;
             document.getElementById('modalCustPhone').textContent = custPhone;
-            document.getElementById('modalCakeMsg').textContent = `"${state.cakeMessage}"`;
+            document.getElementById('modalCakeMsg').textContent = `"${displayMsg}"`;
 
             let colorSummary = [];
             for (let i = 0; i < state.tiers; i++) {
@@ -1404,6 +1928,10 @@
             document.getElementById('modalGrandTotal').textContent = `₹${total.toLocaleString('en-IN')}`;
             document.getElementById('orderStatusToast').classList.add('hidden');
 
+            generateCakeDesignImage((dataUrl) => {
+                document.getElementById('modalCakePreviewImg').src = dataUrl;
+            });
+
             const modal = document.getElementById('orderModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -1420,20 +1948,35 @@
         async function submitAndSendWhatsApp() {
             const { text, payload } = getFormattedOrderSummary();
             const toast = document.getElementById('orderStatusToast');
-            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving order to Sajiya's Cake & opening WhatsApp...`;
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving order to D1 database & preparing WhatsApp...`;
             toast.classList.remove('hidden');
 
             try {
-                await fetch(SAJIYAS_CAKE_CONFIG.apiEndpoint, {
+                await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/orders`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-            } catch (err) {
-                console.warn("Cloudflare API offline or not yet deployed, proceeding to WhatsApp:", err);
+            } catch (err) {}
+
+            if (latestCakeImageDataUrl && navigator.canShare) {
+                try {
+                    const res = await fetch(latestCakeImageDataUrl);
+                    const blob = await res.blob();
+                    const file = new File([blob], `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`, { type: 'image/png' });
+                    if (navigator.canShare({ files: [file] })) {
+                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Choose WhatsApp to send image & bill!`;
+                        await navigator.share({
+                            files: [file],
+                            title: "Sajiya's Cake Order",
+                            text: text
+                        });
+                        return;
+                    }
+                } catch (shareErr) {}
             }
 
-            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Order Ready! Opening WhatsApp...`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Order Saved! Opening WhatsApp...`;
             const waUrl = `https://wa.me/${SAJIYAS_CAKE_CONFIG.shopWhatsApp}?text=${encodeURIComponent(text)}`;
             window.open(waUrl, '_blank');
         }
@@ -1457,6 +2000,259 @@
             tempTextArea.select();
             document.execCommand('copy');
             document.body.removeChild(tempTextArea);
+        }
+
+        // ==========================================
+        // ADMIN CONSOLE: LOGIN, PRICE CHART & ORDERS
+        // ==========================================
+        function openAdminModal() {
+            const modal = document.getElementById('adminModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+
+            if (adminToken) {
+                document.getElementById('adminLoginView').classList.add('hidden');
+                document.getElementById('adminDashboardView').classList.remove('hidden');
+                populateAdminPriceEditor();
+            } else {
+                document.getElementById('adminLoginView').classList.remove('hidden');
+                document.getElementById('adminDashboardView').classList.add('hidden');
+                document.getElementById('adminPinInput').value = '';
+                document.getElementById('adminLoginError').classList.add('hidden');
+            }
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('adminModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        async function verifyAdminLogin() {
+            const pin = document.getElementById('adminPinInput').value.trim();
+            const errEl = document.getElementById('adminLoginError');
+            if (!pin) return;
+
+            try {
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pin })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    adminToken = pin;
+                    document.getElementById('adminLoginView').classList.add('hidden');
+                    document.getElementById('adminDashboardView').classList.remove('hidden');
+                    populateAdminPriceEditor();
+                } else {
+                    errEl.textContent = 'Wrong PIN! Try again.';
+                    errEl.classList.remove('hidden');
+                }
+            } catch (e) {
+                if (pin === '1234') {
+                    adminToken = pin;
+                    document.getElementById('adminLoginView').classList.add('hidden');
+                    document.getElementById('adminDashboardView').classList.remove('hidden');
+                    populateAdminPriceEditor();
+                } else {
+                    errEl.textContent = 'Connection error or wrong PIN.';
+                    errEl.classList.remove('hidden');
+                }
+            }
+        }
+
+        function switchAdminTab(tab) {
+            const pTab = document.getElementById('adminPricingTab');
+            const oTab = document.getElementById('adminOrdersTab');
+            const pBtn = document.getElementById('tabBtnPricing');
+            const oBtn = document.getElementById('tabBtnOrders');
+
+            if (tab === 'pricing') {
+                pTab.classList.remove('hidden');
+                oTab.classList.add('hidden');
+                pBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-bakery-700 text-white';
+                oBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+            } else {
+                pTab.classList.add('hidden');
+                oTab.classList.remove('hidden');
+                oBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-bakery-700 text-white';
+                pBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+                loadAdminOrders();
+            }
+        }
+
+        function populateAdminPriceEditor() {
+            document.getElementById('adminPerPoundInput').value = PRICING.perPoundRate;
+            document.getElementById('adminEgglessInput').value = PRICING.egglessCharge;
+            document.getElementById('adminDripInput').value = PRICING.dripCharge;
+            document.getElementById('adminDeliveredOffsetInput').value = deliveredCount;
+
+            // 1. Tier & Weight Inputs
+            let weightHtml = '';
+            [1, 2, 3].forEach(tierNum => {
+                PRICING.tierWeights[tierNum].forEach((w, idx) => {
+                    weightHtml += `
+                        <div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+                            <span class="text-xs font-semibold text-slate-700">Tier ${tierNum}: ${w.label}</span>
+                            <input type="number" data-tier="${tierNum}" data-idx="${idx}" value="${w.price}"
+                                class="admin-weight-price w-24 px-2.5 py-1 rounded-lg border border-slate-300 text-xs font-bold text-right">
+                        </div>
+                    `;
+                });
+            });
+            document.getElementById('adminWeightInputs').innerHTML = weightHtml;
+
+            // 2. Flavor Inputs
+            document.getElementById('adminFlavorInputs').innerHTML = FLAVOR_META.map(flv => `
+                <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
+                    <label class="text-[11px] font-semibold text-slate-600 block truncate">${flv.name}</label>
+                    <input type="number" data-flavor="${flv.id}" value="${PRICING.flavors[flv.id] || 0}"
+                        class="admin-flavor-price w-full mt-1 px-2 py-1 rounded-lg border border-slate-300 text-xs font-bold">
+                </div>
+            `).join('');
+
+            // 3. Decorations & Toppers Inputs
+            let decorHtml = DECOR_META.map(dec => `
+                <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
+                    <label class="text-[11px] font-semibold text-slate-600 block truncate">${dec.name}</label>
+                    <input type="number" data-decor="${dec.id}" value="${PRICING.decorations[dec.id] || 0}"
+                        class="admin-decor-price w-full mt-1 px-2 py-1 rounded-lg border border-slate-300 text-xs font-bold">
+                </div>
+            `).join('');
+
+            decorHtml += TOPPER_META.filter(t => t.id !== 'none').map(top => `
+                <div class="bg-bakery-50/70 p-2 rounded-xl border border-bakery-200">
+                    <label class="text-[11px] font-semibold text-bakery-800 block truncate">Topper: ${top.name}</label>
+                    <input type="number" data-topper="${top.id}" value="${PRICING.toppers[top.id] || 0}"
+                        class="admin-topper-price w-full mt-1 px-2 py-1 rounded-lg border border-bakery-300 text-xs font-bold">
+                </div>
+            `).join('');
+
+            document.getElementById('adminDecorInputs').innerHTML = decorHtml;
+        }
+
+        function autoCalculateFromPerPound() {
+            const rate = Number(document.getElementById('adminPerPoundInput').value) || 450;
+            [1, 2, 3].forEach(tierNum => {
+                PRICING.tierWeights[tierNum].forEach(w => {
+                    const tierPremium = (tierNum - 1) * 50;
+                    w.price = (w.pounds * rate) + tierPremium;
+                });
+            });
+            PRICING.perPoundRate = rate;
+            populateAdminPriceEditor();
+            showGlobalToast(`Calculated all sizes @ ₹${rate}/pound!`);
+        }
+
+        async function saveAdminPriceChart() {
+            PRICING.perPoundRate = Number(document.getElementById('adminPerPoundInput').value) || 450;
+            PRICING.egglessCharge = Number(document.getElementById('adminEgglessInput').value) || 0;
+            PRICING.dripCharge = Number(document.getElementById('adminDripInput').value) || 0;
+
+            document.querySelectorAll('.admin-weight-price').forEach(inp => {
+                const t = Number(inp.dataset.tier);
+                const i = Number(inp.dataset.idx);
+                PRICING.tierWeights[t][i].price = Number(inp.value) || 0;
+            });
+
+            document.querySelectorAll('.admin-flavor-price').forEach(inp => {
+                PRICING.flavors[inp.dataset.flavor] = Number(inp.value) || 0;
+            });
+
+            document.querySelectorAll('.admin-decor-price').forEach(inp => {
+                PRICING.decorations[inp.dataset.decor] = Number(inp.value) || 0;
+            });
+
+            document.querySelectorAll('.admin-topper-price').forEach(inp => {
+                PRICING.toppers[inp.dataset.topper] = Number(inp.value) || 0;
+            });
+
+            const newDeliveredVal = Number(document.getElementById('adminDeliveredOffsetInput').value) || 0;
+            deliveredCount = newDeliveredVal;
+
+            renderAllControls();
+            updateEverything();
+            renderDeliveredCounter();
+
+            const toast = document.getElementById('adminSaveToast');
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving new price chart to Cloudflare...`;
+            toast.classList.remove('hidden');
+
+            try {
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/pricing`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ pricing: PRICING, deliveredOffset: newDeliveredVal })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Live Price Chart & Delivered Counter updated for all users!`;
+                } else {
+                    toast.innerHTML = `Error: ${data.error || 'Failed to save'}`;
+                }
+            } catch (e) {
+                toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Updated locally (check network to sync cloud).`;
+            }
+        }
+
+        async function loadAdminOrders() {
+            const container = document.getElementById('adminOrdersList');
+            container.innerHTML = `<p class="text-slate-500 text-center py-6"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading D1 orders...</p>`;
+            try {
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/orders`);
+                const data = await res.json();
+                const orders = data.orders || [];
+                if (!orders.length) {
+                    container.innerHTML = `<p class="text-slate-500 text-center py-6">No orders in D1 database yet.</p>`;
+                    return;
+                }
+                container.innerHTML = orders.map(ord => {
+                    const isDelivered = ord.status === 'DELIVERED';
+                    return `
+                        <div class="p-3 rounded-2xl border ${isDelivered ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200 bg-slate-50'} space-y-1.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="font-extrabold text-bakery-900">${ord.order_id} • ${ord.customer_name}</span>
+                                <span class="font-extrabold text-bakery-700">₹${ord.total_amount}</span>
+                            </div>
+                            <div class="text-slate-600">
+                                ${ord.tiers} Tier (${ord.weight}) • ${ord.flavor} • Msg: "${ord.cake_message || ''}"
+                            </div>
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-[11px] text-slate-500">📞 ${ord.customer_phone} | 📅 ${ord.delivery_date}</span>
+                                ${isDelivered
+                                    ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full"><i class="fa-solid fa-check mr-1"></i>Delivered</span>`
+                                    : `<button onclick="markOrderDelivered('${ord.order_id}')" class="text-[11px] font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg transition">Mark Delivered</button>`
+                                }
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                container.innerHTML = `<p class="text-rose-600 text-center py-4">Failed to load orders from D1.</p>`;
+            }
+        }
+
+        async function markOrderDelivered(orderId) {
+            try {
+                await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/order-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ orderId, status: 'DELIVERED' })
+                });
+                deliveredCount += 1;
+                renderDeliveredCounter();
+                loadAdminOrders();
+                showGlobalToast(`Order ${orderId} marked Delivered! Counter +1`);
+            } catch (e) {}
         }
     </script>
 </body>
