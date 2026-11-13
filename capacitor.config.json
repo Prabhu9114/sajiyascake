@@ -3,6 +3,7 @@
   "appName": "Sajiya's Cake",
   "webDir": "www",
   "server": {
+    "url": "https://sajiyascake.pages.dev",
     "androidScheme": "https"
   },
   "plugins": {
