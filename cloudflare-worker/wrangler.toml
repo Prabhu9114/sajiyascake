@@ -2,6 +2,9 @@ name = "sajiyascake-api"
 main = "src/index.js"
 compatibility_date = "2026-11-01"
 
+[vars]
+ADMIN_PIN = "911454"
+
 [[d1_databases]]
 binding = "SAJIYAS_CAKE_DB"
 database_name = "sajiyascake-db"
