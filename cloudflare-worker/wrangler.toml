@@ -1,0 +1,12 @@
+name = "sajiyascake-api"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+[[d1_databases]]
+binding = "SAJIYAS_CAKE_DB"
+database_name = "sajiyascake-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+[[kv_namespaces]]
+binding = "SAJIYAS_CAKE_KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
