@@ -57,17 +57,78 @@ export default {
       }
     };
 
+    const DEFAULT_PRODUCTS = [
+      {
+        id: 'prod-1',
+        name: 'Together Forever Royal',
+        category: 'Signature Cakes',
+        price: 1480,
+        tag: 'Bestseller',
+        desc: '2 Tier Rose Berry & Vanilla Truffle with Cream Roses',
+        preset: { tiers: 2, weightIndex: 0, flavorId: 'truffle', tierColors: ['#FB7185', '#FFFDF9', '#F9A8D4'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'anniversary', cakeMessage: 'Together Forever' }
+      },
+      {
+        id: 'prod-2',
+        name: 'Butterscotch Bliss',
+        category: "What's Trending",
+        price: 650,
+        tag: 'Trending',
+        desc: '1 Tier Golden Butterscotch with Caramel Drip & Sprinkles',
+        preset: { tiers: 1, weightIndex: 0, flavorId: 'butterscotch', tierColors: ['#FDE047', '#FFFDF9', '#FDE047'], dripId: 'caramel', decorations: ['sprinkles', 'cherries'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
+      },
+      {
+        id: 'prod-3',
+        name: 'Midnight Choco Truffle',
+        category: 'Occasional Cakes',
+        price: 780,
+        tag: 'Chef Special',
+        desc: 'Rich Dark Chocolate Truffle with Oreo & Choco Chips',
+        preset: { tiers: 1, weightIndex: 0, flavorId: 'truffle', tierColors: ['#5C3317', '#5C3317', '#5C3317'], dripId: 'choco', decorations: ['chocochips', 'goldflakes'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
+      },
+      {
+        id: 'prod-4',
+        name: 'Royal Rasmalai Crown',
+        category: 'Theme Cakes',
+        price: 1750,
+        tag: 'Festive',
+        desc: '2 Tier Kesar Rasmalai Fusion topped with Royal Gold Crown',
+        preset: { tiers: 2, weightIndex: 0, flavorId: 'rasmalai', tierColors: ['#FDBA74', '#FDE047', '#FFFDF9'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'crown', cakeMessage: 'Best Wishes' }
+      }
+    ];
+
+    const DEFAULT_REVIEWS = [
+      {
+        id: 'rev-1',
+        name: 'Ananya Sharma',
+        rating: 5,
+        comment: 'Ordered a 2-tier Rose Berry Truffle cake — looked identical to the preview slip and tasted super fresh!',
+        date: '2 days ago'
+      },
+      {
+        id: 'rev-2',
+        name: 'Rohit Verma',
+        rating: 5,
+        comment: 'Best eggless Rasmalai cake in Rajgangpur! Delivered right on time.',
+        date: '5 days ago'
+      }
+    ];
+
     const jsonResponse = (obj, status = 200) =>
       new Response(JSON.stringify(obj), {
         status,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
 
-    // 1. PUBLIC CONFIG (PRICING + DELIVERED COUNT + APPROVED REVIEWS)
+    const isAuthorized = (req) => (req.headers.get('Authorization') || '') === `Bearer ${ADMIN_PIN}`;
+
+    // 1. GET PUBLIC STORE DATA (PRICING, PRODUCTS, REVIEWS, DELIVERED COUNTER)
     if (url.pathname === '/api/public-data' && request.method === 'GET') {
       try {
         const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config');
         const pricing = storedPricing ? JSON.parse(storedPricing) : DEFAULT_PRICING;
+
+        const storedProducts = await env.SAJIYAS_CAKE_KV.get('catalog_products');
+        const products = storedProducts ? JSON.parse(storedProducts) : DEFAULT_PRODUCTS;
 
         const baseDelivered = parseInt((await env.SAJIYAS_CAKE_KV.get('delivered_offset')) || '128', 10);
         let dbDelivered = 0;
@@ -79,29 +140,14 @@ export default {
         } catch (e) {}
 
         const storedReviews = await env.SAJIYAS_CAKE_KV.get('customer_reviews');
-        const reviews = storedReviews
-          ? JSON.parse(storedReviews)
-          : [
-              {
-                id: 'rev-1',
-                name: 'Ananya Sharma',
-                rating: 5,
-                comment: 'Ordered a 2-tier Rose Berry Truffle cake — looked identical to the preview and tasted super fresh!',
-                date: '2 days ago'
-              },
-              {
-                id: 'rev-2',
-                name: 'Rohit Verma',
-                rating: 5,
-                comment: 'Best eggless Rasmalai cake in town! Delivered right on time.',
-                date: '5 days ago'
-              }
-            ];
+        const reviews = storedReviews ? JSON.parse(storedReviews) : DEFAULT_REVIEWS;
 
         return jsonResponse({
           success: true,
           pricing,
+          products,
           deliveredCount: baseDelivered + dbDelivered,
+          deliveredOffset: baseDelivered,
           reviews
         });
       } catch (err) {
@@ -109,7 +155,7 @@ export default {
       }
     }
 
-    // 2. SUBMIT CUSTOMER REVIEW
+    // 2. CUSTOMER SUBMIT REVIEW
     if (url.pathname === '/api/reviews' && request.method === 'POST') {
       try {
         const body = await request.json();
@@ -117,7 +163,7 @@ export default {
           return jsonResponse({ success: false, error: 'Name and review required' }, 400);
         }
         const stored = await env.SAJIYAS_CAKE_KV.get('customer_reviews');
-        const reviews = stored ? JSON.parse(stored) : [];
+        const reviews = stored ? JSON.parse(stored) : DEFAULT_REVIEWS;
         const newReview = {
           id: 'rev-' + Date.now(),
           name: String(body.name).slice(0, 40),
@@ -126,14 +172,14 @@ export default {
           date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
         };
         reviews.unshift(newReview);
-        await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews.slice(0, 30)));
-        return jsonResponse({ success: true, review: newReview, reviews: reviews.slice(0, 30) });
+        await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews.slice(0, 40)));
+        return jsonResponse({ success: true, reviews: reviews.slice(0, 40) });
       } catch (err) {
         return jsonResponse({ success: false, error: err.message }, 500);
       }
     }
 
-    // 3. ADMIN VERIFY PIN
+    // 3. ADMIN LOGIN
     if (url.pathname === '/api/admin/login' && request.method === 'POST') {
       const { pin } = await request.json();
       if (String(pin) === String(ADMIN_PIN)) {
@@ -142,12 +188,29 @@ export default {
       return jsonResponse({ success: false, error: 'Invalid Admin PIN' }, 401);
     }
 
-    // 4. ADMIN SAVE DYNAMIC PRICE CHART
-    if (url.pathname === '/api/admin/pricing' && request.method === 'POST') {
-      const auth = request.headers.get('Authorization') || '';
-      if (auth !== `Bearer ${ADMIN_PIN}`) {
-        return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+    // 4. ADMIN SAVE PRODUCTS LIST (ADD / REMOVE / UPDATE)
+    if (url.pathname === '/api/admin/products' && request.method === 'POST') {
+      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      const { products } = await request.json();
+      if (Array.isArray(products)) {
+        await env.SAJIYAS_CAKE_KV.put('catalog_products', JSON.stringify(products));
       }
+      return jsonResponse({ success: true });
+    }
+
+    // 5. ADMIN SAVE REVIEWS LIST (EDIT / MODIFY / DELETE)
+    if (url.pathname === '/api/admin/reviews' && request.method === 'POST') {
+      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      const { reviews } = await request.json();
+      if (Array.isArray(reviews)) {
+        await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews));
+      }
+      return jsonResponse({ success: true });
+    }
+
+    // 6. ADMIN SAVE PRICE CHART & DELIVERED OFFSET
+    if (url.pathname === '/api/admin/pricing' && request.method === 'POST') {
+      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { pricing, deliveredOffset } = await request.json();
       if (pricing) {
         await env.SAJIYAS_CAKE_KV.put('pricing_config', JSON.stringify(pricing));
@@ -158,12 +221,9 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 5. ADMIN UPDATE ORDER STATUS (e.g., PENDING -> DELIVERED)
+    // 7. ADMIN UPDATE ORDER STATUS
     if (url.pathname === '/api/admin/order-status' && request.method === 'POST') {
-      const auth = request.headers.get('Authorization') || '';
-      if (auth !== `Bearer ${ADMIN_PIN}`) {
-        return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
-      }
+      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { orderId, status } = await request.json();
       await env.SAJIYAS_CAKE_DB.prepare(
         'UPDATE sajiyascake_orders SET status = ? WHERE order_id = ?'
@@ -171,7 +231,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 6. PLACE NEW ORDER (POST)
+    // 8. PLACE NEW ORDER (POST)
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       try {
         const data = await request.json();
@@ -204,7 +264,7 @@ export default {
       }
     }
 
-    // 7. LIST ORDERS (GET)
+    // 9. LIST ORDERS (GET)
     if (url.pathname === '/api/orders' && request.method === 'GET') {
       const { results } = await env.SAJIYAS_CAKE_DB.prepare(
         'SELECT * FROM sajiyascake_orders ORDER BY id DESC LIMIT 50'
