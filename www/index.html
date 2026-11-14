@@ -990,7 +990,24 @@
         let ORDER_CART = [];
         let activeMainView = 'home', activeCatalogCategory = 'all', catalogSearchTerm = '';
         let currentOrderId = '#SC-1042', latestCakeImageDataUrl = '', latestCakeImageBlob = null, latestUploadedReceiptUrl = '';
-        let deliveredCount = 128, storeViewsCount = 1420, reviewsList = [], selectedReviewRating = 5, adminToken = '';
+        let deliveredCount = 128, deliveredBase = 128, dbDeliveredCount = 0, storeViewsCount = 1420, reviewsList = [], selectedReviewRating = 5, adminToken = '';
+
+        // Sends an admin save to the Worker and tells the admin clearly if it failed.
+        async function adminApiPost(path, body) {
+            try {
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}${path}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json().catch(() => ({}));
+                if (res.ok && data.success) return true;
+                showGlobalToast(res.status === 401 ? '❌ NOT saved: wrong/expired Admin PIN. Log in again.' : '❌ NOT saved: ' + (data.error || 'server error ' + res.status));
+            } catch (e) {
+                showGlobalToast('❌ NOT saved: cannot reach server');
+            }
+            return false;
+        }
 
         window.onload = async function () {
             setDefaultTomorrowDate();
@@ -1009,10 +1026,12 @@
                 if (data.success) {
                     if (data.storeSettings && Object.keys(data.storeSettings).length) STORE_SETTINGS = { ...STORE_SETTINGS, ...data.storeSettings };
                     if (data.pricing && Object.keys(data.pricing).length) PRICING = { ...PRICING, ...data.pricing };
-                    if (Array.isArray(data.products) && data.products.length > 0) CATALOG_PRODUCTS = data.products;
-                    if (Array.isArray(data.accessories) && data.accessories.length > 0) CATALOG_ACCESSORIES = data.accessories;
+                    if (Array.isArray(data.products)) CATALOG_PRODUCTS = data.products;
+                    if (Array.isArray(data.accessories)) CATALOG_ACCESSORIES = data.accessories;
                     if (typeof data.deliveredCount === 'number') deliveredCount = data.deliveredCount;
-                    if (Array.isArray(data.reviews) && data.reviews.length > 0) reviewsList = data.reviews;
+                    if (typeof data.deliveredOffset === 'number') deliveredBase = data.deliveredOffset;
+                    if (typeof data.dbDelivered === 'number') dbDeliveredCount = data.dbDelivered;
+                    if (Array.isArray(data.reviews)) reviewsList = data.reviews;
 
                     renderAboutStoreUI();
                     renderCatalogProducts();
@@ -1021,7 +1040,7 @@
                     renderDeliveredCounter();
                     renderReviews();
                 }
-            } catch (e) { renderDeliveredCounter(); renderReviews(); }
+            } catch (e) { console.error('Could not load cloud data:', e); renderDeliveredCounter(); renderReviews(); }
         }
 
         function setDefaultTomorrowDate() {
@@ -1141,16 +1160,15 @@
         function renderCartUI() {
             const { totalItems, grandTotal } = getCartTotals();
             const formatted = `₹${grandTotal.toLocaleString('en-IN')}`;
-            document.getElementById('headerCartTotal').textContent = formatted;
-            document.getElementById('headerCartCount').textContent = totalItems;
-            document.getElementById('drawerCartBadge').textContent = totalItems;
-            document.getElementById('accViewCartCount').textContent = totalItems;
-            document.getElementById('mobileBarCartCount').textContent = totalItems;
-            document.getElementById('mobileBotCartCount').textContent = totalItems;
-            document.getElementById('mobileTotalPrice').textContent = formatted;
-            document.getElementById('cartPageItemCount').textContent = totalItems;
-            document.getElementById('cartSubtotalText').textContent = formatted;
-            document.getElementById('cartGrandTotalText').textContent = formatted;
+            const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            setText('headerCartTotal', formatted);
+            setText('headerCartCount', totalItems);
+            setText('drawerCartBadge', totalItems);
+            setText('accViewCartCount', totalItems);
+            setText('mobileBotCartCount', totalItems);
+            setText('cartPageItemCount', totalItems);
+            setText('cartSubtotalText', formatted);
+            setText('cartGrandTotalText', formatted);
 
             const container = document.getElementById('cartItemsContainer');
             if (!ORDER_CART.length) {
@@ -1621,13 +1639,14 @@
             document.getElementById('dashDeliveredCount').textContent = deliveredCount;
             document.getElementById('dashCartCount').textContent = ORDER_CART.reduce((s, i) => s + i.qty, 0);
             try {
-                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/orders`);
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/orders`, { headers: { 'Authorization': `Bearer ${adminToken}` } });
                 const data = await res.json();
                 const orders = data.orders || [];
-                const monthlySum = orders.reduce((s, o) => s + Number(o.total_amount || 0), 0);
-                document.getElementById('dashMonthlySales').textContent = `₹${(monthlySum || 48500).toLocaleString('en-IN')}`;
+                const now = new Date();
+                const monthlySum = orders.filter(o => { const d = new Date((o.created_at || '').replace(' ', 'T') + 'Z'); return !isNaN(d) && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); }).reduce((s, o) => s + Number(o.total_amount || 0), 0);
+                document.getElementById('dashMonthlySales').textContent = `₹${monthlySum.toLocaleString('en-IN')}`;
             } catch (e) {
-                document.getElementById('dashMonthlySales').textContent = '₹48,500';
+                document.getElementById('dashMonthlySales').textContent = '₹0';
             }
         }
 
@@ -1695,14 +1714,13 @@
             const newPin = document.getElementById('adminNewPinInput').value.trim();
             const toast = document.getElementById('adminStoreToast'); toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...`; toast.classList.remove('hidden');
 
-            try {
-                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/store-settings`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ storeSettings: STORE_SETTINGS, newPin }) });
-                const data = await res.json();
-                if (data.success) {
-                    if (newPin && newPin.length >= 4) { adminToken = newPin; document.getElementById('adminNewPinInput').value = ''; }
-                    renderAboutStoreUI(); toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Updated successfully!`;
-                }
-            } catch (e) { toast.innerHTML = `Error saving settings.`; }
+            const ok = await adminApiPost('/api/admin/store-settings', { storeSettings: STORE_SETTINGS, newPin });
+            if (ok) {
+                if (newPin && newPin.length >= 4) { adminToken = newPin; document.getElementById('adminNewPinInput').value = ''; }
+                renderAboutStoreUI(); toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Saved to cloud successfully!`;
+            } else {
+                toast.innerHTML = `❌ NOT saved. Check Admin PIN / connection and try again.`;
+            }
         }
 
         function renderAdminProductsList() {
@@ -1745,14 +1763,13 @@
                 showGlobalToast(`Added "${name}"!`);
             }
             resetProductForm(); renderCatalogProducts(); renderAdminProductsList();
-            try { await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/products`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ products: CATALOG_PRODUCTS }) }); } catch (e) {}
+            const savedOk = await adminApiPost('/api/admin/products', { products: CATALOG_PRODUCTS }); if (savedOk) showGlobalToast('✅ Saved to cloud');
         }
 
         async function adminRemoveProduct(prodId) {
             CATALOG_PRODUCTS = CATALOG_PRODUCTS.filter(p => p.id !== prodId); if (document.getElementById('editProdId').value === prodId) resetProductForm();
             renderCatalogProducts(); renderAdminProductsList();
-            try { await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/products`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ products: CATALOG_PRODUCTS }) }); } catch (e) {}
-            showGlobalToast('Pre-made cake removed!');
+            const savedOk = await adminApiPost('/api/admin/products', { products: CATALOG_PRODUCTS }); if (savedOk) showGlobalToast('✅ Saved to cloud');
         }
 
         function renderAdminAccessoriesList() {
@@ -1795,15 +1812,14 @@
                 showGlobalToast(`Added "${name}"!`);
             }
             resetAccessoryForm(); renderAccessories(); renderAdminAccessoriesList();
-            try { await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/accessories`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ accessories: CATALOG_ACCESSORIES }) }); } catch (e) {}
+            const savedOk = await adminApiPost('/api/admin/accessories', { accessories: CATALOG_ACCESSORIES }); if (savedOk) showGlobalToast('✅ Saved to cloud');
         }
 
         async function adminRemoveAccessory(accId) {
             CATALOG_ACCESSORIES = CATALOG_ACCESSORIES.filter(a => a.id !== accId); ORDER_CART = ORDER_CART.filter(i => !(i.refId === accId && i.type === 'accessory'));
             if (document.getElementById('editAccId').value === accId) resetAccessoryForm();
             renderAccessories(); renderAdminAccessoriesList(); renderCartUI();
-            try { await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/accessories`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ accessories: CATALOG_ACCESSORIES }) }); } catch (e) {}
-            showGlobalToast('Accessory removed!');
+            const savedOk = await adminApiPost('/api/admin/accessories', { accessories: CATALOG_ACCESSORIES }); if (savedOk) showGlobalToast('✅ Saved to cloud');
         }
 
         function renderAdminReviewsEditor() {
@@ -1814,19 +1830,17 @@
 
         async function adminDeleteReview(idx) {
             reviewsList.splice(idx, 1); renderReviews(); renderAdminReviewsEditor();
-            try { await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ reviews: reviewsList }) }); } catch (e) {}
-            showGlobalToast('Customer review deleted!');
+            const savedOk = await adminApiPost('/api/admin/reviews', { reviews: reviewsList }); if (savedOk) showGlobalToast('✅ Saved to cloud');
         }
 
         async function adminSaveAllReviews() {
             reviewsList = reviewsList.map((rev, idx) => ({ ...rev, name: document.getElementById(`editRevName_${idx}`).value.trim() || rev.name, rating: Number(document.getElementById(`editRevRating_${idx}`).value) || 5, comment: document.getElementById(`editRevComment_${idx}`).value.trim() || rev.comment }));
             renderReviews();
-            try { await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ reviews: reviewsList }) }); } catch (e) {}
-            showGlobalToast('All customer review edits saved to cloud!');
+            const savedOk = await adminApiPost('/api/admin/reviews', { reviews: reviewsList }); if (savedOk) showGlobalToast('✅ Saved to cloud');
         }
 
         function populateAdminPriceEditor() {
-            document.getElementById('adminPerPoundInput').value = PRICING.perPoundRate; document.getElementById('adminEgglessInput').value = PRICING.egglessCharge; document.getElementById('adminDripInput').value = PRICING.dripCharge; document.getElementById('adminDeliveredOffsetInput').value = deliveredCount;
+            document.getElementById('adminPerPoundInput').value = PRICING.perPoundRate; document.getElementById('adminEgglessInput').value = PRICING.egglessCharge; document.getElementById('adminDripInput').value = PRICING.dripCharge; document.getElementById('adminDeliveredOffsetInput').value = deliveredBase;
             let weightHtml = ''; [1, 2, 3].forEach(tierNum => PRICING.tierWeights[tierNum].forEach((w, idx) => { weightHtml += `<div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-xl border border-slate-200"><span class="text-xs font-semibold text-slate-700">Tier ${tierNum}: ${w.label}</span><input type="number" data-tier="${tierNum}" data-idx="${idx}" value="${w.price}" class="admin-weight-price w-24 px-2.5 py-1 rounded-lg border border-slate-300 text-xs font-bold text-right"></div>`; }));
             document.getElementById('adminWeightInputs').innerHTML = weightHtml;
             document.getElementById('adminFlavorInputs').innerHTML = FLAVOR_META.map(flv => `<div class="bg-slate-50 p-2 rounded-xl border border-slate-200"><label class="text-[11px] font-semibold text-slate-600 block truncate">${flv.name}</label><input type="number" data-flavor="${flv.id}" value="${PRICING.flavors[flv.id] || 0}" class="admin-flavor-price w-full mt-1 px-2 py-1 rounded-lg border border-slate-300 text-xs font-bold"></div>`).join('');
@@ -1847,20 +1861,20 @@
             document.querySelectorAll('.admin-flavor-price').forEach(inp => PRICING.flavors[inp.dataset.flavor] = Number(inp.value) || 0);
             document.querySelectorAll('.admin-decor-price').forEach(inp => PRICING.decorations[inp.dataset.decor] = Number(inp.value) || 0);
             document.querySelectorAll('.admin-topper-price').forEach(inp => PRICING.toppers[inp.dataset.topper] = Number(inp.value) || 0);
-            const newDeliveredVal = Number(document.getElementById('adminDeliveredOffsetInput').value) || 0; deliveredCount = newDeliveredVal;
+            const newDeliveredVal = Number(document.getElementById('adminDeliveredOffsetInput').value) || 0;
+            deliveredBase = newDeliveredVal; deliveredCount = deliveredBase + dbDeliveredCount;
             renderAllControls(); updateEverything(); renderDeliveredCounter();
-            const toast = document.getElementById('adminSaveToast'); toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...`; toast.classList.get ? toast.classList.remove('hidden') : null;
-            try {
-                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/pricing`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ pricing: PRICING, deliveredOffset: newDeliveredVal }) });
-                const data = await res.json();
-                if (data.success) toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Live 3D Price Chart & Delivered Counter updated!`;
-            } catch (e) { toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Updated locally!`; }
+            const toast = document.getElementById('adminSaveToast'); toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...`; toast.classList.remove('hidden');
+            const ok = await adminApiPost('/api/admin/pricing', { pricing: PRICING, deliveredOffset: newDeliveredVal });
+            toast.innerHTML = ok ? `<i class="fa-solid fa-circle-check mr-1"></i> Saved to cloud! Live 3D prices & Delivered Counter updated.` : `❌ NOT saved to cloud. Check Admin PIN / connection.`;
         }
 
         async function loadAdminOrders() {
             const container = document.getElementById('adminOrdersList'); container.innerHTML = `<p class="text-slate-500 text-center py-6">Loading D1 orders...</p>`;
             try {
-                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/orders`); const data = await res.json(); const orders = data.orders || [];
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/orders`, { headers: { 'Authorization': `Bearer ${adminToken}` } }); const data = await res.json();
+                if (res.status === 401) { container.innerHTML = `<p class="text-rose-600 text-center py-4">Wrong/expired Admin PIN. Close and log in again.</p>`; return; }
+                const orders = data.orders || [];
                 if (!orders.length) { container.innerHTML = `<p class="text-slate-500 text-center py-6">No orders yet.</p>`; return; }
                 container.innerHTML = orders.map(ord => `<div class="p-3 rounded-2xl border ${ord.status === 'DELIVERED' ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200 bg-slate-50'} space-y-1.5"><div class="flex items-center justify-between gap-2"><span class="font-extrabold text-bakery-900">${ord.order_id} • ${ord.customer_name}</span><span class="font-extrabold text-bakery-700">₹${ord.total_amount}</span></div><div class="text-slate-600">${ord.cake_message || ''} • ${ord.notes || ''}</div><div class="flex items-center justify-between pt-1"><span class="text-[11px] text-slate-500">📞 ${ord.customer_phone} | 📅 ${ord.delivery_date}</span>${ord.status === 'DELIVERED' ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">Delivered</span>` : `<button onclick="markOrderDelivered('${ord.order_id}')" class="text-[11px] font-bold bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded-lg transition">Mark Delivered</button>`}</div></div>`).join('');
             } catch (e) { container.innerHTML = `<p class="text-rose-600 text-center py-4">Failed to load orders.</p>`; }
@@ -1868,9 +1882,10 @@
 
         async function markOrderDelivered(orderId) {
             try {
-                await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/order-status`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ orderId, status: 'DELIVERED' }) });
-                deliveredCount += 1; renderDeliveredCounter(); loadAdminOrders(); showGlobalToast(`Order ${orderId} marked Delivered!`);
-            } catch (e) {}
+                const ok = await adminApiPost('/api/admin/order-status', { orderId, status: 'DELIVERED' });
+                if (!ok) return;
+                dbDeliveredCount += 1; deliveredCount = deliveredBase + dbDeliveredCount; renderDeliveredCounter(); loadAdminOrders(); showGlobalToast(`Order ${orderId} marked Delivered!`);
+            } catch (e) { console.error(e); }
         }
     </script>
 </body>
