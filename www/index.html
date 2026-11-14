@@ -1,3 +1,8 @@
+
+
+
+
+index
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,7 +148,7 @@
     </div>
 
     <!-- ===================================================== -->
-    <!-- SLIDE-OUT RIGHT DRAWER (SECTIONS + CART + ADMIN)      -->
+    <!-- SLIDE-OUT RIGHT DRAWER (SECTIONS + ABOUT + PRIVACY)   -->
     <!-- ===================================================== -->
     <div id="sidebarBackdrop" onclick="closeSidebar()" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
     <aside id="sideDrawer" class="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] bg-white shadow-2xl border-l border-slate-200 transform translate-x-full transition-transform duration-300 flex flex-col justify-between overflow-y-auto" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
@@ -181,40 +186,27 @@
                     <i class="fa-solid fa-chevron-right text-xs text-emerald-500"></i>
                 </button>
 
-                <div>
-                    <button onclick="toggleDrawerAccordion('accCakes')" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-slate-800 hover:text-bakery-700">
-                        <span>Cake Categories</span>
-                        <i id="accCakesIcon" class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform"></i>
-                    </button>
-                    <div id="accCakes" class="hidden pl-3 pt-1.5 space-y-2 border-l-2 border-bakery-200 ml-1">
-                        <button onclick="closeSidebar(); switchMainView('home'); filterCatalogByCategory(&quot;What's Trending&quot;)" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">What's Trending</button>
-                        <button onclick="closeSidebar(); switchMainView('home'); filterCatalogByCategory('Signature Cakes')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Signature Cakes</button>
-                        <button onclick="closeSidebar(); switchMainView('home'); filterCatalogByCategory('Occasional Cakes')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Occasional & Birthday</button>
-                        <button onclick="closeSidebar(); switchMainView('home'); filterCatalogByCategory('Theme Cakes')" class="block text-xs font-medium text-slate-600 hover:text-bakery-700">Theme & Royal Cakes</button>
-                    </div>
-                </div>
+                <button onclick="closeSidebar(); switchMainView('about')" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-slate-800 hover:text-bakery-700">
+                    <span>🏪 About Store & Gallery</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
 
-                <button onclick="closeSidebar(); freshResetCake()" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-rose-600">
-                    <span><i class="fa-solid fa-rotate-left mr-1.5"></i> Reset 3D Studio Design</span>
-                    <i class="fa-solid fa-chevron-right text-xs text-rose-400"></i>
+                <button onclick="closeSidebar(); switchMainView('privacy')" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-slate-800 hover:text-bakery-700">
+                    <span>🔒 Privacy Policy</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </button>
             </div>
 
             <div class="px-5 py-4 space-y-3">
-                <span class="text-xs font-semibold text-slate-400 block">Store & Reviews</span>
+                <span class="text-xs font-semibold text-slate-400 block">Quick Actions</span>
 
-                <button onclick="closeSidebar(); switchMainView('home'); setTimeout(() => scrollToSection('sec-reviews'), 80)" class="w-full flex items-center justify-between py-1.5 text-sm font-medium text-slate-700 hover:text-bakery-700">
-                    <span>Customer Reviews</span>
-                    <span class="text-xs font-bold text-amber-500">★ 4.9</span>
-                </button>
-
-                <button onclick="closeSidebar(); switchMainView('home'); setTimeout(() => scrollToSection('sec-delivered-counter'), 80)" class="w-full flex items-center justify-between py-1.5 text-sm font-medium text-slate-700 hover:text-bakery-700">
-                    <span>Delivered Cakes Counter</span>
-                    <span id="sidebarDeliveredBadge" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">128+</span>
+                <button onclick="closeSidebar(); freshResetCake()" class="w-full flex items-center justify-between py-1.5 text-sm font-semibold text-rose-600">
+                    <span><i class="fa-solid fa-rotate-left mr-1.5"></i> Reset 3D Studio Design</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-rose-400"></i>
                 </button>
 
                 <button onclick="closeSidebar(); openWhatsAppSupport()" class="w-full flex items-center justify-between py-1.5 text-sm font-medium text-slate-700 hover:text-emerald-700">
-                    <span>Contact Us on WhatsApp</span>
+                    <span>Chat on WhatsApp</span>
                     <i class="fa-brands fa-whatsapp text-emerald-600"></i>
                 </button>
 
@@ -231,8 +223,8 @@
         </div>
 
         <div class="px-5 py-3 bg-bakery-50 border-t border-bakery-100 text-[11px] text-slate-500 flex items-center justify-between">
-            <span><i class="fa-solid fa-location-dot text-bakery-700 mr-1"></i> Mein Nhi Bataunga, Odisha</span>
-            <span class="font-bold text-bakery-700">Fresh Daily</span>
+            <span class="truncate"><i class="fa-solid fa-location-dot text-bakery-700 mr-1"></i> <span id="drawerLocationLabel">Rajgangpur, Odisha</span></span>
+            <span class="font-bold text-bakery-700 shrink-0">Fresh Daily</span>
         </div>
     </aside>
 
@@ -246,26 +238,28 @@
                     <span class="font-serif italic font-bold text-[11px] sm:text-xs">Sajiya's</span>
                     <span class="text-[8px] uppercase tracking-widest text-bakery-200">Cake</span>
                 </button>
-                <div class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 truncate">
+                <button onclick="switchMainView('about')" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-700 hover:text-bakery-700 truncate">
                     <i class="fa-solid fa-location-dot text-bakery-700"></i>
-                    <span class="truncate">Kue Batau Bhai</span>
-                </div>
+                    <span id="headerLocationText" class="truncate">Rajgangpur</span>
+                </button>
             </div>
 
             <!-- Desktop View Switcher Tabs -->
-            <nav class="hidden md:flex items-center gap-1 bg-bakery-50 p-1 rounded-full border border-bakery-200">
-                <button id="topNavHome" onclick="switchMainView('home')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition">
+            <nav class="hidden lg:flex items-center gap-1 bg-bakery-50 p-1 rounded-full border border-bakery-200">
+                <button id="topNavHome" onclick="switchMainView('home')" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition">
                     Pre-Made Cakes
                 </button>
-                <button id="topNavAccessories" onclick="switchMainView('accessories')" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
+                <button id="topNavAccessories" onclick="switchMainView('accessories')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
                     Accessories
                 </button>
-                <button id="topNavStudio" onclick="switchMainView('studio')" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
+                <button id="topNavStudio" onclick="switchMainView('studio')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
                     3D Own Cake
                 </button>
-                <button id="topNavCart" onclick="switchMainView('cart')" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition flex items-center gap-1.5">
-                    <span>Order Cart</span>
-                    <span id="desktopNavCartCount" class="bg-emerald-600 text-white text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">0</span>
+                <button id="topNavAbout" onclick="switchMainView('about')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
+                    About Store
+                </button>
+                <button id="topNavPrivacy" onclick="switchMainView('privacy')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
+                    Privacy
                 </button>
             </nav>
 
@@ -348,6 +342,21 @@
             <div id="trendingProductsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5"></div>
         </section>
 
+        <!-- Quick Order Status Tracker Card -->
+        <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-3xl border border-bakery-200 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <h3 class="font-bold text-sm text-bakery-900"><i class="fa-solid fa-magnifying-glass-location text-bakery-700 mr-1.5"></i>Track Your Cake Order Status</h3>
+                    <p class="text-xs text-slate-500">Enter your Order ID (e.g. SC-5203) to check live baking & delivery status</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="trackOrderInput" placeholder="#SC-1042" class="px-3.5 py-2 rounded-xl border border-bakery-200 text-xs font-bold uppercase w-32 outline-none focus:border-bakery-600">
+                    <button type="button" onclick="trackCustomerOrder()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition">Track</button>
+                </div>
+            </div>
+            <div id="trackOrderResult" class="hidden mt-2 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold px-4 py-2.5 rounded-2xl"></div>
+        </section>
+
         <!-- Delivered Cakes Counter Banner -->
         <section id="sec-delivered-counter" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="bg-gradient-to-r from-bakery-900 via-bakery-700 to-bakery-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-bakery-600">
@@ -415,6 +424,18 @@
                 <div id="reviewsListContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
             </div>
         </section>
+
+        <!-- Clean Store Footer with About & Privacy Links -->
+        <footer class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2 pb-4 text-center text-xs text-slate-500 space-y-2">
+            <div class="flex items-center justify-center gap-4 font-semibold text-bakery-700">
+                <button onclick="switchMainView('about')" class="hover:underline">About Store & Location</button>
+                <span>•</span>
+                <button onclick="switchMainView('privacy')" class="hover:underline">Privacy Policy</button>
+                <span>•</span>
+                <button onclick="openWhatsAppSupport()" class="hover:underline">WhatsApp Contact</button>
+            </div>
+            <p>© 2026 Sajiya's Cake • Fresh Custom Bakery</p>
+        </footer>
     </div>
 
     <!-- ===================================================== -->
@@ -461,7 +482,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
-            <!-- LEFT COLUMN: Clean White Live 3D Cake Preview Card -->
             <div class="lg:col-span-5 lg:sticky lg:top-20 space-y-4 w-full min-w-0">
                 <div class="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden relative">
                     <div class="p-3.5 sm:p-4 pb-0 flex items-center justify-between flex-wrap gap-1.5">
@@ -729,7 +749,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            <!-- Left: Cart Items List -->
             <div class="lg:col-span-7 space-y-4">
                 <div class="bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -762,7 +781,7 @@
 
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Address / Landmark *</label>
-                        <textarea id="custAddress" rows="2" placeholder="House no., Street, Area, Nhi Bataunga..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></textarea>
+                        <textarea id="custAddress" rows="2" placeholder="House no., Street, Area, Landmark..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></textarea>
                     </div>
 
                     <div class="grid grid-cols-2 gap-2.5">
@@ -779,6 +798,15 @@
                                 <option value="Midnight Celebration (11:30 PM)">Midnight (11:30 PM)</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Payment Mode</label>
+                        <select id="custPaymentMode" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm bg-white">
+                            <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                            <option value="UPI / GPay / PhonePe on Delivery">UPI / GPay / PhonePe on Delivery</option>
+                            <option value="Store Pickup">Store Pickup</option>
+                        </select>
                     </div>
 
                     <div>
@@ -806,6 +834,82 @@
                     <i class="fa-solid fa-check-circle text-lg"></i>
                     <span>Place Order for Delivery & Receipt Image</span>
                 </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- VIEW 5: ABOUT STORE & MULTI-PHOTO GALLERY + LOCATION  -->
+    <!-- ===================================================== -->
+    <section id="view-about" class="hidden max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 space-y-6">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-8 shadow-xs space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                <div>
+                    <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1.5 inline-flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes
+                    </button>
+                    <h2 id="aboutStoreTitle" class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">About Sajiya's Cake</h2>
+                    <p id="aboutStoreHours" class="text-xs sm:text-sm font-semibold text-emerald-700 mt-1"><i class="fa-regular fa-clock mr-1"></i> Open Daily: 9:00 AM – 10:00 PM</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <a id="aboutMapBtn" href="https://maps.google.com/?q=Rajgangpur,Odisha" target="_blank" rel="noopener" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot"></i> Open Store Location in Maps
+                    </a>
+                    <button onclick="openWhatsAppSupport()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow flex items-center gap-1.5">
+                        <i class="fa-brands fa-whatsapp"></i> Chat with Store
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div class="lg:col-span-6 space-y-4">
+                    <h3 class="font-bold text-base text-slate-900">Our Story & Freshness Promise</h3>
+                    <p id="aboutStoreDescription" class="text-sm text-slate-600 leading-relaxed">
+                        Welcome to Sajiya's Cake — Rajgangpur's boutique custom cake studio. Every cake is freshly baked to order using 100% pure vegetarian ingredients, rich Belgian chocolate, and handcrafted cream artistry.
+                    </p>
+
+                    <div class="bg-bakery-50 rounded-2xl p-4 border border-bakery-100 space-y-2 text-xs sm:text-sm">
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-location-dot text-bakery-700 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-slate-900 block">Store Address:</span>
+                                <span id="aboutStoreAddress" class="text-slate-600">Main Road, Near Station Chowk, Rajgangpur, Odisha 770017</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-slate-900 block">Order & Enquiry WhatsApp:</span>
+                                <span id="aboutStorePhone" class="text-slate-600">+91 78735 62312</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 space-y-3">
+                    <h3 class="font-bold text-base text-slate-900">Store Gallery & Kitchen Showcase</h3>
+                    <div id="aboutStoreGalleryGrid" class="grid grid-cols-2 gap-3"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- VIEW 6: PRIVACY POLICY SECTION                        -->
+    <!-- ===================================================== -->
+    <section id="view-privacy" class="hidden max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 pt-6">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-8 shadow-xs space-y-4">
+            <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline inline-flex items-center gap-1">
+                <i class="fa-solid fa-arrow-left"></i> Back to Home
+            </button>
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Privacy Policy</h2>
+            <p class="text-xs text-slate-400">Last Updated: November 2026 • Sajiya's Cake Boutique & Studio</p>
+
+            <div class="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p><strong>1. Information We Collect:</strong> When you place a custom cake or accessory order on Sajiya's Cake, we collect your Name, Phone/WhatsApp Number, Delivery Address, Delivery Date/Time, and custom cake specifications solely to prepare and deliver your order.</p>
+                <p><strong>2. Order Receipt Images & Cloud Storage:</strong> Generated order receipt cards and product media are stored securely on Cloudflare D1 and KV infrastructure to provide downloadable slips, order tracking, and WhatsApp order confirmation.</p>
+                <p><strong>3. No Third-Party Data Sharing:</strong> We never sell, rent, or share your contact details or delivery address with external marketing agencies. Your phone number is used strictly for order updates and delivery coordination.</p>
+                <p><strong>4. Contact & Data Removal:</strong> You may contact our store directly via WhatsApp at any time to update or request removal of your past order records.</p>
             </div>
         </div>
     </section>
@@ -844,13 +948,13 @@
                 <i class="fa-solid fa-cake-candles text-sm"></i>
                 <span>3D Studio</span>
             </button>
-            <button id="botNavCart" onclick="switchMainView('cart')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 relative">
+            <button id="botNavCart" onclick="switchMainView('cart')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
                 <i class="fa-solid fa-cart-shopping text-sm"></i>
                 <span>Cart</span>
             </button>
-            <button onclick="openAdminModal()" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
-                <i class="fa-solid fa-user-shield text-sm"></i>
-                <span>Admin</span>
+            <button id="botNavAbout" onclick="switchMainView('about')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
+                <i class="fa-solid fa-store text-sm"></i>
+                <span>About</span>
             </button>
         </div>
     </div>
@@ -893,7 +997,7 @@
                 <div class="space-y-2">
                     <button id="whatsappDirectBtn" onclick="submitAndSendWhatsApp()" class="w-full bg-emerald-600 active:scale-98 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-md flex items-center justify-center gap-2 transition">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
-                        <span>Send Order Image & Details on WhatsApp</span>
+                        <span>Auto-Save Image & Send to WhatsApp</span>
                     </button>
 
                     <div class="grid grid-cols-2 gap-2">
@@ -912,7 +1016,7 @@
     </div>
 
     <!-- ===================================================== -->
-    <!-- ADMIN CONSOLE: FULL EDIT & REMOVE FOR ALL SECTIONS    -->
+    <!-- ADMIN CONSOLE: FULL EDIT, STORE SETTINGS & PIN CHANGE -->
     <!-- ===================================================== -->
     <div id="adminModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/70 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-3xl w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
@@ -923,7 +1027,7 @@
                     </div>
                     <div>
                         <h3 class="font-serif font-bold text-lg">Sajiya's Cake Admin Console</h3>
-                        <p class="text-xs text-bakery-200">Edit & Remove Pre-Made Cakes, Accessories, Price Chart & Reviews</p>
+                        <p class="text-xs text-bakery-200">Cakes, Accessories, Store Location, WhatsApp, PIN & Orders</p>
                     </div>
                 </div>
                 <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white">
@@ -938,7 +1042,7 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
                     <h4 class="font-bold text-base text-slate-800">Enter Admin PIN</h4>
-                    <p class="text-xs text-slate-500">Enter your configured Admin PIN to manage store</p>
+                    <p class="text-xs text-slate-500">Enter your Admin PIN to manage store & settings</p>
                 </div>
                 <div class="max-w-xs mx-auto space-y-3">
                     <input type="password" id="adminPinInput" placeholder="••••" maxlength="12" onkeydown="if(event.key==='Enter') verifyAdminLogin()" class="w-full text-center tracking-widest text-lg font-bold px-4 py-3 rounded-xl border border-bakery-200 focus:border-bakery-700 outline-none">
@@ -949,7 +1053,7 @@
                 </div>
             </div>
 
-            <!-- STEP B: ADMIN DASHBOARD -->
+            <!-- STEP B: ADMIN DASHBOARD (6 TABS) -->
             <div id="adminDashboardView" class="hidden p-4 sm:p-5 space-y-4">
                 <div class="flex gap-1.5 overflow-x-auto no-scrollbar border-b border-slate-200 pb-2">
                     <button id="tabBtnProducts" onclick="switchAdminTab('products')" class="px-3 py-2 rounded-xl text-xs font-bold bg-bakery-700 text-white shrink-0">
@@ -958,8 +1062,11 @@
                     <button id="tabBtnAccessories" onclick="switchAdminTab('accessories')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
                         <i class="fa-solid fa-gift mr-1"></i> Accessories
                     </button>
+                    <button id="tabBtnStore" onclick="switchAdminTab('store')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
+                        <i class="fa-solid fa-store mr-1"></i> Store, WhatsApp & PIN
+                    </button>
                     <button id="tabBtnPricing" onclick="switchAdminTab('pricing')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
-                        <i class="fa-solid fa-tags mr-1"></i> 3D Price & Options
+                        <i class="fa-solid fa-tags mr-1"></i> 3D Price
                     </button>
                     <button id="tabBtnReviews" onclick="switchAdminTab('reviews')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
                         <i class="fa-solid fa-star mr-1"></i> Reviews
@@ -1052,7 +1159,64 @@
                     </div>
                 </div>
 
-                <!-- TAB 3: DYNAMIC 3D PRICE CHART, FLAVORS & DECORATIONS EDITOR -->
+                <!-- TAB 3: STORE LOCATION, ABOUT PHOTOS, WHATSAPP NUMBER & CHANGE ADMIN PIN -->
+                <div id="adminStoreTab" class="hidden space-y-4 max-h-[64vh] overflow-y-auto pr-1">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-bakery-900">1. Contact WhatsApp & Security PIN</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">WhatsApp Number (with 91)</label>
+                                <input type="text" id="adminShopWhatsApp" placeholder="917873562312" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">Display Contact Phone</label>
+                                <input type="text" id="adminDisplayPhone" placeholder="+91 78735 62312" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-semibold text-rose-700 block mb-1">Change Admin PIN (Min 4 chars)</label>
+                                <input type="text" id="adminNewPinInput" placeholder="Leave blank to keep current" class="w-full px-3 py-2 rounded-xl border border-rose-200 bg-white text-xs font-bold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-bakery-900">2. About Store, Location & Opening Hours</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">Store Address & Location</label>
+                                <input type="text" id="adminStoreAddress" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">Google Maps Location URL</label>
+                                <input type="url" id="adminStoreMapLink" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">Store Opening Hours</label>
+                                <input type="text" id="adminStoreHours" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="text-[11px] font-semibold text-slate-600 block mb-1">About Store Description</label>
+                                <textarea id="adminStoreAboutText" rows="3" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-bakery-50/70 border border-bakery-200 rounded-2xl p-3.5 space-y-3">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-bakery-900">3. About Store Multi-Photo Gallery</h4>
+                            <input type="file" id="adminStorePhotoUpload" accept="image/*" multiple onchange="adminUploadStorePhotos(this)" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-bakery-700 file:text-white cursor-pointer">
+                        </div>
+                        <div id="adminStorePhotosPreview" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+                    </div>
+
+                    <div id="adminStoreToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold p-2.5 rounded-xl text-center"></div>
+
+                    <button type="button" onclick="saveAdminStoreSettings()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Save Store Details, WhatsApp & PIN
+                    </button>
+                </div>
+
+                <!-- TAB 4: DYNAMIC 3D PRICE CHART -->
                 <div id="adminPricingTab" class="hidden space-y-4 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 flex items-center justify-between flex-wrap gap-2">
                         <div>
@@ -1107,7 +1271,7 @@
                     </button>
                 </div>
 
-                <!-- TAB 4: EDIT, MODIFY OR DELETE CUSTOMER REVIEWS -->
+                <!-- TAB 5: EDIT, MODIFY OR DELETE CUSTOMER REVIEWS -->
                 <div id="adminReviewsTab" class="hidden space-y-3 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-slate-600">Edit, Modify Star Rating, or Delete Customer Reviews</span>
@@ -1118,7 +1282,7 @@
                     <div id="adminReviewsEditorList" class="space-y-3"></div>
                 </div>
 
-                <!-- TAB 5: ORDERS & DELIVERED STATUS -->
+                <!-- TAB 6: ORDERS & DELIVERED STATUS -->
                 <div id="adminOrdersTab" class="hidden space-y-3 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-slate-600">Recent Customer Orders (D1 Database)</span>
@@ -1136,11 +1300,21 @@
 
     <script>
         // ==========================================
-        // SAJIYA'S CAKE API & SHOP CONFIGURATION
+        // SAJIYA'S CAKE API & DYNAMIC STORE SETTINGS
         // ==========================================
         const SAJIYAS_CAKE_CONFIG = {
-            apiBase: 'https://sajiyascake-api.prabhu-y1211.workers.dev',
-            shopWhatsApp: '919777071440'
+            apiBase: 'https://sajiyascake-api.prabhu-y1211.workers.dev'
+        };
+
+        let STORE_SETTINGS = {
+            shopName: "Sajiya's Cake",
+            shopWhatsApp: '917873562312',
+            displayPhone: '+91 78735 62312',
+            address: 'Main Road, Near Station Chowk, Rajgangpur, Odisha 770017',
+            mapLink: 'https://maps.google.com/?q=Rajgangpur,Odisha',
+            hours: 'Open Daily: 9:00 AM – 10:00 PM',
+            aboutText: "Welcome to Sajiya's Cake — Rajgangpur's boutique custom cake studio. Every cake is freshly baked to order using 100% pure vegetarian ingredients, rich Belgian chocolate, and handcrafted cream artistry.",
+            storePhotos: []
         };
 
         // ==========================================
@@ -1307,9 +1481,7 @@
             cakeMessage: 'Happy Birthday'
         };
 
-        // Unified Order Cart: holds Pre-Made Cakes, Custom 3D Cakes, and Party Accessories
         let ORDER_CART = [];
-
         let activeMainView = 'home';
         let activeCatalogCategory = 'all';
         let catalogSearchTerm = '';
@@ -1327,6 +1499,7 @@
         // ==========================================
         window.onload = async function () {
             setDefaultTomorrowDate();
+            renderAboutStoreUI();
             renderCatalogProducts();
             renderAllControls();
             updateEverything();
@@ -1339,12 +1512,14 @@
                 const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/public-data`);
                 const data = await res.json();
                 if (data.success) {
+                    if (data.storeSettings) STORE_SETTINGS = { ...STORE_SETTINGS, ...data.storeSettings };
                     if (data.pricing) PRICING = { ...PRICING, ...data.pricing };
                     if (Array.isArray(data.products) && data.products.length) CATALOG_PRODUCTS = data.products;
                     if (Array.isArray(data.accessories) && data.accessories.length) CATALOG_ACCESSORIES = data.accessories;
                     if (typeof data.deliveredCount === 'number') deliveredCount = data.deliveredCount;
                     if (Array.isArray(data.reviews)) reviewsList = data.reviews;
 
+                    renderAboutStoreUI();
                     renderCatalogProducts();
                     renderAllControls();
                     updateEverything();
@@ -1376,23 +1551,65 @@
         }
 
         // ==========================================
+        // ABOUT STORE & MULTI-PHOTO GALLERY RENDER
+        // ==========================================
+        function renderAboutStoreUI() {
+            const shortLoc = (STORE_SETTINGS.address || 'Rajgangpur').split(',')[0];
+            document.getElementById('headerLocationText').textContent = shortLoc;
+            document.getElementById('drawerLocationLabel').textContent = STORE_SETTINGS.address;
+            document.getElementById('aboutStoreHours').innerHTML = `<i class="fa-regular fa-clock mr-1"></i> ${STORE_SETTINGS.hours}`;
+            document.getElementById('aboutStoreDescription').textContent = STORE_SETTINGS.aboutText;
+            document.getElementById('aboutStoreAddress').textContent = STORE_SETTINGS.address;
+            document.getElementById('aboutStorePhone').textContent = STORE_SETTINGS.displayPhone;
+            document.getElementById('aboutMapBtn').href = STORE_SETTINGS.mapLink || 'https://maps.google.com';
+
+            const gallery = document.getElementById('aboutStoreGalleryGrid');
+            const photos = STORE_SETTINGS.storePhotos || [];
+            if (!photos.length) {
+                gallery.innerHTML = `
+                    <div class="p-6 rounded-2xl bg-bakery-50 border border-bakery-100 text-center space-y-1.5">
+                        <i class="fa-solid fa-store text-3xl text-bakery-700"></i>
+                        <div class="font-bold text-xs text-slate-800">Boutique Cake Counter</div>
+                        <div class="text-[11px] text-slate-500">Freshly baked daily</div>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-amber-50 border border-amber-100 text-center space-y-1.5">
+                        <i class="fa-solid fa-kitchen-set text-3xl text-amber-700"></i>
+                        <div class="font-bold text-xs text-slate-800">100% Pure Veg Kitchen</div>
+                        <div class="text-[11px] text-slate-500">Hygienic custom studio</div>
+                    </div>
+                `;
+            } else {
+                gallery.innerHTML = photos.map(url => `
+                    <div class="rounded-2xl overflow-hidden border border-slate-200 shadow-xs aspect-square bg-slate-100">
+                        <img src="${url}" alt="Sajiya's Cake Store" class="w-full h-full object-cover hover:scale-105 transition duration-300" />
+                    </div>
+                `).join('');
+            }
+        }
+
+        // ==========================================
         // MULTI-SECTION VIEW SWITCHER
         // ==========================================
         function switchMainView(viewName) {
             activeMainView = viewName;
-            ['home', 'accessories', 'studio', 'cart'].forEach(v => {
+            ['home', 'accessories', 'studio', 'cart', 'about', 'privacy'].forEach(v => {
                 const section = document.getElementById(`view-${v}`);
                 const topBtn = document.getElementById(`topNav${v.charAt(0).toUpperCase() + v.slice(1)}`);
                 const botBtn = document.getElementById(`botNav${v.charAt(0).toUpperCase() + v.slice(1)}`);
 
-                if (v === viewName) {
-                    section.classList.remove('hidden');
-                    if (topBtn) topBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition flex items-center gap-1.5';
-                    if (botBtn) botBtn.className = 'flex flex-col items-center justify-center gap-0.5 text-bakery-700 font-bold';
-                } else {
-                    section.classList.add('hidden');
-                    if (topBtn) topBtn.className = 'px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition flex items-center gap-1.5';
-                    if (botBtn) botBtn.className = 'flex flex-col items-center justify-center gap-0.5 text-slate-500 hover:text-bakery-700';
+                if (section) {
+                    if (v === viewName) section.classList.remove('hidden');
+                    else section.classList.add('hidden');
+                }
+                if (topBtn) {
+                    topBtn.className = v === viewName
+                        ? 'px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition'
+                        : 'px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition';
+                }
+                if (botBtn) {
+                    botBtn.className = v === viewName
+                        ? 'flex flex-col items-center justify-center gap-0.5 text-bakery-700 font-bold'
+                        : 'flex flex-col items-center justify-center gap-0.5 text-slate-500 hover:text-bakery-700';
                 }
             });
 
@@ -1401,7 +1618,7 @@
         }
 
         // ==========================================
-        // SIDEBAR DRAWER & SEARCH
+        // SIDEBAR DRAWER & SEARCH & ORDER TRACKER
         // ==========================================
         function openSidebar() {
             document.getElementById('sidebarBackdrop').classList.remove('hidden');
@@ -1413,13 +1630,6 @@
             document.getElementById('sideDrawer').classList.add('translate-x-full');
         }
 
-        function toggleDrawerAccordion(id) {
-            const el = document.getElementById(id);
-            const icon = document.getElementById(id + 'Icon');
-            el.classList.toggle('hidden');
-            if (icon) icon.classList.toggle('rotate-180');
-        }
-
         function toggleSearchBar() {
             const bar = document.getElementById('topSearchBar');
             bar.classList.toggle('hidden');
@@ -1429,12 +1639,32 @@
         }
 
         function openWhatsAppSupport() {
+            const waNum = (STORE_SETTINGS.shopWhatsApp || '917873562312').replace(/[^0-9]/g, '');
             const msg = "Hello Sajiya's Cake! I would like to enquire about a cake order.";
-            window.open(`https://wa.me/${SAJIYAS_CAKE_CONFIG.shopWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        async function trackCustomerOrder() {
+            const val = document.getElementById('trackOrderInput').value.trim();
+            const box = document.getElementById('trackOrderResult');
+            if (!val) return;
+            box.textContent = 'Checking order status...';
+            box.classList.remove('hidden');
+            try {
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/track-order?orderId=${encodeURIComponent(val)}`);
+                const data = await res.json();
+                if (data.success && data.order) {
+                    box.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Order <strong>${data.order.order_id}</strong> (${data.order.customer_name}) • Total: ₹${data.order.total_amount} • Status: <span class="uppercase font-extrabold underline">${data.order.status}</span>`;
+                } else {
+                    box.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-1 text-rose-600"></i> Order ID not found. Please check your receipt slip.`;
+                }
+            } catch (e) {
+                box.textContent = 'Unable to check status right now.';
+            }
         }
 
         // ==========================================
-        // ORDER CART MANAGEMENT (ADD, QTY, REMOVE, CLEAR)
+        // ORDER CART MANAGEMENT
         // ==========================================
         function addPreMadeProductToCart(prodId) {
             const prod = CATALOG_PRODUCTS.find(p => p.id === prodId);
@@ -1551,7 +1781,6 @@
 
             document.getElementById('headerCartTotal').textContent = formatted;
             document.getElementById('headerCartCount').textContent = totalItems;
-            document.getElementById('desktopNavCartCount').textContent = totalItems;
             document.getElementById('drawerCartBadge').textContent = totalItems;
             document.getElementById('accViewCartCount').textContent = totalItems;
             document.getElementById('mobileBarCartCount').textContent = totalItems;
@@ -2253,9 +2482,10 @@
                 const custAddress = document.getElementById('custAddress').value.trim() || 'Local Pickup';
                 const custDate = document.getElementById('custDate').value || 'Today';
                 const custTimeSlot = document.getElementById('custTimeSlot').value;
+                const custPaymentMode = document.getElementById('custPaymentMode').value;
                 const custNotes = document.getElementById('custNotes').value.trim() || 'None';
 
-                const canvasHeight = 760 + (ORDER_CART.length * 46);
+                const canvasHeight = 770 + (ORDER_CART.length * 46);
                 const canvas = document.createElement('canvas');
                 canvas.width = 680;
                 canvas.height = canvasHeight;
@@ -2274,30 +2504,28 @@
                 ctx.fillStyle = '#f5d4ea';
                 ctx.fillText(`Order ID: ${currentOrderId}   |   ${custDate} (${custTimeSlot})`, canvas.width / 2, 68);
 
-                // Cake Sample Box
                 ctx.fillStyle = '#fdf7fb';
-                ctx.fillRect(28, 100, canvas.width - 56, 340);
+                ctx.fillRect(28, 100, canvas.width - 56, 330);
                 ctx.strokeStyle = '#f5d4ea';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(28, 100, canvas.width - 56, 340);
-                ctx.drawImage(img, 190, 106, 300, 322);
+                ctx.strokeRect(28, 100, canvas.width - 56, 330);
+                ctx.drawImage(img, 195, 106, 290, 312);
 
-                // Customer & Delivery Box
-                let y = 458;
+                let y = 448;
                 ctx.fillStyle = '#faebf5';
-                ctx.fillRect(28, y, canvas.width - 56, 134);
+                ctx.fillRect(28, y, canvas.width - 56, 152);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#451034';
                 ctx.font = 'bold 16px sans-serif';
-                ctx.fillText(`Customer: ${custName}   |   Phone: ${custPhone}`, 44, y + 30);
+                ctx.fillText(`Customer: ${custName}   |   Phone: ${custPhone}`, 44, y + 28);
                 ctx.font = '15px sans-serif';
                 ctx.fillStyle = '#1e293b';
-                ctx.fillText(`Delivery Address: ${custAddress.slice(0, 62)}`, 44, y + 60);
-                ctx.fillText(`Date & Slot: ${custDate} • ${custTimeSlot}`, 44, y + 88);
-                ctx.fillText(`Notes: ${custNotes.slice(0, 65)}`, 44, y + 114);
+                ctx.fillText(`Address: ${custAddress.slice(0, 66)}`, 44, y + 56);
+                ctx.fillText(`Delivery: ${custDate} • ${custTimeSlot}`, 44, y + 84);
+                ctx.fillText(`Payment: ${custPaymentMode}`, 44, y + 112);
+                ctx.fillText(`Notes: ${custNotes.slice(0, 65)}`, 44, y + 138);
 
-                // Cart Items List
-                y += 158;
+                y += 174;
                 ctx.fillStyle = '#7c1d5e';
                 ctx.font = 'bold 16px sans-serif';
                 ctx.fillText('ORDER CART ITEMS & SPECIFICATIONS:', 32, y);
@@ -2325,7 +2553,6 @@
                     y += 46;
                 });
 
-                // Grand Total Footer
                 y += 8;
                 ctx.fillStyle = '#451034';
                 ctx.fillRect(28, y, canvas.width - 56, 62);
@@ -2353,9 +2580,19 @@
             img.src = svgDataUrl;
         }
 
+        function triggerAutoFileDownload(href, fileName) {
+            const link = document.createElement('a');
+            link.href = href;
+            link.download = fileName;
+            link.rel = 'noopener';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         async function downloadCakeDesignImage() {
             const toast = document.getElementById('orderStatusToast');
-            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Preparing Receipt Image for your phone...`;
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving Receipt Image to your phone...`;
             toast.classList.remove('hidden');
 
             const fileName = `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`;
@@ -2368,28 +2605,9 @@
                 ? `${latestUploadedReceiptUrl}?download=1`
                 : (latestCakeImageBlob ? URL.createObjectURL(latestCakeImageBlob) : latestCakeImageDataUrl);
 
-            const link = document.createElement('a');
-            link.href = downloadHref;
-            link.download = fileName;
-            link.target = '_blank';
-            link.rel = 'noopener';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            triggerAutoFileDownload(downloadHref, fileName);
 
-            if (latestCakeImageBlob && navigator.share) {
-                try {
-                    const file = new File([latestCakeImageBlob], fileName, { type: 'image/png' });
-                    if (!navigator.canShare || navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            files: [file],
-                            title: fileName
-                        });
-                    }
-                } catch (e) {}
-            }
-
-            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Receipt Image downloaded! Check Phone Downloads / Gallery.`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Receipt Image downloaded to your phone!`;
         }
 
         // ==========================================
@@ -2589,7 +2807,6 @@
         // ==========================================
         function renderDeliveredCounter() {
             document.getElementById('bottomDeliveredCounter').textContent = `${deliveredCount}+`;
-            document.getElementById('sidebarDeliveredBadge').textContent = `${deliveredCount}+`;
         }
 
         function setReviewRating(stars) {
@@ -2684,11 +2901,16 @@
             const custAddress = document.getElementById('custAddress').value.trim() || 'Local Pickup';
             const custDate = document.getElementById('custDate').value || 'N/A';
             const custTimeSlot = document.getElementById('custTimeSlot').value;
+            const custPaymentMode = document.getElementById('custPaymentMode').value;
             const custNotes = document.getElementById('custNotes').value.trim() || 'None';
 
             const itemLines = ORDER_CART.map(item => `• ${item.name} (×${item.qty}) — ₹${item.unitPrice * item.qty}\n   _${item.details}_`);
 
-            const lines = [
+            const lines = [];
+            if (receiptImageUrl) {
+                lines.push(receiptImageUrl);
+            }
+            lines.push(
                 `🎂 *SAJIYA'S CAKE - NEW DELIVERY ORDER* 🎂`,
                 `🆔 *Order ID:* ${currentOrderId}`,
                 `--------------------------------`,
@@ -2696,18 +2918,14 @@
                 `📞 *Phone:* ${custPhone}`,
                 `📍 *Address:* ${custAddress}`,
                 `📅 *Delivery:* ${custDate} (${custTimeSlot})`,
+                `💳 *Payment:* ${custPaymentMode}`,
                 `--------------------------------`,
                 `*CART ITEMS:*`,
                 ...itemLines,
                 `--------------------------------`,
                 `💰 *GRAND TOTAL: ₹${grandTotal}*`,
                 `📝 *Notes:* ${custNotes}`
-            ];
-
-            if (receiptImageUrl) {
-                lines.push(`--------------------------------`);
-                lines.push(`🖼️ *Order Receipt & Design Image:* ${receiptImageUrl}`);
-            }
+            );
 
             const firstCake = ORDER_CART.find(i => i.type === 'custom3d' || i.type === 'premade');
             return {
@@ -2728,7 +2946,7 @@
                     accessories: [],
                     topper: TOPPER_META.find(t => t.id === state.topperId).name,
                     totalAmount: grandTotal,
-                    notes: `Addr: ${custAddress} | ${custNotes}`
+                    notes: `Addr: ${custAddress} | Pay: ${custPaymentMode} | ${custNotes}`
                 }
             };
         }
@@ -2758,13 +2976,19 @@
 
         async function submitAndSendWhatsApp() {
             const toast = document.getElementById('orderStatusToast');
-            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving delivery order & preparing Receipt Image...`;
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving order, downloading Receipt Image & opening WhatsApp...`;
             toast.classList.remove('hidden');
 
             const fileName = `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`;
             if (!latestUploadedReceiptUrl && latestCakeImageBlob) {
                 latestUploadedReceiptUrl = await uploadBlobToCloud(latestCakeImageBlob, fileName, 'image/png');
             }
+
+            // 1. Auto-download Receipt PNG Image to phone immediately
+            const downloadHref = latestUploadedReceiptUrl
+                ? `${latestUploadedReceiptUrl}?download=1`
+                : (latestCakeImageBlob ? URL.createObjectURL(latestCakeImageBlob) : latestCakeImageDataUrl);
+            triggerAutoFileDownload(downloadHref, fileName);
 
             const { text, payload } = getFormattedOrderSummary(latestUploadedReceiptUrl);
 
@@ -2776,11 +3000,12 @@
                 });
             } catch (err) {}
 
+            // 2. On mobile phones, open native Share Sheet with the actual PNG image file + order text so WhatsApp receives the image directly
             if (latestCakeImageBlob && navigator.share) {
                 try {
                     const file = new File([latestCakeImageBlob], fileName, { type: 'image/png' });
                     if (!navigator.canShare || navigator.canShare({ files: [file] })) {
-                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Select WhatsApp to send Receipt Image + Details!`;
+                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Image saved! Tap WhatsApp to send the Receipt Image + Details.`;
                         await navigator.share({
                             files: [file],
                             title: "Sajiya's Cake Order",
@@ -2793,8 +3018,10 @@
                 }
             }
 
-            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Opening WhatsApp with Receipt Image & Details...`;
-            const waUrl = `https://wa.me/${SAJIYAS_CAKE_CONFIG.shopWhatsApp}?text=${encodeURIComponent(text)}`;
+            // 3. Fallback to dynamic Admin-configured WhatsApp number with image link + details
+            const waNum = (STORE_SETTINGS.shopWhatsApp || '917873562312').replace(/[^0-9]/g, '');
+            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Image downloaded! Opening WhatsApp chat...`;
+            const waUrl = `https://wa.me/${waNum}?text=${encodeURIComponent(text)}`;
             window.open(waUrl, '_blank');
         }
 
@@ -2820,7 +3047,7 @@
         }
 
         // =====================================================
-        // ADMIN CONSOLE: FULL EDIT & REMOVE FOR ALL SECTIONS
+        // ADMIN CONSOLE: FULL EDIT, STORE SETTINGS & PIN CHANGE
         // =====================================================
         function openAdminModal() {
             const modal = document.getElementById('adminModal');
@@ -2875,7 +3102,7 @@
         }
 
         function switchAdminTab(tab) {
-            const tabs = ['products', 'accessories', 'pricing', 'reviews', 'orders'];
+            const tabs = ['products', 'accessories', 'store', 'pricing', 'reviews', 'orders'];
             tabs.forEach(t => {
                 const panel = document.getElementById(`admin${t.charAt(0).toUpperCase() + t.slice(1)}Tab`);
                 const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
@@ -2890,29 +3117,108 @@
 
             if (tab === 'products') renderAdminProductsList();
             if (tab === 'accessories') renderAdminAccessoriesList();
+            if (tab === 'store') populateAdminStoreEditor();
             if (tab === 'pricing') populateAdminPriceEditor();
             if (tab === 'reviews') renderAdminReviewsEditor();
             if (tab === 'orders') loadAdminOrders();
         }
 
         function previewAdminMediaFile(input, boxId) {
-            const box = document.getElementById(boxId);
-            const file = input.files && input.files[0];
-            if (!file) {
-                box.classList.add('hidden');
-                box.innerHTML = '';
-                return;
-            }
+            const box = document.getElementById(boxId), file = input.files && input.files[0];
+            if (!file) { box.classList.add('hidden'); box.innerHTML = ''; return; }
             const objUrl = URL.createObjectURL(file);
-            if (file.type.startsWith('video/')) {
-                box.innerHTML = `<video src="${objUrl}" controls muted class="h-28 rounded-xl border border-slate-200"></video>`;
-            } else {
-                box.innerHTML = `<img src="${objUrl}" class="h-28 rounded-xl border border-slate-200 object-cover" />`;
-            }
+            box.innerHTML = file.type.startsWith('video/') ? `<video src="${objUrl}" controls muted class="h-28 rounded-xl border border-slate-200"></video>` : `<img src="${objUrl}" class="h-28 rounded-xl border border-slate-200 object-cover" />`;
             box.classList.remove('hidden');
         }
 
-        // --- ADMIN PRE-MADE CAKES: ADD, EDIT & REMOVE ---
+        function populateAdminStoreEditor() {
+            document.getElementById('adminShopWhatsApp').value = STORE_SETTINGS.shopWhatsApp || '';
+            document.getElementById('adminDisplayPhone').value = STORE_SETTINGS.displayPhone || '';
+            document.getElementById('adminNewPinInput').value = '';
+            document.getElementById('adminStoreAddress').value = STORE_SETTINGS.address || '';
+            document.getElementById('adminStoreMapLink').value = STORE_SETTINGS.mapLink || '';
+            document.getElementById('adminStoreHours').value = STORE_SETTINGS.hours || '';
+            document.getElementById('adminStoreAboutText').value = STORE_SETTINGS.aboutText || '';
+            renderAdminStorePhotosPreview();
+        }
+
+        function renderAdminStorePhotosPreview() {
+            const box = document.getElementById('adminStorePhotosPreview');
+            const photos = STORE_SETTINGS.storePhotos || [];
+            if (!photos.length) {
+                box.innerHTML = `<p class="col-span-full text-[11px] text-slate-500">No store photos uploaded yet. Choose photos above to showcase your store.</p>`;
+                return;
+            }
+            box.innerHTML = photos.map((url, idx) => `
+                <div class="relative rounded-xl overflow-hidden border border-slate-300 aspect-square bg-white">
+                    <img src="${url}" class="w-full h-full object-cover" />
+                    <button type="button" onclick="adminRemoveStorePhoto(${idx})" class="absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center shadow">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function adminUploadStorePhotos(input) {
+            const files = Array.from(input.files || []);
+            if (!files.length) return;
+            const toast = document.getElementById('adminStoreToast');
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Uploading ${files.length} store photo(s)...`;
+            toast.classList.remove('hidden');
+
+            if (!Array.isArray(STORE_SETTINGS.storePhotos)) STORE_SETTINGS.storePhotos = [];
+            for (const f of files) {
+                const url = await uploadBlobToCloud(f, f.name, f.type);
+                if (url) STORE_SETTINGS.storePhotos.push(url);
+            }
+            input.value = '';
+            renderAdminStorePhotosPreview();
+            renderAboutStoreUI();
+            toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Photos uploaded! Click "Save Store Details" below to lock in.`;
+        }
+
+        function adminRemoveStorePhoto(idx) {
+            STORE_SETTINGS.storePhotos.splice(idx, 1);
+            renderAdminStorePhotosPreview();
+            renderAboutStoreUI();
+        }
+
+        async function saveAdminStoreSettings() {
+            STORE_SETTINGS.shopWhatsApp = document.getElementById('adminShopWhatsApp').value.trim() || '917873562312';
+            STORE_SETTINGS.displayPhone = document.getElementById('adminDisplayPhone').value.trim() || '+91 78735 62312';
+            STORE_SETTINGS.address = document.getElementById('adminStoreAddress').value.trim();
+            STORE_SETTINGS.mapLink = document.getElementById('adminStoreMapLink').value.trim();
+            STORE_SETTINGS.hours = document.getElementById('adminStoreHours').value.trim();
+            STORE_SETTINGS.aboutText = document.getElementById('adminStoreAboutText').value.trim();
+
+            const newPin = document.getElementById('adminNewPinInput').value.trim();
+            const toast = document.getElementById('adminStoreToast');
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving Store Details & Settings...`;
+            toast.classList.remove('hidden');
+
+            try {
+                const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/store-settings`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify({ storeSettings: STORE_SETTINGS, newPin })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    if (newPin && newPin.length >= 4) {
+                        adminToken = newPin;
+                        document.getElementById('adminNewPinInput').value = '';
+                    }
+                    renderAboutStoreUI();
+                    toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Store Location, Photos, WhatsApp & PIN updated!`;
+                }
+            } catch (e) {
+                toast.innerHTML = `Error saving settings.`;
+            }
+        }
+
         function renderAdminProductsList() {
             const container = document.getElementById('adminProductsList');
             if (!CATALOG_PRODUCTS.length) {
@@ -3068,7 +3374,6 @@
             } catch (e) {}
         }
 
-        // --- ADMIN ACCESSORIES: ADD, EDIT & REMOVE ---
         function renderAdminAccessoriesList() {
             const container = document.getElementById('adminAccessoriesList');
             if (!CATALOG_ACCESSORIES.length) {
@@ -3213,7 +3518,6 @@
             } catch (e) {}
         }
 
-        // --- ADMIN REVIEWS: EDIT, MODIFY & DELETE ---
         function renderAdminReviewsEditor() {
             const container = document.getElementById('adminReviewsEditorList');
             if (!reviewsList.length) {
@@ -3275,7 +3579,6 @@
             } catch (e) {}
         }
 
-        // --- ADMIN 3D PRICE CHART ---
         function populateAdminPriceEditor() {
             document.getElementById('adminPerPoundInput').value = PRICING.perPoundRate;
             document.getElementById('adminEgglessInput').value = PRICING.egglessCharge;
@@ -3383,7 +3686,6 @@
             }
         }
 
-        // --- ADMIN ORDERS ---
         async function loadAdminOrders() {
             const container = document.getElementById('adminOrdersList');
             container.innerHTML = `<p class="text-slate-500 text-center py-6"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Loading D1 orders...</p>`;
@@ -3440,3 +3742,4 @@
     </script>
 </body>
 </html>
+Processed and analyzed in code
