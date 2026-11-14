@@ -40,30 +40,9 @@ export default {
           { label: '4.0 kg (8 Pounds)', pounds: 8, price: 3300 }
         ]
       },
-      flavors: {
-        vanilla: 0,
-        pineapple: 80,
-        blackforest: 100,
-        butterscotch: 120,
-        truffle: 180,
-        redvelvet: 200,
-        rasmalai: 250
-      },
-      decorations: {
-        sprinkles: 40,
-        cherries: 80,
-        roses: 100,
-        chocochips: 150,
-        goldflakes: 120,
-        candles: 30
-      },
-      toppers: {
-        none: 0,
-        hbd: 70,
-        anniversary: 70,
-        congrats: 70,
-        crown: 120
-      }
+      flavors: { vanilla: 0, pineapple: 80, blackforest: 100, butterscotch: 120, truffle: 180, redvelvet: 200, rasmalai: 250 },
+      decorations: { sprinkles: 40, cherries: 80, roses: 100, chocochips: 150, goldflakes: 120, candles: 30 },
+      toppers: { none: 0, hbd: 70, anniversary: 70, congrats: 70, crown: 120 }
     };
 
     const DEFAULT_PRODUCTS = [
@@ -86,53 +65,16 @@ export default {
         desc: '1 Tier Golden Butterscotch Crunch with Caramel Drip & Rainbow Sprinkles',
         mediaType: 'preset',
         preset: { tiers: 1, weightIndex: 0, flavorId: 'butterscotch', tierColors: ['#FDE047', '#FFFDF9', '#FDE047'], dripId: 'caramel', decorations: ['sprinkles', 'cherries'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
-      },
-      {
-        id: 'prod-3',
-        name: 'Midnight Choco Truffle',
-        category: 'Occasional Cakes',
-        price: 780,
-        tag: 'Chef Special',
-        desc: 'Rich Dark Chocolate Truffle with Oreo Cookies, Choco Chips & Gold Flakes',
-        mediaType: 'preset',
-        preset: { tiers: 1, weightIndex: 0, flavorId: 'truffle', tierColors: ['#5C3317', '#5C3317', '#5C3317'], dripId: 'choco', decorations: ['chocochips', 'goldflakes'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
-      },
-      {
-        id: 'prod-4',
-        name: 'Royal Rasmalai Crown',
-        category: 'Theme Cakes',
-        price: 1750,
-        tag: 'Festive',
-        desc: '2 Tier Kesar Pista Rasmalai Fusion topped with Royal Golden Crown',
-        mediaType: 'preset',
-        preset: { tiers: 2, weightIndex: 0, flavorId: 'rasmalai', tierColors: ['#FDBA74', '#FDE047', '#FFFDF9'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'crown', cakeMessage: 'Best Wishes' }
       }
     ];
 
     const DEFAULT_ACCESSORIES = [
-      { id: 'acc-1', name: 'Sparkle Fountain Candle', price: 40, icon: 'fa-wand-sparkles', desc: 'Smokeless golden firework sparkle candle for cake cutting', imageUrl: '' },
-      { id: 'acc-2', name: 'Golden Number Candle', price: 35, icon: 'fa-1', desc: 'Metallic gold age digit candle (mention digit in order note)', imageUrl: '' },
-      { id: 'acc-3', name: 'Cake Knife & Server Set', price: 30, icon: 'fa-utensils', desc: 'Crystal clear party cake cutting knife and server combo', imageUrl: '' },
-      { id: 'acc-4', name: 'Confetti Party Popper', price: 60, icon: 'fa-explosion', desc: '12-inch twist confetti shooter with metallic paper strips', imageUrl: '' },
-      { id: 'acc-5', name: 'Happy Birthday Banner', price: 90, icon: 'fa-flag', desc: 'Premium black & gold cardstock wall celebration bunting', imageUrl: '' },
-      { id: 'acc-6', name: 'Foil Balloons Combo (5 Pc)', price: 150, icon: 'fa-balloon', desc: 'Set of 5 star & heart metallic helium-ready foil balloons', imageUrl: '' }
+      { id: 'acc-1', name: 'Sparkle Fountain Candle', price: 40, icon: 'fa-wand-sparkles', desc: 'Smokeless golden firework sparkle candle', imageUrl: '' },
+      { id: 'acc-2', name: 'Golden Number Candle', price: 35, icon: 'fa-1', desc: 'Metallic gold age digit candle', imageUrl: '' }
     ];
 
     const DEFAULT_REVIEWS = [
-      {
-        id: 'rev-1',
-        name: 'Ananya Sharma',
-        rating: 5,
-        comment: 'Ordered a 2-tier Rose Berry Truffle cake — looked identical to the receipt slip and tasted super fresh!',
-        date: '2 days ago'
-      },
-      {
-        id: 'rev-2',
-        name: 'Rohit Verma',
-        rating: 5,
-        comment: 'Best eggless Rasmalai cake in Rajgangpur! Delivered right on time.',
-        date: '5 days ago'
-      }
+      { id: 'rev-1', name: 'Ananya Sharma', rating: 5, comment: 'Ordered a custom cake — looked identical and tasted super fresh!', date: '2 days ago' }
     ];
 
     const jsonResponse = (obj, status = 200) =>
@@ -141,7 +83,6 @@ export default {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
 
-    // Dynamic Admin PIN stored in KV (falls back to wrangler.toml ADMIN_PIN or '1234')
     const getActiveAdminPin = async () => {
       const kvPin = await env.SAJIYAS_CAKE_KV.get('admin_pin');
       return kvPin || env.ADMIN_PIN || '1234';
@@ -152,17 +93,13 @@ export default {
       return (req.headers.get('Authorization') || '') === `Bearer ${activePin}`;
     };
 
-    // 0A. UPLOAD MEDIA (RECEIPT PNG, PRODUCT PHOTO/VIDEO, STORE GALLERY PHOTOS)
+    // 0A. UPLOAD MEDIA
     if (url.pathname === '/api/upload' && request.method === 'POST') {
       try {
-        const contentType = request.headers.get('X-Content-Type') || request.headers.get('Content-Type') || 'image/png';
+        const contentType = request.headers.get('X-Content-Type') || 'image/png';
         const rawName = (request.headers.get('X-File-Name') || `media-${Date.now()}`).replace(/[^a-zA-Z0-9._-]/g, '_');
         const key = `${Date.now()}-${rawName}`;
         const buffer = await request.arrayBuffer();
-
-        if (buffer.byteLength > 20 * 1024 * 1024) {
-          return jsonResponse({ success: false, error: 'File must be under 20MB' }, 413);
-        }
 
         await env.SAJIYAS_CAKE_KV.put(`media:${key}`, buffer, {
           metadata: { contentType, fileName: rawName },
@@ -176,41 +113,41 @@ export default {
       }
     }
 
-    // 0B. SERVE UPLOADED MEDIA
     if (url.pathname.startsWith('/api/media/') && request.method === 'GET') {
       const key = decodeURIComponent(url.pathname.replace('/api/media/', ''));
       const { value, metadata } = await env.SAJIYAS_CAKE_KV.getWithMetadata(`media:${key}`, { type: 'arrayBuffer' });
-      if (!value) {
-        return new Response('Media not found', { status: 404, headers: corsHeaders });
-      }
-      const cType = (metadata && metadata.contentType) || 'image/png';
-      const fName = (metadata && metadata.fileName) || key;
-      const forceDownload = url.searchParams.get('download') === '1';
-
+      if (!value) return new Response('Media not found', { status: 404, headers: corsHeaders });
       return new Response(value, {
         headers: {
           ...corsHeaders,
-          'Content-Type': cType,
-          'Cache-Control': 'public, max-age=31536000',
-          'Content-Disposition': forceDownload ? `attachment; filename="${fName}"` : `inline; filename="${fName}"`
+          'Content-Type': (metadata && metadata.contentType) || 'image/png',
+          'Cache-Control': 'public, max-age=31536000'
         }
       });
     }
 
-    // 1. GET PUBLIC STORE DATA
+    // 1. GET PUBLIC STORE DATA (Strictly pulling from KV first)
     if (url.pathname === '/api/public-data' && request.method === 'GET') {
       try {
-        const storedSettings = await env.SAJIYAS_CAKE_KV.get('store_settings');
-        const storeSettings = storedSettings ? { ...DEFAULT_STORE_SETTINGS, ...JSON.parse(storedSettings) } : DEFAULT_STORE_SETTINGS;
+        let storeSettings = DEFAULT_STORE_SETTINGS;
+        const storedSettings = await env.SAJIYAS_CAKE_KV.get('store_settings', { type: 'json' });
+        if (storedSettings) storeSettings = { ...DEFAULT_STORE_SETTINGS, ...storedSettings };
 
-        const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config');
-        const pricing = storedPricing ? { ...DEFAULT_PRICING, ...JSON.parse(storedPricing) } : DEFAULT_PRICING;
+        let pricing = DEFAULT_PRICING;
+        const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config', { type: 'json' });
+        if (storedPricing) pricing = { ...DEFAULT_PRICING, ...storedPricing };
 
-        const storedProducts = await env.SAJIYAS_CAKE_KV.get('catalog_products');
-        const products = storedProducts ? JSON.parse(storedProducts) : DEFAULT_PRODUCTS;
+        let products = DEFAULT_PRODUCTS;
+        const storedProducts = await env.SAJIYAS_CAKE_KV.get('catalog_products', { type: 'json' });
+        if (storedProducts && Array.isArray(storedProducts)) products = storedProducts;
 
-        const storedAccessories = await env.SAJIYAS_CAKE_KV.get('catalog_accessories');
-        const accessories = storedAccessories ? JSON.parse(storedAccessories) : DEFAULT_ACCESSORIES;
+        let accessories = DEFAULT_ACCESSORIES;
+        const storedAccessories = await env.SAJIYAS_CAKE_KV.get('catalog_accessories', { type: 'json' });
+        if (storedAccessories && Array.isArray(storedAccessories)) accessories = storedAccessories;
+
+        let reviews = DEFAULT_REVIEWS;
+        const storedReviews = await env.SAJIYAS_CAKE_KV.get('customer_reviews', { type: 'json' });
+        if (storedReviews && Array.isArray(storedReviews)) reviews = storedReviews;
 
         const baseDelivered = parseInt((await env.SAJIYAS_CAKE_KV.get('delivered_offset')) || '128', 10);
         let dbDelivered = 0;
@@ -221,9 +158,6 @@ export default {
           dbDelivered = countRow ? Number(countRow.cnt || 0) : 0;
         } catch (e) {}
 
-        const storedReviews = await env.SAJIYAS_CAKE_KV.get('customer_reviews');
-        const reviews = storedReviews ? JSON.parse(storedReviews) : DEFAULT_REVIEWS;
-
         return jsonResponse({
           success: true,
           storeSettings,
@@ -231,7 +165,6 @@ export default {
           products,
           accessories,
           deliveredCount: baseDelivered + dbDelivered,
-          deliveredOffset: baseDelivered,
           reviews
         });
       } catch (err) {
@@ -239,7 +172,7 @@ export default {
       }
     }
 
-    // 2. PUBLIC ORDER TRACKING BY ORDER ID
+    // 2. TRACK ORDER
     if (url.pathname === '/api/track-order' && request.method === 'GET') {
       const oid = (url.searchParams.get('orderId') || '').trim().toUpperCase();
       if (!oid) return jsonResponse({ success: false, error: 'Order ID required' }, 400);
@@ -251,25 +184,21 @@ export default {
       return jsonResponse({ success: true, order: row });
     }
 
-    // 3. SUBMIT REVIEW
+    // 3. REVIEWS
     if (url.pathname === '/api/reviews' && request.method === 'POST') {
       try {
         const body = await request.json();
-        if (!body.name || !body.comment) {
-          return jsonResponse({ success: false, error: 'Name and review required' }, 400);
-        }
-        const stored = await env.SAJIYAS_CAKE_KV.get('customer_reviews');
-        const reviews = stored ? JSON.parse(stored) : DEFAULT_REVIEWS;
-        const newReview = {
+        const stored = await env.SAJIYAS_CAKE_KV.get('customer_reviews', { type: 'json' });
+        const reviews = Array.isArray(stored) ? stored : DEFAULT_REVIEWS;
+        reviews.unshift({
           id: 'rev-' + Date.now(),
-          name: String(body.name).slice(0, 40),
+          name: String(body.name || 'Guest').slice(0, 40),
           rating: Math.min(5, Math.max(1, Number(body.rating) || 5)),
-          comment: String(body.comment).slice(0, 260),
-          date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-        };
-        reviews.unshift(newReview);
-        await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews.slice(0, 40)));
-        return jsonResponse({ success: true, reviews: reviews.slice(0, 40) });
+          comment: String(body.comment || '').slice(0, 260),
+          date: 'Just now'
+        });
+        await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews.slice(0, 50)));
+        return jsonResponse({ success: true, reviews });
       } catch (err) {
         return jsonResponse({ success: false, error: err.message }, 500);
       }
@@ -279,32 +208,24 @@ export default {
     if (url.pathname === '/api/admin/login' && request.method === 'POST') {
       const { pin } = await request.json();
       const activePin = await getActiveAdminPin();
-      if (String(pin) === String(activePin)) {
-        return jsonResponse({ success: true });
-      }
+      if (String(pin) === String(activePin)) return jsonResponse({ success: true });
       return jsonResponse({ success: false, error: 'Invalid Admin PIN' }, 401);
     }
 
-    // 5. ADMIN SAVE STORE SETTINGS (WHATSAPP, LOCATION, PHOTOS, ABOUT) & CHANGE PIN
+    // 5. ADMIN SAVE STORE SETTINGS & PIN
     if (url.pathname === '/api/admin/store-settings' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { storeSettings, newPin } = await request.json();
-      if (storeSettings) {
-        await env.SAJIYAS_CAKE_KV.put('store_settings', JSON.stringify(storeSettings));
-      }
-      if (newPin && String(newPin).trim().length >= 4) {
-        await env.SAJIYAS_CAKE_KV.put('admin_pin', String(newPin).trim());
-      }
+      if (storeSettings) await env.SAJIYAS_CAKE_KV.put('store_settings', JSON.stringify(storeSettings));
+      if (newPin && String(newPin).trim().length >= 4) await env.SAJIYAS_CAKE_KV.put('admin_pin', String(newPin).trim());
       return jsonResponse({ success: true });
     }
 
-    // 6. ADMIN SAVE PRE-MADE PRODUCTS
+    // 6. ADMIN SAVE PRODUCTS
     if (url.pathname === '/api/admin/products' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { products } = await request.json();
-      if (Array.isArray(products)) {
-        await env.SAJIYAS_CAKE_KV.put('catalog_products', JSON.stringify(products));
-      }
+      if (Array.isArray(products)) await env.SAJIYAS_CAKE_KV.put('catalog_products', JSON.stringify(products));
       return jsonResponse({ success: true });
     }
 
@@ -312,9 +233,7 @@ export default {
     if (url.pathname === '/api/admin/accessories' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { accessories } = await request.json();
-      if (Array.isArray(accessories)) {
-        await env.SAJIYAS_CAKE_KV.put('catalog_accessories', JSON.stringify(accessories));
-      }
+      if (Array.isArray(accessories)) await env.SAJIYAS_CAKE_KV.put('catalog_accessories', JSON.stringify(accessories));
       return jsonResponse({ success: true });
     }
 
@@ -322,36 +241,28 @@ export default {
     if (url.pathname === '/api/admin/reviews' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { reviews } = await request.json();
-      if (Array.isArray(reviews)) {
-        await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews));
-      }
+      if (Array.isArray(reviews)) await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews));
       return jsonResponse({ success: true });
     }
 
-    // 9. ADMIN SAVE PRICE CHART
+    // 9. ADMIN SAVE PRICING
     if (url.pathname === '/api/admin/pricing' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { pricing, deliveredOffset } = await request.json();
-      if (pricing) {
-        await env.SAJIYAS_CAKE_KV.put('pricing_config', JSON.stringify(pricing));
-      }
-      if (deliveredOffset !== undefined && deliveredOffset !== null) {
-        await env.SAJIYAS_CAKE_KV.put('delivered_offset', String(Number(deliveredOffset) || 0));
-      }
+      if (pricing) await env.SAJIYAS_CAKE_KV.put('pricing_config', JSON.stringify(pricing));
+      if (deliveredOffset !== undefined) await env.SAJIYAS_CAKE_KV.put('delivered_offset', String(Number(deliveredOffset) || 0));
       return jsonResponse({ success: true });
     }
 
-    // 10. ADMIN UPDATE ORDER STATUS
+    // 10. ADMIN ORDER STATUS
     if (url.pathname === '/api/admin/order-status' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { orderId, status } = await request.json();
-      await env.SAJIYAS_CAKE_DB.prepare(
-        'UPDATE sajiyascake_orders SET status = ? WHERE order_id = ?'
-      ).bind(status, orderId).run();
+      await env.SAJIYAS_CAKE_DB.prepare('UPDATE sajiyascake_orders SET status = ? WHERE order_id = ?').bind(status, orderId).run();
       return jsonResponse({ success: true });
     }
 
-    // 11. PLACE NEW ORDER
+    // 11. ORDERS
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       try {
         const data = await request.json();
@@ -360,35 +271,19 @@ export default {
           (order_id, customer_name, customer_phone, delivery_date, cake_message, tiers, weight, eggless, flavor, tier_colors, drip, decorations, topper, total_amount, notes)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         ).bind(
-          data.orderId,
-          data.customerName,
-          data.customerPhone,
-          data.deliveryDate,
-          data.cakeMessage,
-          data.tiers,
-          data.weight,
-          data.eggless ? 1 : 0,
-          data.flavor,
-          JSON.stringify(data.tierColors || []),
-          data.drip,
-          JSON.stringify([...(data.decorations || []), ...(data.accessories || [])]),
-          data.topper,
-          data.totalAmount,
-          data.notes || ''
+          data.orderId, data.customerName, data.customerPhone, data.deliveryDate, data.cakeMessage,
+          data.tiers, data.weight, data.eggless ? 1 : 0, data.flavor, JSON.stringify(data.tierColors || []),
+          data.drip, JSON.stringify([...(data.decorations || []), ...(data.accessories || [])]),
+          data.topper, data.totalAmount, data.notes || ''
         ).run();
-
-        await env.SAJIYAS_CAKE_KV.put(`order:${data.orderId}`, JSON.stringify(data), { expirationTtl: 2592000 });
         return jsonResponse({ success: true, orderId: data.orderId });
       } catch (err) {
         return jsonResponse({ success: false, error: err.message }, 500);
       }
     }
 
-    // 12. LIST ORDERS
     if (url.pathname === '/api/orders' && request.method === 'GET') {
-      const { results } = await env.SAJIYAS_CAKE_DB.prepare(
-        'SELECT * FROM sajiyascake_orders ORDER BY id DESC LIMIT 50'
-      ).all();
+      const { results } = await env.SAJIYAS_CAKE_DB.prepare('SELECT * FROM sajiyascake_orders ORDER BY id DESC LIMIT 50').all();
       return jsonResponse({ app: "Sajiya's Cake", orders: results || [] });
     }
 
