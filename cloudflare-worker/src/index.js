@@ -11,7 +11,21 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
-    const ADMIN_PIN = env.ADMIN_PIN || '1234';
+    const getActiveAdminPin = async () => {
+      const kvPin = await env.SAJIYAS_CAKE_KV.get('admin_pin');
+      return kvPin || env.ADMIN_PIN || '1234';
+    };
+
+    const DEFAULT_STORE_SETTINGS = {
+      shopName: "Sajiya's Cake",
+      shopWhatsApp: '917873562312',
+      displayPhone: '+91 78735 62312',
+      address: 'Main Road, Near Station Chowk, Rajgangpur, Odisha 770017',
+      mapLink: 'https://maps.google.com/?q=Rajgangpur,Odisha',
+      hours: 'Open Daily: 9:00 AM – 10:00 PM',
+      aboutText: "Welcome to Sajiya's Cake — Rajgangpur's boutique custom cake studio. Every cake is freshly baked to order using 100% pure vegetarian ingredients, rich Belgian chocolate, and handcrafted cream artistry.",
+      storePhotos: []
+    };
 
     const DEFAULT_PRICING = {
       perPoundRate: 450,
@@ -132,9 +146,12 @@ export default {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
 
-    const isAuthorized = (req) => (req.headers.get('Authorization') || '') === `Bearer ${ADMIN_PIN}`;
+    const isAuthorized = async (req) => {
+      const activePin = await getActiveAdminPin();
+      return (req.headers.get('Authorization') || '') === `Bearer ${activePin}`;
+    };
 
-    // 0A. UPLOAD MEDIA (RECEIPT PNG, PRODUCT PHOTO/VIDEO, ACCESSORY PHOTO)
+    // 0A. UPLOAD MEDIA (RECEIPT PNG, PRODUCT PHOTO/VIDEO, STORE PHOTOS)
     if (url.pathname === '/api/upload' && request.method === 'POST') {
       try {
         const contentType = request.headers.get('X-Content-Type') || request.headers.get('Content-Type') || 'image/png';
@@ -182,6 +199,9 @@ export default {
     // 1. GET PUBLIC STORE DATA
     if (url.pathname === '/api/public-data' && request.method === 'GET') {
       try {
+        const storedSettings = await env.SAJIYAS_CAKE_KV.get('store_settings');
+        const storeSettings = storedSettings ? { ...DEFAULT_STORE_SETTINGS, ...JSON.parse(storedSettings) } : DEFAULT_STORE_SETTINGS;
+
         const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config');
         const pricing = storedPricing ? { ...DEFAULT_PRICING, ...JSON.parse(storedPricing) } : DEFAULT_PRICING;
 
@@ -205,6 +225,7 @@ export default {
 
         return jsonResponse({
           success: true,
+          storeSettings,
           pricing,
           products,
           accessories,
@@ -217,7 +238,19 @@ export default {
       }
     }
 
-    // 2. SUBMIT REVIEW
+    // 2. TRACK ORDER BY ORDER ID
+    if (url.pathname === '/api/track-order' && request.method === 'GET') {
+      const oid = (url.searchParams.get('orderId') || '').trim().toUpperCase();
+      if (!oid) return jsonResponse({ success: false, error: 'Order ID required' }, 400);
+      const formattedId = oid.startsWith('#') ? oid : `#${oid}`;
+      const row = await env.SAJIYAS_CAKE_DB.prepare(
+        'SELECT order_id, customer_name, delivery_date, total_amount, status, created_at FROM sajiyascake_orders WHERE UPPER(order_id) = ?'
+      ).bind(formattedId).first();
+      if (!row) return jsonResponse({ success: false, error: 'Order not found' }, 404);
+      return jsonResponse({ success: true, order: row });
+    }
+
+    // 3. SUBMIT REVIEW
     if (url.pathname === '/api/reviews' && request.method === 'POST') {
       try {
         const body = await request.json();
@@ -241,18 +274,32 @@ export default {
       }
     }
 
-    // 3. ADMIN LOGIN
+    // 4. ADMIN LOGIN
     if (url.pathname === '/api/admin/login' && request.method === 'POST') {
       const { pin } = await request.json();
-      if (String(pin) === String(ADMIN_PIN)) {
+      const activePin = await getActiveAdminPin();
+      if (String(pin) === String(activePin)) {
         return jsonResponse({ success: true });
       }
       return jsonResponse({ success: false, error: 'Invalid Admin PIN' }, 401);
     }
 
-    // 4. ADMIN SAVE PRE-MADE PRODUCTS
+    // 5. ADMIN SAVE STORE SETTINGS (WHATSAPP, LOCATION, PHOTOS, ABOUT) & CHANGE PIN
+    if (url.pathname === '/api/admin/store-settings' && request.method === 'POST') {
+      if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      const { storeSettings, newPin } = await request.json();
+      if (storeSettings) {
+        await env.SAJIYAS_CAKE_KV.put('store_settings', JSON.stringify(storeSettings));
+      }
+      if (newPin && String(newPin).trim().length >= 4) {
+        await env.SAJIYAS_CAKE_KV.put('admin_pin', String(newPin).trim());
+      }
+      return jsonResponse({ success: true });
+    }
+
+    // 6. ADMIN SAVE PRE-MADE PRODUCTS
     if (url.pathname === '/api/admin/products' && request.method === 'POST') {
-      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { products } = await request.json();
       if (Array.isArray(products)) {
         await env.SAJIYAS_CAKE_KV.put('catalog_products', JSON.stringify(products));
@@ -260,9 +307,9 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 5. ADMIN SAVE ACCESSORIES CATALOG
+    // 7. ADMIN SAVE ACCESSORIES
     if (url.pathname === '/api/admin/accessories' && request.method === 'POST') {
-      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { accessories } = await request.json();
       if (Array.isArray(accessories)) {
         await env.SAJIYAS_CAKE_KV.put('catalog_accessories', JSON.stringify(accessories));
@@ -270,9 +317,9 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 6. ADMIN SAVE REVIEWS
+    // 8. ADMIN SAVE REVIEWS
     if (url.pathname === '/api/admin/reviews' && request.method === 'POST') {
-      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { reviews } = await request.json();
       if (Array.isArray(reviews)) {
         await env.SAJIYAS_CAKE_KV.put('customer_reviews', JSON.stringify(reviews));
@@ -280,9 +327,9 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 7. ADMIN SAVE PRICE CHART
+    // 9. ADMIN SAVE PRICE CHART
     if (url.pathname === '/api/admin/pricing' && request.method === 'POST') {
-      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { pricing, deliveredOffset } = await request.json();
       if (pricing) {
         await env.SAJIYAS_CAKE_KV.put('pricing_config', JSON.stringify(pricing));
@@ -293,9 +340,9 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 8. ADMIN UPDATE ORDER STATUS
+    // 10. ADMIN UPDATE ORDER STATUS
     if (url.pathname === '/api/admin/order-status' && request.method === 'POST') {
-      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { orderId, status } = await request.json();
       await env.SAJIYAS_CAKE_DB.prepare(
         'UPDATE sajiyascake_orders SET status = ? WHERE order_id = ?'
@@ -303,7 +350,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 9. PLACE NEW ORDER
+    // 11. PLACE NEW ORDER
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       try {
         const data = await request.json();
@@ -336,7 +383,7 @@ export default {
       }
     }
 
-    // 10. LIST ORDERS
+    // 12. LIST ORDERS
     if (url.pathname === '/api/orders' && request.method === 'GET') {
       const { results } = await env.SAJIYAS_CAKE_DB.prepare(
         'SELECT * FROM sajiyascake_orders ORDER BY id DESC LIMIT 50'
