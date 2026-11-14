@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#7c1d5e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>Sajiya's Cake | Pre-Made Cakes, Accessories & 3D Cake Studio</title>
+    <title>Sajiya's Cake | Pre-Made Cakes, Accessories, 3D Studio & Cart</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -143,7 +143,7 @@
     </div>
 
     <!-- ===================================================== -->
-    <!-- SLIDE-OUT RIGHT DRAWER (SECTIONS + ADMIN LOGIN)       -->
+    <!-- SLIDE-OUT RIGHT DRAWER (SECTIONS + CART + ADMIN)      -->
     <!-- ===================================================== -->
     <div id="sidebarBackdrop" onclick="closeSidebar()" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
     <aside id="sideDrawer" class="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] bg-white shadow-2xl border-l border-slate-200 transform translate-x-full transition-transform duration-300 flex flex-col justify-between overflow-y-auto" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
@@ -164,16 +164,21 @@
                 </button>
 
                 <button onclick="closeSidebar(); switchMainView('accessories')" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-slate-800 hover:text-bakery-700">
-                    <span class="flex items-center gap-2">
-                        <span>🎈 Party Accessories Store</span>
-                        <span id="drawerAccCountBadge" class="text-[10px] font-bold bg-bakery-100 text-bakery-700 px-2 py-0.5 rounded-full">0</span>
-                    </span>
+                    <span>🎈 Party Accessories Store</span>
                     <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </button>
 
                 <button onclick="closeSidebar(); switchMainView('studio')" class="w-full flex items-center justify-between py-2 text-sm font-bold text-bakery-700">
                     <span>🎨 3D Own Cake Design Studio</span>
                     <i class="fa-solid fa-chevron-right text-xs text-bakery-500"></i>
+                </button>
+
+                <button onclick="closeSidebar(); switchMainView('cart')" class="w-full flex items-center justify-between py-2 text-sm font-bold text-emerald-700">
+                    <span class="flex items-center gap-2">
+                        <span>🛒 Final Order Cart & Delivery</span>
+                        <span id="drawerCartBadge" class="text-[10px] font-extrabold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">0</span>
+                    </span>
+                    <i class="fa-solid fa-chevron-right text-xs text-emerald-500"></i>
                 </button>
 
                 <div>
@@ -190,7 +195,7 @@
                 </div>
 
                 <button onclick="closeSidebar(); freshResetCake()" class="w-full flex items-center justify-between py-2 text-sm font-semibold text-rose-600">
-                    <span><i class="fa-solid fa-rotate-left mr-1.5"></i> Reset & Start New Cake</span>
+                    <span><i class="fa-solid fa-rotate-left mr-1.5"></i> Reset 3D Studio Design</span>
                     <i class="fa-solid fa-chevron-right text-xs text-rose-400"></i>
                 </button>
             </div>
@@ -232,7 +237,7 @@
     </aside>
 
     <!-- ===================================================== -->
-    <!-- TOP BAR WITH SECTION SWITCHER PILLS (DESKTOP + MOBILE)-->
+    <!-- TOP BAR WITH VIEW TABS & LIVE CART BUTTON             -->
     <!-- ===================================================== -->
     <header class="sticky sticky-safe-header z-30 bg-white border-b border-slate-200/80 shadow-xs">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
@@ -248,26 +253,31 @@
             </div>
 
             <!-- Desktop View Switcher Tabs -->
-            <nav class="hidden md:flex items-center gap-1.5 bg-bakery-50 p-1 rounded-full border border-bakery-200">
+            <nav class="hidden md:flex items-center gap-1 bg-bakery-50 p-1 rounded-full border border-bakery-200">
                 <button id="topNavHome" onclick="switchMainView('home')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition">
                     Pre-Made Cakes
                 </button>
                 <button id="topNavAccessories" onclick="switchMainView('accessories')" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
-                    Party Accessories
+                    Accessories
                 </button>
                 <button id="topNavStudio" onclick="switchMainView('studio')" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition">
-                    3D Own Cake Design
+                    3D Own Cake
+                </button>
+                <button id="topNavCart" onclick="switchMainView('cart')" class="px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition flex items-center gap-1.5">
+                    <span>Order Cart</span>
+                    <span id="desktopNavCartCount" class="bg-emerald-600 text-white text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">0</span>
                 </button>
             </nav>
 
-            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
                 <button onclick="toggleSearchBar()" aria-label="Search Cakes" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-700 transition">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
-                <div class="hidden sm:flex items-center gap-2 bg-bakery-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold cursor-pointer" onclick="openOrderModal()">
-                    <span>Order Slip:</span>
-                    <span id="headerTotalPrice">₹500</span>
-                </div>
+                <button onclick="switchMainView('cart')" aria-label="View Order Cart" class="relative flex items-center gap-1.5 bg-bakery-700 hover:bg-bakery-800 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-xs transition">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span id="headerCartTotal">₹0</span>
+                    <span id="headerCartCount" class="bg-amber-300 text-bakery-950 text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </button>
                 <button onclick="openSidebar()" aria-label="Open Menu" class="w-9 h-9 rounded-xl hover:bg-bakery-50 flex flex-col items-center justify-center gap-1.5 text-slate-800 transition relative">
                     <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
                     <span class="w-5 h-0.5 bg-slate-800 rounded-full"></span>
@@ -288,7 +298,6 @@
     <!-- VIEW 1: HOME SCREEN (ONLY PRE-MADE CAKES + REVIEWS)   -->
     <!-- ===================================================== -->
     <div id="view-home" class="space-y-8">
-        <!-- Hero Spotlight Banner -->
         <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4">
             <div class="rounded-3xl overflow-hidden bg-gradient-to-r from-[#f6eadf] via-[#f9efe6] to-[#f3dfd1] border border-amber-200/70 shadow-sm p-5 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5 relative">
                 <div class="space-y-2.5 max-w-lg text-left z-10">
@@ -299,7 +308,7 @@
                         Captured in a Flutter,<br/>Savored in a Slice
                     </h1>
                     <p class="text-xs sm:text-sm text-[#6d4c3d]/90 leading-relaxed">
-                        Browse our ready-to-order signature cakes below, or jump to our separate 3D Own Cake Studio and Party Accessories sections.
+                        Add ready-made signature cakes directly to your Order Cart, or open our 3D Own Cake Studio and Party Accessories sections.
                     </p>
                     <div class="pt-1 flex flex-wrap items-center gap-2.5">
                         <button onclick="switchMainView('studio')" class="bg-[#6d4c3d] hover:bg-[#52372b] text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg shadow transition active:scale-95">
@@ -325,7 +334,7 @@
         <section id="sec-trending" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="text-center max-w-xl mx-auto mb-4 sm:mb-6">
                 <h2 class="font-sans text-xl sm:text-3xl font-extrabold text-bakery-700 tracking-tight">Pre-Made & Trending Cakes</h2>
-                <p class="text-xs sm:text-sm text-slate-500 mt-1">Explore our most popular pre-made cakes, fresh from the oven!</p>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1">Add directly to your Order Cart or customize in 3D Studio!</p>
             </div>
 
             <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-3">
@@ -418,17 +427,15 @@
                     <i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes
                 </button>
                 <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Party Accessories & Celebration Store</h2>
-                <p class="text-xs sm:text-sm text-slate-500 mt-1">Select candles, banners, party poppers & cake cutting sets — added directly to your order receipt!</p>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1">Select candles, banners, party poppers & cake cutting sets to add to your Order Cart!</p>
             </div>
-            <div class="flex items-center gap-3 shrink-0">
-                <span id="accSelectedBadge" class="text-xs font-bold bg-bakery-100 text-bakery-800 px-3.5 py-2 rounded-full">0 Selected</span>
-                <button onclick="switchMainView('studio')" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow transition">
-                    Go to 3D Cake Studio →
+            <div class="flex items-center gap-2.5 shrink-0">
+                <button onclick="switchMainView('cart')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow transition">
+                    Review Cart (<span id="accViewCartCount">0</span>) →
                 </button>
             </div>
         </div>
 
-        <!-- Clean White Product Cards for Accessories -->
         <div id="accessoriesGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5"></div>
     </section>
 
@@ -444,11 +451,11 @@
                 <h2 class="font-serif text-xl sm:text-3xl font-bold text-slate-900">3D Own Cake Design Studio</h2>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="switchMainView('accessories')" class="text-xs font-bold bg-white hover:bg-bakery-50 text-bakery-800 border border-bakery-200 px-3.5 py-2 rounded-full transition">
-                    🎈 Add Accessories (<span id="studioAccCount">0</span>)
-                </button>
                 <button onclick="freshResetCake()" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3.5 py-2 rounded-full transition">
                     <i class="fa-solid fa-rotate-left mr-1"></i> Reset New Cake
+                </button>
+                <button onclick="addCustomStudioCakeToCart()" class="text-xs font-bold bg-bakery-700 hover:bg-bakery-800 text-white px-4 py-2 rounded-full shadow transition">
+                    <i class="fa-solid fa-cart-plus mr-1"></i> Add Design to Cart
                 </button>
             </div>
         </div>
@@ -471,7 +478,6 @@
                         </span>
                     </div>
 
-                    <!-- Pure White Canvas Background -->
                     <div class="relative flex items-center justify-center px-3 py-3 min-h-[280px] sm:min-h-[380px] lg:min-h-[410px] bg-white">
                         <svg id="cakeSvg" xmlns="http://www.w3.org/2000/svg" width="400" height="430" viewBox="0 0 400 430" class="w-full max-w-[270px] sm:max-w-[340px] lg:max-w-[360px] h-auto drop-shadow-md select-none">
                             <defs>
@@ -521,26 +527,26 @@
                     </div>
                 </div>
 
-                <!-- Live Price Breakdown Card (Desktop View) -->
+                <!-- Live 3D Design Price Card (Desktop View) -->
                 <div class="hidden lg:block bg-white rounded-3xl border border-slate-200 p-5 shadow-md">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
                         <div>
-                            <h3 class="font-serif font-bold text-lg text-slate-900">Live Price Estimate</h3>
-                            <p class="text-xs text-slate-500">Per-pound rate, toppings & party accessories</p>
+                            <h3 class="font-serif font-bold text-lg text-slate-900">Custom 3D Cake Estimate</h3>
+                            <p class="text-xs text-slate-500">Add this design to your cart for final delivery</p>
                         </div>
-                        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-emerald-200">Live Bill</span>
+                        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-emerald-200">3D Builder</span>
                     </div>
 
                     <div id="billItemsList" class="space-y-2 text-sm max-h-52 overflow-y-auto pr-1"></div>
 
                     <div class="border-t border-dashed border-slate-200 mt-4 pt-3 flex items-center justify-between">
                         <div>
-                            <span class="text-xs uppercase tracking-wider font-bold text-slate-400 block">Grand Total</span>
+                            <span class="text-xs uppercase tracking-wider font-bold text-slate-400 block">Cake Price</span>
                             <span id="desktopTotalPrice" class="text-2xl font-extrabold text-bakery-700">₹500</span>
                         </div>
-                        <button onclick="openOrderModal()" class="bg-bakery-700 hover:bg-bakery-800 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
-                            <span>Order & Receipt Image</span>
-                            <i class="fa-solid fa-arrow-right"></i>
+                        <button onclick="addCustomStudioCakeToCart()" class="bg-bakery-700 hover:bg-bakery-800 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg transition flex items-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Add Cake to Cart</span>
                         </button>
                     </div>
                 </div>
@@ -562,7 +568,7 @@
                         4. Decorations
                     </button>
                     <button onclick="scrollToSection('sec-message')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">
-                        5. Name & Order
+                        5. Name on Cake
                     </button>
                 </div>
 
@@ -665,84 +671,163 @@
                     </div>
                 </section>
 
-                <!-- SECTION 5: MESSAGE ON CAKE & CUSTOMER DETAILS -->
-                <section id="sec-message" class="scroll-mt-32 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs">
-                    <div class="flex items-center gap-2.5 mb-4">
+                <!-- SECTION 5: MESSAGE ON CAKE -->
+                <section id="sec-message" class="scroll-mt-32 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-4">
+                    <div class="flex items-center gap-2.5">
                         <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">5</span>
                         <div>
-                            <h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cake Name & Order Details</h2>
-                            <p class="text-xs text-slate-500">Cake plate par likhne ke liye naam aur delivery jankari</p>
+                            <h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cake Name Plaque</h2>
+                            <p class="text-xs text-slate-500">Cake plate par likhne ke liye naam chunein</p>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="sm:col-span-2">
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                                Cake Par Kya Likhna Hai? (Max 24 chars)
-                            </label>
-                            <div class="relative">
-                                <input
-                                    type="text"
-                                    id="cakeMessageInput"
-                                    maxlength="24"
-                                    value="Happy Birthday"
-                                    placeholder="e.g. Happy Birthday Aayat"
-                                    oninput="updateMessage(this.value)"
-                                    class="w-full px-4 py-3 pr-14 rounded-xl border border-slate-200 focus:border-bakery-600 focus:ring-2 focus:ring-bakery-200 outline-none text-base sm:text-sm font-medium"
-                                >
-                                <span id="charCount" class="absolute right-3 top-3.5 text-xs text-slate-400">14/24</span>
-                            </div>
-                            <div class="flex flex-wrap gap-1.5 mt-2">
-                                <button type="button" onclick="setQuickMsg('Happy Birthday')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Happy Birthday</button>
-                                <button type="button" onclick="setQuickMsg('Happy Anniversary')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Happy Anniversary</button>
-                                <button type="button" onclick="setQuickMsg('Mubarak Ho!')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Mubarak Ho!</button>
-                                <button type="button" onclick="setQuickMsg('Best Wishes')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Best Wishes</button>
-                            </div>
+                    <div>
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="cakeMessageInput"
+                                maxlength="24"
+                                value="Happy Birthday"
+                                placeholder="e.g. Happy Birthday Aayat"
+                                oninput="updateMessage(this.value)"
+                                class="w-full px-4 py-3 pr-14 rounded-xl border border-slate-200 focus:border-bakery-600 focus:ring-2 focus:ring-bakery-200 outline-none text-base sm:text-sm font-medium"
+                            >
+                            <span id="charCount" class="absolute right-3 top-3.5 text-xs text-slate-400">14/24</span>
                         </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Aapka Naam (Customer Name)</label>
-                            <input type="text" id="custName" placeholder="Apna naam likhein" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-base sm:text-sm">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Phone / WhatsApp Number</label>
-                            <input type="tel" id="custPhone" placeholder="10-digit mobile number" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-base sm:text-sm">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Delivery / Pickup Date</label>
-                            <input type="date" id="custDate" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-base sm:text-sm bg-white">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Special Note (Optional)</label>
-                            <input type="text" id="custNotes" placeholder="e.g. Less sweet cream, evening 6 PM" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-base sm:text-sm">
+                        <div class="flex flex-wrap gap-1.5 mt-2">
+                            <button type="button" onclick="setQuickMsg('Happy Birthday')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Happy Birthday</button>
+                            <button type="button" onclick="setQuickMsg('Happy Anniversary')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Happy Anniversary</button>
+                            <button type="button" onclick="setQuickMsg('Mubarak Ho!')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Mubarak Ho!</button>
+                            <button type="button" onclick="setQuickMsg('Best Wishes')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Best Wishes</button>
                         </div>
                     </div>
+
+                    <button type="button" onclick="addCustomStudioCakeToCart()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3.5 rounded-2xl shadow-md flex items-center justify-center gap-2 transition active:scale-98">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        <span>Add Custom 3D Cake to Final Cart (<span id="btnStudioPrice">₹500</span>)</span>
+                    </button>
                 </section>
             </div>
         </div>
     </main>
+
+    <!-- ===================================================== -->
+    <!-- VIEW 4: SEPARATE FINAL ORDER CART & DELIVERY REVIEW   -->
+    <!-- ===================================================== -->
+    <section id="view-cart" class="hidden max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 space-y-6">
+        <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1 inline-flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-left"></i> Continue Shopping
+                </button>
+                <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Your Final Order Cart & Delivery</h2>
+                <p class="text-xs sm:text-sm text-slate-500">Review all selected cakes & accessories, enter delivery address & place order</p>
+            </div>
+            <button onclick="clearEntireCart()" class="text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3.5 py-2 rounded-full self-start sm:self-center">
+                <i class="fa-solid fa-trash mr-1"></i> Clear Cart
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <!-- Left: Cart Items List -->
+            <div class="lg:col-span-7 space-y-4">
+                <div class="bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <h3 class="font-bold text-base text-slate-900">Selected Items (<span id="cartPageItemCount">0</span>)</h3>
+                        <div class="flex gap-2">
+                            <button onclick="switchMainView('home')" class="text-xs font-semibold text-bakery-700 hover:underline">+ Pre-Made Cake</button>
+                            <span class="text-slate-300">|</span>
+                            <button onclick="switchMainView('accessories')" class="text-xs font-semibold text-bakery-700 hover:underline">+ Accessories</button>
+                        </div>
+                    </div>
+
+                    <div id="cartItemsContainer" class="space-y-3"></div>
+                </div>
+            </div>
+
+            <!-- Right: Customer Delivery Details & Place Final Order -->
+            <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-md space-y-4">
+                <h3 class="font-serif font-bold text-lg text-slate-900 border-b border-slate-100 pb-3">Delivery Details & Checkout</h3>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Customer Full Name *</label>
+                        <input type="text" id="custName" placeholder="Enter your full name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Phone / WhatsApp Number *</label>
+                        <input type="tel" id="custPhone" placeholder="10-digit mobile number" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Address / Landmark *</label>
+                        <textarea id="custAddress" rows="2" placeholder="House no., Street, Area, Rajgangpur..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Date *</label>
+                            <input type="date" id="custDate" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-xs sm:text-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Time Slot</label>
+                            <select id="custTimeSlot" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-xs sm:text-sm bg-white">
+                                <option value="Morning (10 AM - 1 PM)">Morning (10 AM - 1 PM)</option>
+                                <option value="Afternoon (1 PM - 5 PM)">Afternoon (1 PM - 5 PM)</option>
+                                <option value="Evening (5 PM - 9 PM)" selected>Evening (5 PM - 9 PM)</option>
+                                <option value="Midnight Celebration (11:30 PM)">Midnight (11:30 PM)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Special Instructions (Optional)</label>
+                        <input type="text" id="custNotes" placeholder="e.g. Less sweet cream, call on arrival" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm">
+                    </div>
+                </div>
+
+                <div class="border-t border-dashed border-slate-200 pt-3 space-y-1.5">
+                    <div class="flex justify-between text-xs text-slate-500">
+                        <span>Items Subtotal</span>
+                        <span id="cartSubtotalText" class="font-semibold text-slate-800">₹0</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-emerald-700">
+                        <span>Delivery Charge</span>
+                        <span class="font-bold">FREE (Local)</span>
+                    </div>
+                    <div class="flex justify-between items-baseline pt-2 border-t border-slate-100">
+                        <span class="font-bold text-sm text-slate-800">Grand Total</span>
+                        <span id="cartGrandTotalText" class="text-2xl font-extrabold text-bakery-700">₹0</span>
+                    </div>
+                </div>
+
+                <button type="button" onclick="placeFinalCartOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 px-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 transition active:scale-98">
+                    <i class="fa-solid fa-check-circle text-lg"></i>
+                    <span>Place Order for Delivery & Receipt Image</span>
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- FLOATING WHATSAPP QUICK CHAT BUTTON -->
     <button onclick="openWhatsAppSupport()" aria-label="Chat on WhatsApp" class="fixed right-4 bottom-[128px] lg:bottom-6 z-30 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center text-2xl active:scale-90 transition">
         <i class="fa-brands fa-whatsapp"></i>
     </button>
 
-    <!-- MOBILE STICKY PRICE BAR + 5-TAB VIEW SWITCHER NAVIGATION -->
+    <!-- MOBILE STICKY CART BAR + 5-TAB VIEW SWITCHER NAVIGATION -->
     <div class="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white border-t border-slate-200 shadow-[0_-6px_20px_rgba(74,27,45,0.08)] safe-bottom-nav">
         <div class="px-4 py-2 bg-bakery-50 border-b border-bakery-100 flex items-center justify-between gap-3">
             <div class="min-w-0">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Total Order Estimate</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Final Order Cart (<span id="mobileBarCartCount">0</span> Items)</span>
                 <div class="flex items-baseline gap-1.5 truncate">
-                    <span id="mobileTotalPrice" class="text-lg font-extrabold text-bakery-700">₹500</span>
-                    <span id="mobileTierSummary" class="text-[11px] text-slate-500 truncate">1 Tier • 0.5 kg</span>
+                    <span id="mobileTotalPrice" class="text-lg font-extrabold text-bakery-700">₹0</span>
+                    <span id="mobileTierSummary" class="text-[11px] text-slate-500 truncate">Tap Cart to review & deliver</span>
                 </div>
             </div>
-            <button onclick="openOrderModal()" class="bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow flex items-center gap-1.5 active:scale-95 transition shrink-0">
-                <span>Order & Image Slip</span>
-                <i class="fa-solid fa-receipt"></i>
+            <button onclick="switchMainView('cart')" class="bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow flex items-center gap-1.5 active:scale-95 transition shrink-0">
+                <span>View Order Cart</span>
+                <i class="fa-solid fa-bag-shopping"></i>
             </button>
         </div>
 
@@ -759,9 +844,9 @@
                 <i class="fa-solid fa-cake-candles text-sm"></i>
                 <span>3D Studio</span>
             </button>
-            <button onclick="switchMainView('home'); setTimeout(() => scrollToSection('sec-reviews'), 80)" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
-                <i class="fa-solid fa-star text-sm"></i>
-                <span>Reviews</span>
+            <button id="botNavCart" onclick="switchMainView('cart')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 relative">
+                <i class="fa-solid fa-cart-shopping text-sm"></i>
+                <span>Cart</span>
             </button>
             <button onclick="openAdminModal()" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700">
                 <i class="fa-solid fa-user-shield text-sm"></i>
@@ -785,7 +870,7 @@
                     </div>
                     <div>
                         <h3 class="font-serif font-bold text-lg sm:text-xl">Sajiya's Cake</h3>
-                        <p class="text-xs text-bakery-100">Final Design Image & Complete Order Receipt</p>
+                        <p class="text-xs text-bakery-100">Final Order Receipt Image & Delivery Confirmation</p>
                     </div>
                 </div>
             </div>
@@ -794,7 +879,7 @@
                 <div class="bg-bakery-50 rounded-2xl border border-bakery-200 p-2.5 flex flex-col items-center">
                     <div class="w-full flex items-center justify-between mb-1.5 px-1 gap-2">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-bakery-800 truncate">
-                            <i class="fa-solid fa-image mr-1 text-bakery-700"></i> Final Cake & Details Image
+                            <i class="fa-solid fa-image mr-1 text-bakery-700"></i> Final Cake & Cart Receipt
                         </span>
                         <button type="button" onclick="downloadCakeDesignImage()" class="text-[11px] font-bold bg-bakery-700 hover:bg-bakery-800 text-white px-3 py-1.5 rounded-full shadow-sm active:scale-95 transition flex items-center gap-1 shrink-0">
                             <i class="fa-solid fa-download"></i> Save / Download
@@ -808,7 +893,7 @@
                 <div class="space-y-2">
                     <button id="whatsappDirectBtn" onclick="submitAndSendWhatsApp()" class="w-full bg-emerald-600 active:scale-98 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-md flex items-center justify-center gap-2 transition">
                         <i class="fa-brands fa-whatsapp text-lg"></i>
-                        <span>Confirm & Send Image on WhatsApp</span>
+                        <span>Send Order Image & Details on WhatsApp</span>
                     </button>
 
                     <div class="grid grid-cols-2 gap-2">
@@ -827,7 +912,7 @@
     </div>
 
     <!-- ===================================================== -->
-    <!-- ADMIN CONSOLE: PRE-MADE CAKES, ACCESSORIES, PRICING   -->
+    <!-- ADMIN CONSOLE: FULL EDIT & REMOVE FOR ALL SECTIONS    -->
     <!-- ===================================================== -->
     <div id="adminModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/70 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-3xl w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
@@ -838,7 +923,7 @@
                     </div>
                     <div>
                         <h3 class="font-serif font-bold text-lg">Sajiya's Cake Admin Console</h3>
-                        <p class="text-xs text-bakery-200">Manage Pre-Made Cakes, Accessories, Price Chart & Reviews</p>
+                        <p class="text-xs text-bakery-200">Edit & Remove Pre-Made Cakes, Accessories, Price Chart & Reviews</p>
                     </div>
                 </div>
                 <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white">
@@ -864,7 +949,7 @@
                 </div>
             </div>
 
-            <!-- STEP B: ADMIN DASHBOARD (5 TABS) -->
+            <!-- STEP B: ADMIN DASHBOARD -->
             <div id="adminDashboardView" class="hidden p-4 sm:p-5 space-y-4">
                 <div class="flex gap-1.5 overflow-x-auto no-scrollbar border-b border-slate-200 pb-2">
                     <button id="tabBtnProducts" onclick="switchAdminTab('products')" class="px-3 py-2 rounded-xl text-xs font-bold bg-bakery-700 text-white shrink-0">
@@ -874,7 +959,7 @@
                         <i class="fa-solid fa-gift mr-1"></i> Accessories
                     </button>
                     <button id="tabBtnPricing" onclick="switchAdminTab('pricing')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
-                        <i class="fa-solid fa-tags mr-1"></i> 3D Price Chart
+                        <i class="fa-solid fa-tags mr-1"></i> 3D Price & Options
                     </button>
                     <button id="tabBtnReviews" onclick="switchAdminTab('reviews')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0">
                         <i class="fa-solid fa-star mr-1"></i> Reviews
@@ -884,12 +969,18 @@
                     </button>
                 </div>
 
-                <!-- TAB 1: ADD & REMOVE PRE-MADE CAKES (PHOTO OR SHORT VIDEO) -->
+                <!-- TAB 1: ADD, EDIT & REMOVE PRE-MADE CAKES -->
                 <div id="adminProductsTab" class="space-y-4 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="bg-bakery-50/80 border border-bakery-200 rounded-2xl p-3.5 space-y-3">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-bakery-900">Add Pre-Made Cake to Home Screen</h4>
+                        <div class="flex items-center justify-between">
+                            <h4 id="prodFormHeading" class="text-xs font-bold uppercase tracking-wider text-bakery-900">Add New Pre-Made Cake</h4>
+                            <button id="cancelEditProdBtn" type="button" onclick="resetProductForm()" class="hidden text-xs font-bold text-slate-600 hover:text-rose-600">
+                                ✕ Cancel Edit
+                            </button>
+                        </div>
+                        <input type="hidden" id="editProdId" value="">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <input type="text" id="newProdName" placeholder="Cake Name (e.g. Butterfly Bliss Cake)" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                            <input type="text" id="newProdName" placeholder="Cake Name (e.g. Together Forever Royal)" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
                             <select id="newProdCategory" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
                                 <option value="What's Trending">What's Trending</option>
                                 <option value="Signature Cakes">Signature Cakes</option>
@@ -898,39 +989,45 @@
                             </select>
                             <input type="number" id="newProdPrice" placeholder="Price ₹ (e.g. 850)" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
                             <input type="text" id="newProdTag" placeholder="Badge Tag (e.g. Bestseller, Fresh)" class="px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
-                            <input type="text" id="newProdDesc" placeholder="Full Cake Details (flavors, weight, layers, toppings)" class="sm:col-span-2 px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none">
+                            <textarea id="newProdDesc" rows="2" placeholder="Full Cake Details (flavors, weight, layers, toppings)" class="sm:col-span-2 px-3 py-2 rounded-xl border border-bakery-200 bg-white text-xs font-medium outline-none"></textarea>
 
                             <div class="sm:col-span-2 bg-white p-3 rounded-xl border border-dashed border-bakery-300 space-y-2">
                                 <div class="flex items-center justify-between flex-wrap gap-2">
                                     <label class="text-xs font-bold text-bakery-800 flex items-center gap-1.5">
                                         <i class="fa-solid fa-photo-film text-bakery-600"></i>
-                                        <span>Upload Cake Photo or Short Video:</span>
+                                        <span>Upload Photo or Short Video:</span>
                                     </label>
                                     <input type="file" id="newProdMediaFile" accept="image/*,video/mp4,video/webm,video/quicktime" onchange="previewAdminMediaFile(this, 'adminMediaPreviewBox')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-bakery-100 file:text-bakery-700 hover:file:bg-bakery-200 cursor-pointer">
                                 </div>
                                 <div id="adminMediaPreviewBox" class="hidden pt-1"></div>
-                                <input type="url" id="newProdImage" placeholder="Or paste direct Image / Video URL (optional)" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs outline-none">
+                                <input type="url" id="newProdImage" placeholder="Direct Image / Video URL (auto-filled when editing)" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs outline-none">
                             </div>
                         </div>
-                        <button id="adminAddProdBtn" type="button" onclick="adminAddProduct()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-plus"></i> Add Pre-Made Cake & Upload
+                        <button id="adminAddProdBtn" type="button" onclick="adminSaveProductForm()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus"></i> Add Pre-Made Cake & Sync Cloud
                         </button>
                     </div>
 
                     <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Current Pre-Made Cakes on Home Screen</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Current Pre-Made Cakes (Edit or Remove)</h4>
                         <div id="adminProductsList" class="space-y-2"></div>
                     </div>
                 </div>
 
-                <!-- TAB 2: ADD & REMOVE PARTY ACCESSORIES WITH IMAGES & DETAILS -->
+                <!-- TAB 2: ADD, EDIT & REMOVE PARTY ACCESSORIES -->
                 <div id="adminAccessoriesTab" class="hidden space-y-4 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="bg-amber-50/80 border border-amber-200 rounded-2xl p-3.5 space-y-3">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-amber-950">Add New Party Accessory (with Image & Details)</h4>
+                        <div class="flex items-center justify-between">
+                            <h4 id="accFormHeading" class="text-xs font-bold uppercase tracking-wider text-amber-950">Add New Party Accessory</h4>
+                            <button id="cancelEditAccBtn" type="button" onclick="resetAccessoryForm()" class="hidden text-xs font-bold text-slate-600 hover:text-rose-600">
+                                ✕ Cancel Edit
+                            </button>
+                        </div>
+                        <input type="hidden" id="editAccId" value="">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                            <input type="text" id="newAccName" placeholder="Accessory Name (e.g. Golden Crown Tiara)" class="px-3 py-2 rounded-xl border border-amber-200 bg-white text-xs font-medium outline-none">
-                            <input type="number" id="newAccPrice" placeholder="Price ₹ (e.g. 120)" class="px-3 py-2 rounded-xl border border-amber-200 bg-white text-xs font-medium outline-none">
-                            <input type="text" id="newAccDesc" placeholder="Accessory Full Details (size, material, pack count)" class="sm:col-span-2 px-3 py-2 rounded-xl border border-amber-200 bg-white text-xs font-medium outline-none">
+                            <input type="text" id="newAccName" placeholder="Accessory Name (e.g. Sparkle Fountain Candle)" class="px-3 py-2 rounded-xl border border-amber-200 bg-white text-xs font-medium outline-none">
+                            <input type="number" id="newAccPrice" placeholder="Price ₹ (e.g. 40)" class="px-3 py-2 rounded-xl border border-amber-200 bg-white text-xs font-medium outline-none">
+                            <textarea id="newAccDesc" rows="2" placeholder="Accessory Full Details (size, material, pack count)" class="sm:col-span-2 px-3 py-2 rounded-xl border border-amber-200 bg-white text-xs font-medium outline-none"></textarea>
 
                             <div class="sm:col-span-2 bg-white p-3 rounded-xl border border-dashed border-amber-300 space-y-2">
                                 <div class="flex items-center justify-between flex-wrap gap-2">
@@ -941,21 +1038,21 @@
                                     <input type="file" id="newAccMediaFile" accept="image/*" onchange="previewAdminMediaFile(this, 'adminAccPreviewBox')" class="text-xs text-slate-600 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-amber-100 file:text-amber-800 hover:file:bg-amber-200 cursor-pointer">
                                 </div>
                                 <div id="adminAccPreviewBox" class="hidden pt-1"></div>
-                                <input type="url" id="newAccImage" placeholder="Or paste direct Accessory Image URL (optional)" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs outline-none">
+                                <input type="url" id="newAccImage" placeholder="Direct Accessory Image URL (auto-filled when editing)" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 bg-slate-50 text-xs outline-none">
                             </div>
                         </div>
-                        <button id="adminAddAccBtn" type="button" onclick="adminAddAccessory()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
+                        <button id="adminAddAccBtn" type="button" onclick="adminSaveAccessoryForm()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
                             <i class="fa-solid fa-plus"></i> Add Accessory & Sync Cloud
                         </button>
                     </div>
 
                     <div>
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Current Party Accessories</h4>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Current Party Accessories (Edit or Remove)</h4>
                         <div id="adminAccessoriesList" class="space-y-2"></div>
                     </div>
                 </div>
 
-                <!-- TAB 3: DYNAMIC 3D CAKE PRICE CHART EDITOR -->
+                <!-- TAB 3: DYNAMIC 3D PRICE CHART, FLAVORS & DECORATIONS EDITOR -->
                 <div id="adminPricingTab" class="hidden space-y-4 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 flex items-center justify-between flex-wrap gap-2">
                         <div>
@@ -1006,7 +1103,7 @@
                     <div id="adminSaveToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold p-2.5 rounded-xl text-center"></div>
 
                     <button type="button" onclick="saveAdminPriceChart()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Save Price Chart to Cloud
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Save All 3D Prices to Cloud
                     </button>
                 </div>
 
@@ -1196,7 +1293,7 @@
         ];
 
         // ==========================================
-        // APPLICATION STATE
+        // APPLICATION & ORDER CART STATE
         // ==========================================
         let state = {
             tiers: 1,
@@ -1207,9 +1304,11 @@
             dripId: 'choco',
             decorations: ['sprinkles', 'cherries'],
             topperId: 'hbd',
-            accessories: [],
             cakeMessage: 'Happy Birthday'
         };
+
+        // Unified Order Cart: holds Pre-Made Cakes, Custom 3D Cakes, and Party Accessories
+        let ORDER_CART = [];
 
         let activeMainView = 'home';
         let activeCatalogCategory = 'all';
@@ -1231,6 +1330,7 @@
             renderCatalogProducts();
             renderAllControls();
             updateEverything();
+            renderCartUI();
             await fetchPublicCloudData();
         };
 
@@ -1276,26 +1376,27 @@
         }
 
         // ==========================================
-        // MULTI-SECTION VIEW SWITCHER (HOME / ACCESSORIES / 3D STUDIO)
+        // MULTI-SECTION VIEW SWITCHER
         // ==========================================
         function switchMainView(viewName) {
             activeMainView = viewName;
-            ['home', 'accessories', 'studio'].forEach(v => {
+            ['home', 'accessories', 'studio', 'cart'].forEach(v => {
                 const section = document.getElementById(`view-${v}`);
                 const topBtn = document.getElementById(`topNav${v.charAt(0).toUpperCase() + v.slice(1)}`);
                 const botBtn = document.getElementById(`botNav${v.charAt(0).toUpperCase() + v.slice(1)}`);
 
                 if (v === viewName) {
                     section.classList.remove('hidden');
-                    if (topBtn) topBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition';
+                    if (topBtn) topBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition flex items-center gap-1.5';
                     if (botBtn) botBtn.className = 'flex flex-col items-center justify-center gap-0.5 text-bakery-700 font-bold';
                 } else {
                     section.classList.add('hidden');
-                    if (topBtn) topBtn.className = 'px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition';
+                    if (topBtn) topBtn.className = 'px-4 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition flex items-center gap-1.5';
                     if (botBtn) botBtn.className = 'flex flex-col items-center justify-center gap-0.5 text-slate-500 hover:text-bakery-700';
                 }
             });
 
+            if (viewName === 'cart') renderCartUI();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1328,8 +1429,180 @@
         }
 
         function openWhatsAppSupport() {
-            const msg = "Hello Sajiya's Cake! I would like to enquire about a custom cake order.";
+            const msg = "Hello Sajiya's Cake! I would like to enquire about a cake order.";
             window.open(`https://wa.me/${SAJIYAS_CAKE_CONFIG.shopWhatsApp}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        // ==========================================
+        // ORDER CART MANAGEMENT (ADD, QTY, REMOVE, CLEAR)
+        // ==========================================
+        function addPreMadeProductToCart(prodId) {
+            const prod = CATALOG_PRODUCTS.find(p => p.id === prodId);
+            if (!prod) return;
+
+            const existing = ORDER_CART.find(item => item.refId === prod.id && item.type === 'premade');
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                ORDER_CART.push({
+                    cartId: 'cart-' + Date.now() + Math.random(),
+                    type: 'premade',
+                    refId: prod.id,
+                    name: prod.name,
+                    details: `${prod.category} • ${prod.desc || 'Fresh Pre-Made Cake'}`,
+                    unitPrice: Number(prod.price),
+                    qty: 1,
+                    imageUrl: prod.imageUrl || ''
+                });
+            }
+            renderCartUI();
+            showGlobalToast(`Added "${prod.name}" to Order Cart!`);
+        }
+
+        function addAccessoryToCart(accId) {
+            const acc = CATALOG_ACCESSORIES.find(a => a.id === accId);
+            if (!acc) return;
+
+            const existing = ORDER_CART.find(item => item.refId === acc.id && item.type === 'accessory');
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                ORDER_CART.push({
+                    cartId: 'cart-' + Date.now() + Math.random(),
+                    type: 'accessory',
+                    refId: acc.id,
+                    name: acc.name,
+                    details: acc.desc || 'Party Celebration Accessory',
+                    unitPrice: Number(acc.price),
+                    qty: 1,
+                    imageUrl: acc.imageUrl || ''
+                });
+            }
+            renderAccessories();
+            renderCartUI();
+            showGlobalToast(`Added "${acc.name}" to Order Cart!`);
+        }
+
+        function addCustomStudioCakeToCart() {
+            const { total } = getStudioBillBreakdown();
+            const tierInfo = TIER_META[state.tiers];
+            const weightInfo = PRICING.tierWeights[state.tiers][state.weightIndex];
+            const flv = FLAVOR_META.find(f => f.id === state.flavorId);
+            const displayMsg = state.cakeMessage.trim() || "Sajiya's Cake";
+
+            let colorSummary = [];
+            for (let i = 0; i < state.tiers; i++) {
+                const match = FROSTING_COLORS.find(c => c.hex.toLowerCase() === state.tierColors[i].toLowerCase());
+                colorSummary.push(`T${i+1}: ${match ? match.name : state.tierColors[i]}`);
+            }
+
+            const detailStr = `${tierInfo.name} (${weightInfo.label}) • ${flv.name} • ${state.eggless ? 'Eggless' : 'With Egg'} • Msg: "${displayMsg}" • ${colorSummary.join(', ')}`;
+
+            ORDER_CART.push({
+                cartId: 'cart-' + Date.now(),
+                type: 'custom3d',
+                refId: 'custom3d',
+                name: `Custom 3D ${tierInfo.name} (${flv.name})`,
+                details: detailStr,
+                unitPrice: total,
+                qty: 1,
+                snapshotState: JSON.parse(JSON.stringify(state))
+            });
+
+            renderCartUI();
+            switchMainView('cart');
+            showGlobalToast('Custom 3D Cake added to Final Order Cart!');
+        }
+
+        function updateCartItemQty(cartId, delta) {
+            const idx = ORDER_CART.findIndex(i => i.cartId === cartId);
+            if (idx === -1) return;
+            ORDER_CART[idx].qty += delta;
+            if (ORDER_CART[idx].qty <= 0) {
+                ORDER_CART.splice(idx, 1);
+            }
+            renderAccessories();
+            renderCartUI();
+        }
+
+        function removeCartItem(cartId) {
+            ORDER_CART = ORDER_CART.filter(i => i.cartId !== cartId);
+            renderAccessories();
+            renderCartUI();
+            showGlobalToast('Item removed from cart');
+        }
+
+        function clearEntireCart() {
+            ORDER_CART = [];
+            renderAccessories();
+            renderCartUI();
+            showGlobalToast('Order Cart cleared');
+        }
+
+        function getCartTotals() {
+            const totalItems = ORDER_CART.reduce((s, item) => s + item.qty, 0);
+            const grandTotal = ORDER_CART.reduce((s, item) => s + (item.unitPrice * item.qty), 0);
+            return { totalItems, grandTotal };
+        }
+
+        function renderCartUI() {
+            const { totalItems, grandTotal } = getCartTotals();
+            const formatted = `₹${grandTotal.toLocaleString('en-IN')}`;
+
+            document.getElementById('headerCartTotal').textContent = formatted;
+            document.getElementById('headerCartCount').textContent = totalItems;
+            document.getElementById('desktopNavCartCount').textContent = totalItems;
+            document.getElementById('drawerCartBadge').textContent = totalItems;
+            document.getElementById('accViewCartCount').textContent = totalItems;
+            document.getElementById('mobileBarCartCount').textContent = totalItems;
+            document.getElementById('mobileTotalPrice').textContent = formatted;
+            document.getElementById('cartPageItemCount').textContent = totalItems;
+            document.getElementById('cartSubtotalText').textContent = formatted;
+            document.getElementById('cartGrandTotalText').textContent = formatted;
+
+            const container = document.getElementById('cartItemsContainer');
+            if (!ORDER_CART.length) {
+                container.innerHTML = `
+                    <div class="text-center py-10 space-y-3">
+                        <div class="w-14 h-14 rounded-full bg-bakery-50 text-bakery-600 flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <p class="text-sm font-bold text-slate-700">Your Order Cart is currently empty</p>
+                        <p class="text-xs text-slate-500">Add a Pre-Made Cake, Party Accessories, or design a Custom 3D Cake.</p>
+                        <div class="pt-2 flex justify-center gap-2">
+                            <button onclick="switchMainView('home')" class="bg-bakery-700 text-white text-xs font-bold px-4 py-2 rounded-full">Browse Pre-Made Cakes</button>
+                            <button onclick="switchMainView('studio')" class="bg-white border border-bakery-300 text-bakery-700 text-xs font-bold px-4 py-2 rounded-full">3D Cake Studio</button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = ORDER_CART.map(item => `
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-start justify-between gap-3">
+                    <div class="min-w-0 flex-1 space-y-1">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                                item.type === 'custom3d' ? 'bg-purple-100 text-purple-800' : (item.type === 'accessory' ? 'bg-amber-100 text-amber-800' : 'bg-bakery-100 text-bakery-800')
+                            }">${item.type === 'custom3d' ? '3D Custom' : (item.type === 'accessory' ? 'Accessory' : 'Pre-Made')}</span>
+                            <h4 class="font-bold text-sm text-slate-900 truncate">${item.name}</h4>
+                        </div>
+                        <p class="text-xs text-slate-500 leading-relaxed">${item.details}</p>
+                        <div class="font-extrabold text-sm text-bakery-700 pt-0.5">₹${(item.unitPrice * item.qty).toLocaleString('en-IN')} <span class="text-[11px] font-normal text-slate-400">(₹${item.unitPrice} × ${item.qty})</span></div>
+                    </div>
+
+                    <div class="flex flex-col items-end gap-2 shrink-0">
+                        <button type="button" onclick="removeCartItem('${item.cartId}')" class="text-xs text-rose-600 hover:text-rose-800 font-semibold">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <div class="flex items-center bg-white border border-slate-200 rounded-full overflow-hidden">
+                            <button type="button" onclick="updateCartItemQty('${item.cartId}', -1)" class="w-7 h-7 flex items-center justify-center text-xs font-bold text-slate-700 hover:bg-slate-100">−</button>
+                            <span class="px-2.5 text-xs font-extrabold text-slate-900">${item.qty}</span>
+                            <button type="button" onclick="updateCartItemQty('${item.cartId}', 1)" class="w-7 h-7 flex items-center justify-center text-xs font-bold text-slate-700 hover:bg-slate-100">+</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // ==========================================
@@ -1409,9 +1682,12 @@
                                 <div class="font-extrabold text-sm sm:text-base text-bakery-700 pt-0.5">₹${Number(prod.price).toLocaleString('en-IN')}.00</div>
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <button type="button" onclick="loadProductIntoStudio('${prod.id}')" class="w-full py-2 px-3 rounded-full border border-bakery-600 text-bakery-700 hover:bg-bakery-700 hover:text-white font-bold text-xs transition active:scale-95">
-                                Customize & Order
+                        <div class="mt-3 space-y-1.5">
+                            <button type="button" onclick="addPreMadeProductToCart('${prod.id}')" class="w-full py-2 px-3 rounded-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-xs transition active:scale-95 flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button type="button" onclick="loadProductIntoStudio('${prod.id}')" class="w-full py-1.5 px-3 rounded-full border border-bakery-300 text-bakery-700 hover:bg-bakery-50 font-semibold text-[11px] transition">
+                                Customize in 3D
                             </button>
                         </div>
                     </div>
@@ -1433,7 +1709,6 @@
                     dripId: prod.preset.dripId || 'choco',
                     decorations: [...(prod.preset.decorations || [])],
                     topperId: prod.preset.topperId || 'hbd',
-                    accessories: [...state.accessories],
                     cakeMessage: prod.preset.cakeMessage || prod.name
                 };
             } else {
@@ -1445,11 +1720,11 @@
             renderAllControls();
             updateEverything();
             switchMainView('studio');
-            showGlobalToast(`Opened "${prod.name}" in 3D Cake Studio!`);
+            showGlobalToast(`Loaded "${prod.name}" into 3D Studio!`);
         }
 
         // ==========================================
-        // SEPARATE PARTY ACCESSORIES SECTION (WHITE CARDS)
+        // SEPARATE PARTY ACCESSORIES SECTION
         // ==========================================
         function renderAccessories() {
             const container = document.getElementById('accessoriesGrid');
@@ -1463,7 +1738,7 @@
             }
 
             container.innerHTML = filtered.map(acc => {
-                const isSelected = state.accessories.includes(acc.id);
+                const inCart = ORDER_CART.find(i => i.refId === acc.id && i.type === 'accessory');
                 const price = Number(acc.price || 0);
                 const mediaHtml = acc.imageUrl
                     ? `<img src="${acc.imageUrl}" alt="${acc.name}" class="w-full h-36 sm:h-44 object-cover rounded-2xl border border-slate-100" />`
@@ -1474,35 +1749,26 @@
                        </div>`;
 
                 return `
-                    <div class="bg-white rounded-2xl sm:rounded-3xl border-2 p-2.5 sm:p-3.5 shadow-xs transition flex flex-col justify-between ${isSelected ? 'border-bakery-700 bg-bakery-50/20' : 'border-slate-200 hover:border-bakery-300'}">
+                    <div class="bg-white rounded-2xl sm:rounded-3xl border-2 p-2.5 sm:p-3.5 shadow-xs transition flex flex-col justify-between ${inCart ? 'border-bakery-700 bg-bakery-50/20' : 'border-slate-200 hover:border-bakery-300'}">
                         <div>
                             <div class="relative">
                                 ${mediaHtml}
-                                ${isSelected ? `<span class="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs"><i class="fa-solid fa-check mr-0.5"></i>Added</span>` : ''}
+                                ${inCart ? `<span class="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">In Cart (${inCart.qty})</span>` : ''}
                             </div>
                             <div class="text-center mt-3 space-y-1 px-1">
                                 <h3 class="font-bold text-xs sm:text-sm text-slate-900 line-clamp-1">${acc.name}</h3>
                                 <p class="text-[11px] text-slate-500 line-clamp-2 min-h-[30px]">${acc.desc || ''}</p>
-                                <div class="font-extrabold text-sm sm:text-base text-bakery-700 pt-0.5">+₹${price}.00</div>
+                                <div class="font-extrabold text-sm sm:text-base text-bakery-700 pt-0.5">₹${price}.00</div>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <button type="button" onclick="toggleAccessory('${acc.id}')" class="w-full py-2 px-3 rounded-full font-bold text-xs transition active:scale-95 ${
-                                isSelected
-                                    ? 'bg-bakery-700 text-white shadow-xs'
-                                    : 'border border-bakery-600 text-bakery-700 hover:bg-bakery-700 hover:text-white'
-                            }">
-                                ${isSelected ? 'Remove from Order' : 'Add to Order'}
+                            <button type="button" onclick="addAccessoryToCart('${acc.id}')" class="w-full py-2 px-3 rounded-full font-bold text-xs transition active:scale-95 bg-bakery-700 hover:bg-bakery-800 text-white flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
                             </button>
                         </div>
                     </div>
                 `;
             }).join('');
-
-            const count = state.accessories.length;
-            document.getElementById('accSelectedBadge').textContent = `${count} Selected`;
-            document.getElementById('drawerAccCountBadge').textContent = `${count}`;
-            document.getElementById('studioAccCount').textContent = `${count}`;
         }
 
         // ==========================================
@@ -1526,7 +1792,7 @@
 
         function updateEverything() {
             renderCakeSVG();
-            calculateAndRenderBill();
+            calculateAndRenderStudioBill();
             updatePreviewBadges();
         }
 
@@ -1981,20 +2247,15 @@
             img.crossOrigin = 'anonymous';
 
             img.onload = function () {
-                const { items, total } = getBillBreakdown();
-                const custName = document.getElementById('custName').value.trim() || 'Valued Customer';
-                const custPhone = document.getElementById('custPhone').value.trim() || 'Not provided';
+                const { grandTotal } = getCartTotals();
+                const custName = document.getElementById('custName').value.trim();
+                const custPhone = document.getElementById('custPhone').value.trim();
+                const custAddress = document.getElementById('custAddress').value.trim() || 'Local Pickup';
                 const custDate = document.getElementById('custDate').value || 'Today';
+                const custTimeSlot = document.getElementById('custTimeSlot').value;
                 const custNotes = document.getElementById('custNotes').value.trim() || 'None';
-                const displayMsg = state.cakeMessage.trim() || "Sajiya's Cake";
 
-                let colorSummary = [];
-                for (let i = 0; i < state.tiers; i++) {
-                    const match = FROSTING_COLORS.find(c => c.hex.toLowerCase() === state.tierColors[i].toLowerCase());
-                    colorSummary.push(`T${i+1}: ${match ? match.name : state.tierColors[i]}`);
-                }
-
-                const canvasHeight = 760 + (items.length * 28);
+                const canvasHeight = 760 + (ORDER_CART.length * 46);
                 const canvas = document.createElement('canvas');
                 canvas.width = 680;
                 canvas.height = canvasHeight;
@@ -2008,36 +2269,38 @@
                 ctx.fillStyle = '#ffffff';
                 ctx.font = 'bold 28px Georgia, serif';
                 ctx.textAlign = 'center';
-                ctx.fillText("Sajiya's Cake — Custom Order Slip", canvas.width / 2, 42);
+                ctx.fillText("Sajiya's Cake — Delivery Order Receipt", canvas.width / 2, 42);
                 ctx.font = '15px sans-serif';
                 ctx.fillStyle = '#f5d4ea';
-                ctx.fillText(`Order ID: ${currentOrderId}   |   Delivery Date: ${custDate}`, canvas.width / 2, 68);
+                ctx.fillText(`Order ID: ${currentOrderId}   |   ${custDate} (${custTimeSlot})`, canvas.width / 2, 68);
 
+                // Cake Sample Box
                 ctx.fillStyle = '#fdf7fb';
-                ctx.fillRect(28, 100, canvas.width - 56, 360);
+                ctx.fillRect(28, 100, canvas.width - 56, 340);
                 ctx.strokeStyle = '#f5d4ea';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(28, 100, canvas.width - 56, 360);
+                ctx.strokeRect(28, 100, canvas.width - 56, 340);
+                ctx.drawImage(img, 190, 106, 300, 322);
 
-                ctx.drawImage(img, 180, 108, 320, 344);
-
-                let y = 482;
+                // Customer & Delivery Box
+                let y = 458;
                 ctx.fillStyle = '#faebf5';
-                ctx.fillRect(28, y, canvas.width - 56, 132);
+                ctx.fillRect(28, y, canvas.width - 56, 134);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#451034';
                 ctx.font = 'bold 16px sans-serif';
                 ctx.fillText(`Customer: ${custName}   |   Phone: ${custPhone}`, 44, y + 30);
-                ctx.fillText(`Message on Cake: "${displayMsg}"`, 44, y + 60);
                 ctx.font = '15px sans-serif';
-                ctx.fillStyle = '#334155';
-                ctx.fillText(`Tier Colors: ${colorSummary.join(' • ')}`, 44, y + 88);
-                ctx.fillText(`Notes: ${custNotes}`, 44, y + 114);
+                ctx.fillStyle = '#1e293b';
+                ctx.fillText(`Delivery Address: ${custAddress.slice(0, 62)}`, 44, y + 60);
+                ctx.fillText(`Date & Slot: ${custDate} • ${custTimeSlot}`, 44, y + 88);
+                ctx.fillText(`Notes: ${custNotes.slice(0, 65)}`, 44, y + 114);
 
-                y += 156;
+                // Cart Items List
+                y += 158;
                 ctx.fillStyle = '#7c1d5e';
                 ctx.font = 'bold 16px sans-serif';
-                ctx.fillText('SELECTED CAKE, ACCESSORIES & PRICE:', 32, y);
+                ctx.fillText('ORDER CART ITEMS & SPECIFICATIONS:', 32, y);
                 y += 12;
                 ctx.strokeStyle = '#e2e8f0';
                 ctx.beginPath();
@@ -2045,31 +2308,36 @@
                 ctx.lineTo(canvas.width - 32, y);
                 ctx.stroke();
 
-                y += 26;
-                items.forEach(item => {
+                y += 28;
+                ORDER_CART.forEach(item => {
                     ctx.textAlign = 'left';
-                    ctx.fillStyle = '#1e293b';
-                    ctx.font = '16px sans-serif';
-                    ctx.fillText(`• ${item.label}`, 36, y);
+                    ctx.fillStyle = '#0f172a';
+                    ctx.font = 'bold 16px sans-serif';
+                    ctx.fillText(`• ${item.name} (×${item.qty})`, 36, y);
 
                     ctx.textAlign = 'right';
-                    ctx.font = 'bold 16px sans-serif';
-                    ctx.fillText(item.price === 0 ? 'Included' : `₹${item.price}`, canvas.width - 36, y);
-                    y += 28;
+                    ctx.fillText(`₹${(item.unitPrice * item.qty).toLocaleString('en-IN')}`, canvas.width - 36, y);
+
+                    ctx.textAlign = 'left';
+                    ctx.fillStyle = '#64748b';
+                    ctx.font = '13px sans-serif';
+                    ctx.fillText(`   ${item.details.slice(0, 78)}`, 36, y + 19);
+                    y += 46;
                 });
 
+                // Grand Total Footer
                 y += 8;
                 ctx.fillStyle = '#451034';
                 ctx.fillRect(28, y, canvas.width - 56, 62);
                 ctx.textAlign = 'left';
                 ctx.fillStyle = '#ffffff';
                 ctx.font = 'bold 20px sans-serif';
-                ctx.fillText('GRAND TOTAL AMOUNT', 46, y + 39);
+                ctx.fillText('GRAND TOTAL PAYABLE', 46, y + 39);
 
                 ctx.textAlign = 'right';
                 ctx.fillStyle = '#fde047';
                 ctx.font = 'bold 26px sans-serif';
-                ctx.fillText(`₹${total.toLocaleString('en-IN')}`, canvas.width - 46, y + 41);
+                ctx.fillText(`₹${grandTotal.toLocaleString('en-IN')}`, canvas.width - 46, y + 41);
 
                 latestCakeImageDataUrl = canvas.toDataURL('image/png');
                 canvas.toBlob(async (blob) => {
@@ -2180,19 +2448,6 @@
             updateEverything();
         }
 
-        function toggleAccessory(accId) {
-            const idx = state.accessories.indexOf(accId);
-            if (idx > -1) {
-                state.accessories.splice(idx, 1);
-                showGlobalToast('Accessory removed from order');
-            } else {
-                state.accessories.push(accId);
-                showGlobalToast('Accessory added to your order!');
-            }
-            renderAccessories();
-            updateEverything();
-        }
-
         function clearDecorationsOnly() {
             state.decorations = [];
             state.topperId = 'none';
@@ -2232,21 +2487,16 @@
                 dripId: 'none',
                 decorations: [],
                 topperId: 'none',
-                accessories: [],
                 cakeMessage: ''
             };
             document.getElementById('egglessToggle').checked = true;
             document.getElementById('cakeMessageInput').value = '';
             document.getElementById('charCount').textContent = '0/24';
-            document.getElementById('custName').value = '';
-            document.getElementById('custPhone').value = '';
-            document.getElementById('custNotes').value = '';
-            setDefaultTomorrowDate();
 
             renderAllControls();
             updateEverything();
             switchMainView('studio');
-            showGlobalToast('Selection reset! Start designing a new cake ✨');
+            showGlobalToast('3D Studio reset! Start designing a new cake ✨');
         }
 
         function scrollToSection(id) {
@@ -2255,9 +2505,9 @@
         }
 
         // ==========================================
-        // BILL CALCULATION & LIVE SUMMARY
+        // 3D STUDIO BILL CALCULATION
         // ==========================================
-        function getBillBreakdown() {
+        function getStudioBillBreakdown() {
             const items = [];
             const tierInfo = TIER_META[state.tiers];
             const weightInfo = PRICING.tierWeights[state.tiers][state.weightIndex];
@@ -2290,19 +2540,12 @@
                 items.push({ label: `Topper: ${topper.name}`, price: Number(PRICING.toppers[topper.id] || 0) });
             }
 
-            state.accessories.forEach(accId => {
-                const acc = CATALOG_ACCESSORIES.find(a => a.id === accId);
-                if (acc) {
-                    items.push({ label: `Accessory: ${acc.name}`, price: Number(acc.price || 0) });
-                }
-            });
-
             const total = items.reduce((sum, item) => sum + item.price, 0);
             return { items, total };
         }
 
-        function calculateAndRenderBill() {
-            const { items, total } = getBillBreakdown();
+        function calculateAndRenderStudioBill() {
+            const { items, total } = getStudioBillBreakdown();
 
             const listEl = document.getElementById('billItemsList');
             listEl.innerHTML = items.map(item => `
@@ -2314,8 +2557,7 @@
 
             const formatted = `₹${total.toLocaleString('en-IN')}`;
             document.getElementById('desktopTotalPrice').textContent = formatted;
-            document.getElementById('mobileTotalPrice').textContent = formatted;
-            document.getElementById('headerTotalPrice').textContent = formatted;
+            document.getElementById('btnStudioPrice').textContent = formatted;
         }
 
         function updatePreviewBadges() {
@@ -2323,7 +2565,6 @@
             const flv = FLAVOR_META.find(f => f.id === state.flavorId);
 
             document.getElementById('previewTierBadge').innerHTML = `<i class="fa-solid fa-layer-group text-bakery-700"></i> ${state.tiers} Tier (${weightInfo.label.split(' ')[0]} kg)`;
-            document.getElementById('mobileTierSummary').textContent = `${state.tiers} Tier • ${weightInfo.label.split(' ')[0]} kg`;
             document.getElementById('previewFlavorBadge').textContent = `Flavor: ${flv.name}`;
 
             const dietBadge = document.getElementById('previewDietBadge');
@@ -2340,7 +2581,7 @@
                 dotsHtml += `<span class="w-4 h-4 rounded-full border border-slate-400 shadow-sm inline-block" style="background-color: ${state.tierColors[i]}" title="Tier ${i+1}"></span>`;
             }
             document.getElementById('activeColorDots').innerHTML = dotsHtml;
-            document.getElementById('decorationCountBadge').textContent = `${state.decorations.length} Decor • ${state.accessories.length} Acc`;
+            document.getElementById('decorationCountBadge').textContent = `${state.decorations.length} Decors`;
         }
 
         // ==========================================
@@ -2417,63 +2658,77 @@
         }
 
         // ==========================================
-        // ORDER MODAL, RECEIPT IMAGE & WHATSAPP CHAT
+        // FINAL CART CHECKOUT, RECEIPT IMAGE & WHATSAPP
         // ==========================================
-        function getFormattedOrderSummary(receiptImageUrl = '') {
-            const { items, total } = getBillBreakdown();
-            const custName = document.getElementById('custName').value.trim() || 'Customer';
-            const custPhone = document.getElementById('custPhone').value.trim() || 'N/A';
-            const custDate = document.getElementById('custDate').value || 'N/A';
-            const custNotes = document.getElementById('custNotes').value.trim() || 'None';
-            const displayMsg = state.cakeMessage.trim() || "Sajiya's Cake";
+        function placeFinalCartOrder() {
+            if (!ORDER_CART.length) {
+                showGlobalToast('Your Order Cart is empty! Add a cake or accessory first.');
+                return;
+            }
+            const custName = document.getElementById('custName').value.trim();
+            const custPhone = document.getElementById('custPhone').value.trim();
+            const custAddress = document.getElementById('custAddress').value.trim();
 
-            let colorSummary = [];
-            for (let i = 0; i < state.tiers; i++) {
-                const match = FROSTING_COLORS.find(c => c.hex.toLowerCase() === state.tierColors[i].toLowerCase());
-                colorSummary.push(`Tier ${i+1}: ${match ? match.name : state.tierColors[i]}`);
+            if (!custName || !custPhone || !custAddress) {
+                showGlobalToast('Please enter Customer Name, Phone Number & Delivery Address!');
+                return;
             }
 
+            openOrderModal();
+        }
+
+        function getFormattedOrderSummary(receiptImageUrl = '') {
+            const { grandTotal } = getCartTotals();
+            const custName = document.getElementById('custName').value.trim() || 'Customer';
+            const custPhone = document.getElementById('custPhone').value.trim() || 'N/A';
+            const custAddress = document.getElementById('custAddress').value.trim() || 'Local Pickup';
+            const custDate = document.getElementById('custDate').value || 'N/A';
+            const custTimeSlot = document.getElementById('custTimeSlot').value;
+            const custNotes = document.getElementById('custNotes').value.trim() || 'None';
+
+            const itemLines = ORDER_CART.map(item => `• ${item.name} (×${item.qty}) — ₹${item.unitPrice * item.qty}\n   _${item.details}_`);
+
             const lines = [
-                `🎂 *SAJIYA'S CAKE - NEW CUSTOM ORDER* 🎂`,
+                `🎂 *SAJIYA'S CAKE - NEW DELIVERY ORDER* 🎂`,
                 `🆔 *Order ID:* ${currentOrderId}`,
                 `--------------------------------`,
                 `👤 *Customer:* ${custName}`,
                 `📞 *Phone:* ${custPhone}`,
-                `📅 *Delivery Date:* ${custDate}`,
-                `✍️ *Message on Cake:* "${displayMsg}"`,
-                `🎨 *Tier Colors:* ${colorSummary.join(', ')}`,
+                `📍 *Address:* ${custAddress}`,
+                `📅 *Delivery:* ${custDate} (${custTimeSlot})`,
                 `--------------------------------`,
-                `*ITEMIZED BILL & ACCESSORIES:*`,
-                ...items.map(i => `• ${i.label}: ₹${i.price}`),
+                `*CART ITEMS:*`,
+                ...itemLines,
                 `--------------------------------`,
-                `💰 *GRAND TOTAL: ₹${total}*`,
+                `💰 *GRAND TOTAL: ₹${grandTotal}*`,
                 `📝 *Notes:* ${custNotes}`
             ];
 
             if (receiptImageUrl) {
                 lines.push(`--------------------------------`);
-                lines.push(`🖼️ *Selected Cake & Receipt Image:* ${receiptImageUrl}`);
+                lines.push(`🖼️ *Order Receipt & Design Image:* ${receiptImageUrl}`);
             }
 
+            const firstCake = ORDER_CART.find(i => i.type === 'custom3d' || i.type === 'premade');
             return {
                 text: lines.join('\n'),
                 payload: {
                     orderId: currentOrderId,
                     customerName: custName,
                     customerPhone: custPhone,
-                    deliveryDate: custDate,
-                    cakeMessage: displayMsg,
+                    deliveryDate: `${custDate} (${custTimeSlot})`,
+                    cakeMessage: firstCake ? firstCake.name : 'Order Cart',
                     tiers: state.tiers,
                     weight: PRICING.tierWeights[state.tiers][state.weightIndex].label,
                     eggless: state.eggless,
                     flavor: FLAVOR_META.find(f => f.id === state.flavorId).name,
-                    tierColors: colorSummary,
+                    tierColors: [custAddress],
                     drip: DRIP_META.find(d => d.id === state.dripId).name,
-                    decorations: state.decorations,
-                    accessories: state.accessories,
+                    decorations: ORDER_CART.map(i => `${i.name} x${i.qty}`),
+                    accessories: [],
                     topper: TOPPER_META.find(t => t.id === state.topperId).name,
-                    totalAmount: total,
-                    notes: custNotes
+                    totalAmount: grandTotal,
+                    notes: `Addr: ${custAddress} | ${custNotes}`
                 }
             };
         }
@@ -2503,7 +2758,7 @@
 
         async function submitAndSendWhatsApp() {
             const toast = document.getElementById('orderStatusToast');
-            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving order & attaching Receipt Image...`;
+            toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving delivery order & preparing Receipt Image...`;
             toast.classList.remove('hidden');
 
             const fileName = `Sajiyas-Cake-${currentOrderId.replace('#', '')}.png`;
@@ -2525,7 +2780,7 @@
                 try {
                     const file = new File([latestCakeImageBlob], fileName, { type: 'image/png' });
                     if (!navigator.canShare || navigator.canShare({ files: [file] })) {
-                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Select WhatsApp to send Image + Details!`;
+                        toast.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Select WhatsApp to send Receipt Image + Details!`;
                         await navigator.share({
                             files: [file],
                             title: "Sajiya's Cake Order",
@@ -2565,7 +2820,7 @@
         }
 
         // =====================================================
-        // ADMIN CONSOLE: PRE-MADE CAKES, ACCESSORIES, PRICING
+        // ADMIN CONSOLE: FULL EDIT & REMOVE FOR ALL SECTIONS
         // =====================================================
         function openAdminModal() {
             const modal = document.getElementById('adminModal');
@@ -2657,7 +2912,7 @@
             box.classList.remove('hidden');
         }
 
-        // --- ADMIN PRE-MADE CAKES ---
+        // --- ADMIN PRE-MADE CAKES: ADD, EDIT & REMOVE ---
         function renderAdminProductsList() {
             const container = document.getElementById('adminProductsList');
             if (!CATALOG_PRODUCTS.length) {
@@ -2667,30 +2922,68 @@
             container.innerHTML = CATALOG_PRODUCTS.map(prod => {
                 const hasVid = isVideoUrl(prod.imageUrl, prod.mediaType);
                 return `
-                    <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
-                        <div class="min-w-0">
+                    <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="min-w-0 flex-1">
                             <div class="font-bold text-xs sm:text-sm text-slate-800 truncate">
                                 ${prod.name} <span class="text-bakery-700">(₹${prod.price})</span>
                                 ${hasVid ? '<span class="ml-1 text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded">Video</span>' : (prod.imageUrl ? '<span class="ml-1 text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded">Photo</span>' : '')}
                             </div>
                             <div class="text-[11px] text-slate-500 truncate">${prod.category} • ${prod.desc || ''}</div>
                         </div>
-                        <button type="button" onclick="adminRemoveProduct('${prod.id}')" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl shrink-0">
-                            <i class="fa-solid fa-trash mr-1"></i> Remove
-                        </button>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" onclick="adminStartEditProduct('${prod.id}')" class="text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1.5 rounded-xl">
+                                <i class="fa-solid fa-pen mr-1"></i> Edit
+                            </button>
+                            <button type="button" onclick="adminRemoveProduct('${prod.id}')" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 py-1.5 rounded-xl">
+                                <i class="fa-solid fa-trash mr-1"></i> Remove
+                            </button>
+                        </div>
                     </div>
                 `;
             }).join('');
         }
 
-        async function adminAddProduct() {
+        function adminStartEditProduct(prodId) {
+            const prod = CATALOG_PRODUCTS.find(p => p.id === prodId);
+            if (!prod) return;
+
+            document.getElementById('editProdId').value = prod.id;
+            document.getElementById('newProdName').value = prod.name;
+            document.getElementById('newProdCategory').value = prod.category || "What's Trending";
+            document.getElementById('newProdPrice').value = prod.price;
+            document.getElementById('newProdTag').value = prod.tag || '';
+            document.getElementById('newProdDesc').value = prod.desc || '';
+            document.getElementById('newProdImage').value = prod.imageUrl || '';
+
+            document.getElementById('prodFormHeading').textContent = `Editing: ${prod.name}`;
+            document.getElementById('cancelEditProdBtn').classList.remove('hidden');
+            document.getElementById('adminAddProdBtn').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Update Cake Details & Save`;
+            document.getElementById('adminProductsTab').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetProductForm() {
+            document.getElementById('editProdId').value = '';
+            document.getElementById('newProdName').value = '';
+            document.getElementById('newProdPrice').value = '';
+            document.getElementById('newProdTag').value = '';
+            document.getElementById('newProdDesc').value = '';
+            document.getElementById('newProdImage').value = '';
+            document.getElementById('newProdMediaFile').value = '';
+            document.getElementById('adminMediaPreviewBox').classList.add('hidden');
+            document.getElementById('prodFormHeading').textContent = 'Add New Pre-Made Cake';
+            document.getElementById('cancelEditProdBtn').classList.add('hidden');
+            document.getElementById('adminAddProdBtn').innerHTML = `<i class="fa-solid fa-plus"></i> Add Pre-Made Cake & Sync Cloud`;
+        }
+
+        async function adminSaveProductForm() {
+            const editId = document.getElementById('editProdId').value;
             const name = document.getElementById('newProdName').value.trim();
             const category = document.getElementById('newProdCategory').value;
             const price = Number(document.getElementById('newProdPrice').value) || 500;
             const tag = document.getElementById('newProdTag').value.trim() || 'Special';
             const desc = document.getElementById('newProdDesc').value.trim() || 'Fresh custom baked cake';
             let imageUrl = document.getElementById('newProdImage').value.trim();
-            let mediaType = 'preset';
+            let mediaType = imageUrl ? (isVideoUrl(imageUrl) ? 'video/mp4' : 'image/jpeg') : 'preset';
 
             if (!name) {
                 showGlobalToast('Please enter a Cake Name!');
@@ -2706,49 +2999,56 @@
                 btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading...`;
                 const uploadedUrl = await uploadBlobToCloud(selectedFile, selectedFile.name, selectedFile.type);
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-plus"></i> Add Pre-Made Cake & Upload`;
 
                 if (uploadedUrl) {
                     imageUrl = uploadedUrl;
                     mediaType = selectedFile.type;
                 } else {
+                    btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Cake`;
                     showGlobalToast('Upload failed — check file size (<15MB)');
                     return;
                 }
-            } else if (imageUrl) {
-                mediaType = isVideoUrl(imageUrl) ? 'video/mp4' : 'image/jpeg';
             }
 
-            const newProd = {
-                id: 'prod-' + Date.now(),
-                name,
-                category,
-                price,
-                tag,
-                desc,
-                imageUrl,
-                mediaType,
-                preset: { ...state }
-            };
+            if (editId) {
+                const idx = CATALOG_PRODUCTS.findIndex(p => p.id === editId);
+                if (idx > -1) {
+                    CATALOG_PRODUCTS[idx] = {
+                        ...CATALOG_PRODUCTS[idx],
+                        name,
+                        category,
+                        price,
+                        tag,
+                        desc,
+                        imageUrl,
+                        mediaType
+                    };
+                }
+                showGlobalToast(`Updated "${name}"!`);
+            } else {
+                CATALOG_PRODUCTS.unshift({
+                    id: 'prod-' + Date.now(),
+                    name,
+                    category,
+                    price,
+                    tag,
+                    desc,
+                    imageUrl,
+                    mediaType,
+                    preset: { ...state }
+                });
+                showGlobalToast(`Added "${name}" to Home Screen!`);
+            }
 
-            CATALOG_PRODUCTS.unshift(newProd);
+            resetProductForm();
             renderCatalogProducts();
             renderAdminProductsList();
-
-            document.getElementById('newProdName').value = '';
-            document.getElementById('newProdPrice').value = '';
-            document.getElementById('newProdTag').value = '';
-            document.getElementById('newProdDesc').value = '';
-            document.getElementById('newProdImage').value = '';
-            fileInput.value = '';
-            document.getElementById('adminMediaPreviewBox').classList.add('hidden');
-
             await syncProductsToCloud();
-            showGlobalToast(`Added "${name}" to Home Screen!`);
         }
 
         async function adminRemoveProduct(prodId) {
             CATALOG_PRODUCTS = CATALOG_PRODUCTS.filter(p => p.id !== prodId);
+            if (document.getElementById('editProdId').value === prodId) resetProductForm();
             renderCatalogProducts();
             renderAdminProductsList();
             await syncProductsToCloud();
@@ -2768,7 +3068,7 @@
             } catch (e) {}
         }
 
-        // --- ADMIN ACCESSORIES (ADD WITH IMAGE & DETAILS / REMOVE) ---
+        // --- ADMIN ACCESSORIES: ADD, EDIT & REMOVE ---
         function renderAdminAccessoriesList() {
             const container = document.getElementById('adminAccessoriesList');
             if (!CATALOG_ACCESSORIES.length) {
@@ -2776,25 +3076,60 @@
                 return;
             }
             container.innerHTML = CATALOG_ACCESSORIES.map(acc => `
-                <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
-                    <div class="flex items-center gap-2.5 min-w-0">
+                <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
                         ${acc.imageUrl
                             ? `<img src="${acc.imageUrl}" class="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" />`
                             : `<div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0"><i class="fa-solid ${acc.icon || 'fa-gift'}"></i></div>`
                         }
                         <div class="min-w-0">
-                            <div class="font-bold text-xs sm:text-sm text-slate-800 truncate">${acc.name} <span class="text-bakery-700">(+₹${acc.price})</span></div>
+                            <div class="font-bold text-xs sm:text-sm text-slate-800 truncate">${acc.name} <span class="text-bakery-700">(₹${acc.price})</span></div>
                             <div class="text-[11px] text-slate-500 truncate">${acc.desc || ''}</div>
                         </div>
                     </div>
-                    <button type="button" onclick="adminRemoveAccessory('${acc.id}')" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl shrink-0">
-                        <i class="fa-solid fa-trash mr-1"></i> Remove
-                    </button>
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <button type="button" onclick="adminStartEditAccessory('${acc.id}')" class="text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1.5 rounded-xl">
+                            <i class="fa-solid fa-pen mr-1"></i> Edit
+                        </button>
+                        <button type="button" onclick="adminRemoveAccessory('${acc.id}')" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 py-1.5 rounded-xl">
+                            <i class="fa-solid fa-trash mr-1"></i> Remove
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        async function adminAddAccessory() {
+        function adminStartEditAccessory(accId) {
+            const acc = CATALOG_ACCESSORIES.find(a => a.id === accId);
+            if (!acc) return;
+
+            document.getElementById('editAccId').value = acc.id;
+            document.getElementById('newAccName').value = acc.name;
+            document.getElementById('newAccPrice').value = acc.price;
+            document.getElementById('newAccDesc').value = acc.desc || '';
+            document.getElementById('newAccImage').value = acc.imageUrl || '';
+
+            document.getElementById('accFormHeading').textContent = `Editing: ${acc.name}`;
+            document.getElementById('cancelEditAccBtn').classList.remove('hidden');
+            document.getElementById('adminAddAccBtn').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Update Accessory & Save`;
+            document.getElementById('adminAccessoriesTab').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetAccessoryForm() {
+            document.getElementById('editAccId').value = '';
+            document.getElementById('newAccName').value = '';
+            document.getElementById('newAccPrice').value = '';
+            document.getElementById('newAccDesc').value = '';
+            document.getElementById('newAccImage').value = '';
+            document.getElementById('newAccMediaFile').value = '';
+            document.getElementById('adminAccPreviewBox').classList.add('hidden');
+            document.getElementById('accFormHeading').textContent = 'Add New Party Accessory';
+            document.getElementById('cancelEditAccBtn').classList.add('hidden');
+            document.getElementById('adminAddAccBtn').innerHTML = `<i class="fa-solid fa-plus"></i> Add Accessory & Sync Cloud`;
+        }
+
+        async function adminSaveAccessoryForm() {
+            const editId = document.getElementById('editAccId').value;
             const name = document.getElementById('newAccName').value.trim();
             const price = Number(document.getElementById('newAccPrice').value) || 50;
             const desc = document.getElementById('newAccDesc').value.trim() || 'Party celebration accessory';
@@ -2814,45 +3149,53 @@
                 btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading Photo...`;
                 const uploadedUrl = await uploadBlobToCloud(selectedFile, selectedFile.name, selectedFile.type);
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-plus"></i> Add Accessory & Sync Cloud`;
 
                 if (uploadedUrl) {
                     imageUrl = uploadedUrl;
                 } else {
+                    btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Accessory`;
                     showGlobalToast('Photo upload failed');
                     return;
                 }
             }
 
-            CATALOG_ACCESSORIES.unshift({
-                id: 'acc-' + Date.now(),
-                name,
-                price,
-                desc,
-                imageUrl,
-                icon: 'fa-gift'
-            });
+            if (editId) {
+                const idx = CATALOG_ACCESSORIES.findIndex(a => a.id === editId);
+                if (idx > -1) {
+                    CATALOG_ACCESSORIES[idx] = {
+                        ...CATALOG_ACCESSORIES[idx],
+                        name,
+                        price,
+                        desc,
+                        imageUrl
+                    };
+                }
+                showGlobalToast(`Updated "${name}"!`);
+            } else {
+                CATALOG_ACCESSORIES.unshift({
+                    id: 'acc-' + Date.now(),
+                    name,
+                    price,
+                    desc,
+                    imageUrl,
+                    icon: 'fa-gift'
+                });
+                showGlobalToast(`Added "${name}" to Accessories!`);
+            }
 
+            resetAccessoryForm();
             renderAccessories();
             renderAdminAccessoriesList();
-
-            document.getElementById('newAccName').value = '';
-            document.getElementById('newAccPrice').value = '';
-            document.getElementById('newAccDesc').value = '';
-            document.getElementById('newAccImage').value = '';
-            fileInput.value = '';
-            document.getElementById('adminAccPreviewBox').classList.add('hidden');
-
             await syncAccessoriesToCloud();
-            showGlobalToast(`Added "${name}" to Accessories Section!`);
         }
 
         async function adminRemoveAccessory(accId) {
             CATALOG_ACCESSORIES = CATALOG_ACCESSORIES.filter(a => a.id !== accId);
-            state.accessories = state.accessories.filter(id => id !== accId);
+            ORDER_CART = ORDER_CART.filter(i => !(i.refId === accId && i.type === 'accessory'));
+            if (document.getElementById('editAccId').value === accId) resetAccessoryForm();
             renderAccessories();
             renderAdminAccessoriesList();
-            updateEverything();
+            renderCartUI();
             await syncAccessoriesToCloud();
             showGlobalToast('Accessory removed!');
         }
@@ -2870,7 +3213,7 @@
             } catch (e) {}
         }
 
-        // --- ADMIN REVIEWS ---
+        // --- ADMIN REVIEWS: EDIT, MODIFY & DELETE ---
         function renderAdminReviewsEditor() {
             const container = document.getElementById('adminReviewsEditorList');
             if (!reviewsList.length) {
@@ -2890,7 +3233,7 @@
                                 <option value="1" ${rev.rating == 1 ? 'selected' : ''}>1 ★</option>
                             </select>
                             <button type="button" onclick="adminDeleteReview(${idx})" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-2.5 py-1 rounded-lg">
-                                <i class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-trash mr-1"></i> Remove
                             </button>
                         </div>
                     </div>
@@ -3061,7 +3404,7 @@
                                 <span class="font-extrabold text-bakery-700">₹${ord.total_amount}</span>
                             </div>
                             <div class="text-slate-600">
-                                ${ord.tiers} Tier (${ord.weight}) • ${ord.flavor} • Msg: "${ord.cake_message || ''}"
+                                ${ord.cake_message || ''} • ${ord.notes || ''}
                             </div>
                             <div class="flex items-center justify-between pt-1">
                                 <span class="text-[11px] text-slate-500">📞 ${ord.customer_phone} | 📅 ${ord.delivery_date}</span>
