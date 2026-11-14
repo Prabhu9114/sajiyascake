@@ -1,5 +1,16 @@
 export default {
   async fetch(request, env) {
+    try {
+      return await this.handle(request, env);
+    } catch (err) {
+      return new Response(JSON.stringify({ success: false, error: 'Server error: ' + err.message }), {
+        status: 500,
+        headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+      });
+    }
+  },
+
+  async handle(request, env) {
     const url = new URL(request.url);
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
@@ -69,7 +80,7 @@ export default {
     const jsonResponse = (obj, status = 200) =>
       new Response(JSON.stringify(obj), {
         status,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
       });
 
     const getActiveAdminPin = async () => {
@@ -154,6 +165,8 @@ export default {
           products,
           accessories,
           deliveredCount: baseDelivered + dbDelivered,
+          deliveredOffset: baseDelivered,
+          dbDelivered,
           reviews
         });
       } catch (err) {
@@ -272,6 +285,7 @@ export default {
     }
 
     if (url.pathname === '/api/orders' && request.method === 'GET') {
+      if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { results } = await env.SAJIYAS_CAKE_DB.prepare('SELECT * FROM sajiyascake_orders ORDER BY id DESC LIMIT 50').all();
       return jsonResponse({ app: "Sajiya's Cake", orders: results || [] });
     }
