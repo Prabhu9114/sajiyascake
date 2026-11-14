@@ -11,11 +11,6 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
-    const getActiveAdminPin = async () => {
-      const kvPin = await env.SAJIYAS_CAKE_KV.get('admin_pin');
-      return kvPin || env.ADMIN_PIN || '1234';
-    };
-
     const DEFAULT_STORE_SETTINGS = {
       shopName: "Sajiya's Cake",
       shopWhatsApp: '917873562312',
@@ -146,12 +141,18 @@ export default {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
 
+    // Dynamic Admin PIN stored in KV (falls back to wrangler.toml ADMIN_PIN or '1234')
+    const getActiveAdminPin = async () => {
+      const kvPin = await env.SAJIYAS_CAKE_KV.get('admin_pin');
+      return kvPin || env.ADMIN_PIN || '1234';
+    };
+
     const isAuthorized = async (req) => {
       const activePin = await getActiveAdminPin();
       return (req.headers.get('Authorization') || '') === `Bearer ${activePin}`;
     };
 
-    // 0A. UPLOAD MEDIA (RECEIPT PNG, PRODUCT PHOTO/VIDEO, STORE PHOTOS)
+    // 0A. UPLOAD MEDIA (RECEIPT PNG, PRODUCT PHOTO/VIDEO, STORE GALLERY PHOTOS)
     if (url.pathname === '/api/upload' && request.method === 'POST') {
       try {
         const contentType = request.headers.get('X-Content-Type') || request.headers.get('Content-Type') || 'image/png';
@@ -238,7 +239,7 @@ export default {
       }
     }
 
-    // 2. TRACK ORDER BY ORDER ID
+    // 2. PUBLIC ORDER TRACKING BY ORDER ID
     if (url.pathname === '/api/track-order' && request.method === 'GET') {
       const oid = (url.searchParams.get('orderId') || '').trim().toUpperCase();
       if (!oid) return jsonResponse({ success: false, error: 'Order ID required' }, 400);
