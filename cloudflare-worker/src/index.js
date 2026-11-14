@@ -4,7 +4,7 @@ export default {
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-File-Name, X-Content-Type',
     };
 
     if (request.method === 'OPTIONS') {
@@ -54,14 +54,6 @@ export default {
         anniversary: 70,
         congrats: 70,
         crown: 120
-      },
-      accessories: {
-        sparkle_candle: 40,
-        number_candle: 35,
-        knife_set: 30,
-        party_popper: 60,
-        hbd_banner: 90,
-        foil_balloons: 150
       }
     };
 
@@ -72,7 +64,8 @@ export default {
         category: 'Signature Cakes',
         price: 1480,
         tag: 'Bestseller',
-        desc: '2 Tier Rose Berry & Vanilla Truffle with Cream Roses',
+        desc: '2 Tier Rose Berry & Vanilla Truffle with handcrafted Cream Roses & Gold Flakes',
+        mediaType: 'preset',
         preset: { tiers: 2, weightIndex: 0, flavorId: 'truffle', tierColors: ['#FB7185', '#FFFDF9', '#F9A8D4'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'anniversary', cakeMessage: 'Together Forever' }
       },
       {
@@ -81,7 +74,8 @@ export default {
         category: "What's Trending",
         price: 650,
         tag: 'Trending',
-        desc: '1 Tier Golden Butterscotch with Caramel Drip & Sprinkles',
+        desc: '1 Tier Golden Butterscotch Crunch with Caramel Drip & Rainbow Sprinkles',
+        mediaType: 'preset',
         preset: { tiers: 1, weightIndex: 0, flavorId: 'butterscotch', tierColors: ['#FDE047', '#FFFDF9', '#FDE047'], dripId: 'caramel', decorations: ['sprinkles', 'cherries'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
       },
       {
@@ -90,7 +84,8 @@ export default {
         category: 'Occasional Cakes',
         price: 780,
         tag: 'Chef Special',
-        desc: 'Rich Dark Chocolate Truffle with Oreo & Choco Chips',
+        desc: 'Rich Dark Chocolate Truffle with Oreo Cookies, Choco Chips & Gold Flakes',
+        mediaType: 'preset',
         preset: { tiers: 1, weightIndex: 0, flavorId: 'truffle', tierColors: ['#5C3317', '#5C3317', '#5C3317'], dripId: 'choco', decorations: ['chocochips', 'goldflakes'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
       },
       {
@@ -99,9 +94,19 @@ export default {
         category: 'Theme Cakes',
         price: 1750,
         tag: 'Festive',
-        desc: '2 Tier Kesar Rasmalai Fusion topped with Royal Gold Crown',
+        desc: '2 Tier Kesar Pista Rasmalai Fusion topped with Royal Golden Crown',
+        mediaType: 'preset',
         preset: { tiers: 2, weightIndex: 0, flavorId: 'rasmalai', tierColors: ['#FDBA74', '#FDE047', '#FFFDF9'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'crown', cakeMessage: 'Best Wishes' }
       }
+    ];
+
+    const DEFAULT_ACCESSORIES = [
+      { id: 'acc-1', name: 'Sparkle Fountain Candle', price: 40, icon: 'fa-wand-sparkles', desc: 'Smokeless golden firework sparkle candle for cake cutting', imageUrl: '' },
+      { id: 'acc-2', name: 'Golden Number Candle', price: 35, icon: 'fa-1', desc: 'Metallic gold age digit candle (mention digit in order note)', imageUrl: '' },
+      { id: 'acc-3', name: 'Cake Knife & Server Set', price: 30, icon: 'fa-utensils', desc: 'Crystal clear party cake cutting knife and server combo', imageUrl: '' },
+      { id: 'acc-4', name: 'Confetti Party Popper', price: 60, icon: 'fa-explosion', desc: '12-inch twist confetti shooter with metallic paper strips', imageUrl: '' },
+      { id: 'acc-5', name: 'Happy Birthday Banner', price: 90, icon: 'fa-flag', desc: 'Premium black & gold cardstock wall celebration bunting', imageUrl: '' },
+      { id: 'acc-6', name: 'Foil Balloons Combo (5 Pc)', price: 150, icon: 'fa-balloon', desc: 'Set of 5 star & heart metallic helium-ready foil balloons', imageUrl: '' }
     ];
 
     const DEFAULT_REVIEWS = [
@@ -129,6 +134,52 @@ export default {
 
     const isAuthorized = (req) => (req.headers.get('Authorization') || '') === `Bearer ${ADMIN_PIN}`;
 
+    // 0A. UPLOAD MEDIA (RECEIPT PNG, PRODUCT PHOTO/VIDEO, ACCESSORY PHOTO)
+    if (url.pathname === '/api/upload' && request.method === 'POST') {
+      try {
+        const contentType = request.headers.get('X-Content-Type') || request.headers.get('Content-Type') || 'image/png';
+        const rawName = (request.headers.get('X-File-Name') || `media-${Date.now()}`).replace(/[^a-zA-Z0-9._-]/g, '_');
+        const key = `${Date.now()}-${rawName}`;
+        const buffer = await request.arrayBuffer();
+
+        if (buffer.byteLength > 20 * 1024 * 1024) {
+          return jsonResponse({ success: false, error: 'File must be under 20MB' }, 413);
+        }
+
+        await env.SAJIYAS_CAKE_KV.put(`media:${key}`, buffer, {
+          metadata: { contentType, fileName: rawName },
+          expirationTtl: 15552000
+        });
+
+        const publicUrl = `${url.origin}/api/media/${encodeURIComponent(key)}`;
+        return jsonResponse({ success: true, url: publicUrl, key, contentType });
+      } catch (err) {
+        return jsonResponse({ success: false, error: err.message }, 500);
+      }
+    }
+
+    // 0B. SERVE UPLOADED MEDIA
+    if (url.pathname.startsWith('/api/media/') && request.method === 'GET') {
+      const key = decodeURIComponent(url.pathname.replace('/api/media/', ''));
+      const { value, metadata } = await env.SAJIYAS_CAKE_KV.getWithMetadata(`media:${key}`, { type: 'arrayBuffer' });
+      if (!value) {
+        return new Response('Media not found', { status: 404, headers: corsHeaders });
+      }
+      const cType = (metadata && metadata.contentType) || 'image/png';
+      const fName = (metadata && metadata.fileName) || key;
+      const forceDownload = url.searchParams.get('download') === '1';
+
+      return new Response(value, {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': cType,
+          'Cache-Control': 'public, max-age=31536000',
+          'Content-Disposition': forceDownload ? `attachment; filename="${fName}"` : `inline; filename="${fName}"`
+        }
+      });
+    }
+
+    // 1. GET PUBLIC STORE DATA
     if (url.pathname === '/api/public-data' && request.method === 'GET') {
       try {
         const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config');
@@ -136,6 +187,9 @@ export default {
 
         const storedProducts = await env.SAJIYAS_CAKE_KV.get('catalog_products');
         const products = storedProducts ? JSON.parse(storedProducts) : DEFAULT_PRODUCTS;
+
+        const storedAccessories = await env.SAJIYAS_CAKE_KV.get('catalog_accessories');
+        const accessories = storedAccessories ? JSON.parse(storedAccessories) : DEFAULT_ACCESSORIES;
 
         const baseDelivered = parseInt((await env.SAJIYAS_CAKE_KV.get('delivered_offset')) || '128', 10);
         let dbDelivered = 0;
@@ -153,6 +207,7 @@ export default {
           success: true,
           pricing,
           products,
+          accessories,
           deliveredCount: baseDelivered + dbDelivered,
           deliveredOffset: baseDelivered,
           reviews
@@ -162,6 +217,7 @@ export default {
       }
     }
 
+    // 2. SUBMIT REVIEW
     if (url.pathname === '/api/reviews' && request.method === 'POST') {
       try {
         const body = await request.json();
@@ -185,6 +241,7 @@ export default {
       }
     }
 
+    // 3. ADMIN LOGIN
     if (url.pathname === '/api/admin/login' && request.method === 'POST') {
       const { pin } = await request.json();
       if (String(pin) === String(ADMIN_PIN)) {
@@ -193,6 +250,7 @@ export default {
       return jsonResponse({ success: false, error: 'Invalid Admin PIN' }, 401);
     }
 
+    // 4. ADMIN SAVE PRE-MADE PRODUCTS
     if (url.pathname === '/api/admin/products' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { products } = await request.json();
@@ -202,6 +260,17 @@ export default {
       return jsonResponse({ success: true });
     }
 
+    // 5. ADMIN SAVE ACCESSORIES CATALOG
+    if (url.pathname === '/api/admin/accessories' && request.method === 'POST') {
+      if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
+      const { accessories } = await request.json();
+      if (Array.isArray(accessories)) {
+        await env.SAJIYAS_CAKE_KV.put('catalog_accessories', JSON.stringify(accessories));
+      }
+      return jsonResponse({ success: true });
+    }
+
+    // 6. ADMIN SAVE REVIEWS
     if (url.pathname === '/api/admin/reviews' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { reviews } = await request.json();
@@ -211,6 +280,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
+    // 7. ADMIN SAVE PRICE CHART
     if (url.pathname === '/api/admin/pricing' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { pricing, deliveredOffset } = await request.json();
@@ -223,6 +293,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
+    // 8. ADMIN UPDATE ORDER STATUS
     if (url.pathname === '/api/admin/order-status' && request.method === 'POST') {
       if (!isAuthorized(request)) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { orderId, status } = await request.json();
@@ -232,6 +303,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
+    // 9. PLACE NEW ORDER
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       try {
         const data = await request.json();
@@ -264,6 +336,7 @@ export default {
       }
     }
 
+    // 10. LIST ORDERS
     if (url.pathname === '/api/orders' && request.method === 'GET') {
       const { results } = await env.SAJIYAS_CAKE_DB.prepare(
         'SELECT * FROM sajiyascake_orders ORDER BY id DESC LIMIT 50'
