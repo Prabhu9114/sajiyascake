@@ -84,7 +84,6 @@
             padding-top: calc(16px + var(--safe-top));
             padding-bottom: calc(24px + var(--safe-bottom));
         }
-        /* Touch effects & smooth press micro-interactions */
         .touch-press {
             transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
         }
@@ -130,18 +129,14 @@
 </head>
 <body class="text-slate-800 antialiased select-none">
 
-    <!-- Top Status Bar Spacer for Android Notch -->
     <div class="fixed top-0 inset-x-0 bg-white z-40" style="height: var(--safe-top);"></div>
 
-    <!-- Global Toast Notification -->
     <div id="globalToast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 hidden bg-bakery-900 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full shadow-lg border border-bakery-500 items-center gap-2 transition-all">
         <i class="fa-solid fa-sparkles text-amber-300"></i>
         <span id="globalToastText">Updated!</span>
     </div>
 
-    <!-- ===================================================== -->
-    <!-- SLIDE-OUT RIGHT DRAWER (SECTIONS + APK + ADMIN)       -->
-    <!-- ===================================================== -->
+    <!-- SIDEBAR DRAWER -->
     <div id="sidebarBackdrop" onclick="closeSidebar()" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs transition-opacity"></div>
     <aside id="sideDrawer" class="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] bg-white shadow-2xl border-l border-slate-200 transform translate-x-full transition-transform duration-300 flex flex-col justify-between overflow-y-auto" style="padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);">
         <div>
@@ -190,7 +185,6 @@
             </div>
 
             <div class="px-5 py-4 space-y-3">
-                <!-- Download APK Section in Drawer -->
                 <div class="bg-gradient-to-r from-bakery-50 to-pink-50 p-3.5 rounded-2xl border border-bakery-200 space-y-2">
                     <div class="flex items-center gap-2 text-bakery-900 font-bold text-xs">
                         <i class="fa-solid fa-mobile-screen text-bakery-700"></i>
@@ -225,9 +219,7 @@
         </div>
     </aside>
 
-    <!-- ===================================================== -->
-    <!-- TOP BAR WITH VIEW TABS & LIVE CART BUTTON             -->
-    <!-- ===================================================== -->
+    <!-- HEADER -->
     <header class="sticky sticky-safe-header z-30 bg-white border-b border-slate-200/80 shadow-xs">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
@@ -241,29 +233,16 @@
                 </button>
             </div>
 
-            <!-- Desktop View Switcher Tabs -->
             <nav class="hidden lg:flex items-center gap-1 bg-bakery-50 p-1 rounded-full border border-bakery-200">
-                <button id="topNavHome" onclick="switchMainView('home')" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition touch-press">
-                    Pre-Made Cakes
-                </button>
-                <button id="topNavAccessories" onclick="switchMainView('accessories')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">
-                    Accessories
-                </button>
-                <button id="topNavStudio" onclick="switchMainView('studio')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">
-                    3D Own Cake
-                </button>
-                <button id="topNavAbout" onclick="switchMainView('about')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">
-                    About Store
-                </button>
-                <button id="topNavPrivacy" onclick="switchMainView('privacy')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">
-                    Privacy
-                </button>
+                <button id="topNavHome" onclick="switchMainView('home')" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white transition touch-press">Pre-Made Cakes</button>
+                <button id="topNavAccessories" onclick="switchMainView('accessories')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">Accessories</button>
+                <button id="topNavStudio" onclick="switchMainView('studio')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">3D Own Cake</button>
+                <button id="topNavAbout" onclick="switchMainView('about')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">About Store</button>
+                <button id="topNavPrivacy" onclick="switchMainView('privacy')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-700 hover:bg-white transition touch-press">Privacy</button>
             </nav>
 
             <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
-                <button onclick="toggleSearchBar()" aria-label="Search Cakes" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-700 transition touch-press">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+                <button onclick="toggleSearchBar()" aria-label="Search Cakes" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-700 transition touch-press"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <button onclick="switchMainView('cart')" aria-label="View Order Cart" class="relative flex items-center gap-1.5 bg-bakery-700 hover:bg-bakery-800 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-xs transition touch-press">
                     <i class="fa-solid fa-bag-shopping"></i>
                     <span id="headerCartTotal">₹0</span>
@@ -285,32 +264,19 @@
         </div>
     </header>
 
-    <!-- ===================================================== -->
-    <!-- VIEW 1: HOME SCREEN (ONLY PRE-MADE CAKES + REVIEWS)   -->
-    <!-- ===================================================== -->
+    <!-- VIEW 1: HOME -->
     <div id="view-home" class="space-y-8">
         <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4">
             <div class="rounded-3xl overflow-hidden bg-gradient-to-r from-[#f6eadf] via-[#f9efe6] to-[#f3dfd1] border border-amber-200/70 shadow-sm p-5 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5 relative">
                 <div class="space-y-2.5 max-w-lg text-left z-10">
-                    <span class="inline-block bg-[#6d4c3d] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-md">
-                        Freshly Baked Pre-Made Cakes
-                    </span>
-                    <h1 class="font-serif text-2xl sm:text-4xl font-bold text-[#3d2314] leading-tight">
-                        Captured in a Flutter,<br/>Savored in a Slice
-                    </h1>
-                    <p class="text-xs sm:text-sm text-[#6d4c3d]/90 leading-relaxed">
-                        Add ready-made signature cakes directly to your Order Cart, or open our 3D Own Cake Studio and Party Accessories sections.
-                    </p>
+                    <span class="inline-block bg-[#6d4c3d] text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-md">Freshly Baked Pre-Made Cakes</span>
+                    <h1 class="font-serif text-2xl sm:text-4xl font-bold text-[#3d2314] leading-tight">Captured in a Flutter,<br/>Savored in a Slice</h1>
+                    <p class="text-xs sm:text-sm text-[#6d4c3d]/90 leading-relaxed">Add ready-made signature cakes directly to your Order Cart, or open our 3D Own Cake Studio and Party Accessories sections.</p>
                     <div class="pt-1 flex flex-wrap items-center gap-2.5">
-                        <button onclick="switchMainView('studio')" class="bg-[#6d4c3d] hover:bg-[#52372b] text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg shadow transition touch-press">
-                            🎨 3D Own Cake Design
-                        </button>
-                        <button onclick="downloadAndroidApk()" class="bg-white/90 hover:bg-white text-[#3d2314] border border-[#6d4c3d]/30 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg transition touch-press flex items-center gap-1.5">
-                            <i class="fa-solid fa-download text-[#6d4c3d]"></i> Download Android App
-                        </button>
+                        <button onclick="switchMainView('studio')" class="bg-[#6d4c3d] hover:bg-[#52372b] text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg shadow transition touch-press">🎨 3D Own Cake Design</button>
+                        <button onclick="downloadAndroidApk()" class="bg-white/90 hover:bg-white text-[#3d2314] border border-[#6d4c3d]/30 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-lg transition touch-press flex items-center gap-1.5"><i class="fa-solid fa-download text-[#6d4c3d]"></i> Download Android App</button>
                     </div>
                 </div>
-
                 <div class="flex items-center justify-center shrink-0">
                     <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-white/75 border-4 border-white shadow-inner flex flex-col items-center justify-center text-center p-3">
                         <i class="fa-solid fa-cake-candles text-4xl sm:text-5xl text-bakery-700 mb-1.5"></i>
@@ -321,13 +287,11 @@
             </div>
         </section>
 
-        <!-- Pre-Made Cakes Catalog Grid -->
         <section id="sec-trending" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="text-center max-w-xl mx-auto mb-4 sm:mb-6">
                 <h2 class="font-sans text-xl sm:text-3xl font-extrabold text-bakery-700 tracking-tight">Pre-Made & Trending Cakes</h2>
                 <p class="text-xs sm:text-sm text-slate-500 mt-1">Add directly to your Order Cart or customize in 3D Studio!</p>
             </div>
-
             <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar pb-3 mb-3">
                 <button onclick="filterCatalogByCategory('all')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold bg-bakery-700 text-white shrink-0 touch-press">All Cakes</button>
                 <button onclick="filterCatalogByCategory(&quot;What's Trending&quot;)" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0 touch-press">What's Trending</button>
@@ -335,11 +299,9 @@
                 <button onclick="filterCatalogByCategory('Occasional Cakes')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0 touch-press">Occasional Cakes</button>
                 <button onclick="filterCatalogByCategory('Theme Cakes')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white border border-bakery-200 text-slate-700 hover:bg-bakery-50 shrink-0 touch-press">Theme Cakes</button>
             </div>
-
             <div id="trendingProductsGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5"></div>
         </section>
 
-        <!-- Quick Order Status Tracker Card -->
         <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl border border-bakery-200 p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
@@ -354,48 +316,22 @@
             <div id="trackOrderResult" class="hidden mt-2 bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-semibold px-4 py-2.5 rounded-2xl"></div>
         </section>
 
-        <!-- Delivered Cakes Counter Banner -->
         <section id="sec-delivered-counter" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="bg-gradient-to-r from-bakery-900 via-bakery-700 to-bakery-900 text-white rounded-3xl p-5 sm:p-6 shadow-xl border border-bakery-600">
                 <div class="grid grid-cols-3 gap-3 text-center divide-x divide-bakery-500/50">
-                    <div class="px-2">
-                        <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-amber-300">
-                            <i class="fa-solid fa-cake-candles"></i>
-                        </div>
-                        <div id="bottomDeliveredCounter" class="text-2xl sm:text-3xl font-extrabold text-white">128+</div>
-                        <div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Successful Delivered Cakes</div>
-                    </div>
-                    <div class="px-2">
-                        <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-emerald-300">
-                            <i class="fa-solid fa-leaf"></i>
-                        </div>
-                        <div class="text-2xl sm:text-3xl font-extrabold text-white">100%</div>
-                        <div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Freshly Baked Daily</div>
-                    </div>
-                    <div class="px-2">
-                        <div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-yellow-300">
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <div id="bottomAvgRating" class="text-2xl sm:text-3xl font-extrabold text-white">4.9★</div>
-                        <div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Happy Customer Rating</div>
-                    </div>
+                    <div class="px-2"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-amber-300"><i class="fa-solid fa-cake-candles"></i></div><div id="bottomDeliveredCounter" class="text-2xl sm:text-3xl font-extrabold text-white">128+</div><div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Successful Delivered Cakes</div></div>
+                    <div class="px-2"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-emerald-300"><i class="fa-solid fa-leaf"></i></div><div class="text-2xl sm:text-3xl font-extrabold text-white">100%</div><div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Freshly Baked Daily</div></div>
+                    <div class="px-2"><div class="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white/10 flex items-center justify-center text-yellow-300"><i class="fa-solid fa-star"></i></div><div id="bottomAvgRating" class="text-2xl sm:text-3xl font-extrabold text-white">4.9★</div><div class="text-[11px] sm:text-xs text-bakery-100 font-medium">Happy Customer Rating</div></div>
                 </div>
             </div>
         </section>
 
-        <!-- Customer Reviews Section -->
         <section id="sec-reviews" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="bg-white rounded-3xl border border-bakery-200 p-4 sm:p-6 shadow-sm space-y-5">
                 <div class="flex items-center justify-between flex-wrap gap-2">
-                    <div>
-                        <h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Customer Reviews & Feedback</h2>
-                        <p class="text-xs text-slate-500">Apna experience share karein aur dusre customers ke reviews dekhein</p>
-                    </div>
-                    <span id="reviewTotalBadge" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full">
-                        ★ 4.9 / 5
-                    </span>
+                    <div><h2 class="font-serif font-bold text-base sm:text-lg text-bakery-900">Customer Reviews & Feedback</h2><p class="text-xs text-slate-500">Apna experience share karein</p></div>
+                    <span id="reviewTotalBadge" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full">★ 4.9 / 5</span>
                 </div>
-
                 <div class="bg-bakery-50/80 rounded-2xl p-3.5 sm:p-4 border border-bakery-100 space-y-3">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <span class="text-xs font-bold uppercase tracking-wider text-bakery-900">Write Your Review:</span>
@@ -411,113 +347,68 @@
                         <input type="text" id="revNameInput" placeholder="Your Name" class="px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-600">
                         <input type="text" id="revCommentInput" placeholder="How was the cake design & taste?" class="sm:col-span-2 px-3.5 py-2.5 rounded-xl border border-bakery-200 bg-white text-sm outline-none focus:border-bakery-600">
                     </div>
-                    <div class="flex justify-end">
-                        <button type="button" onclick="submitCustomerReview()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm active:scale-95 transition touch-press flex items-center gap-1.5">
-                            <i class="fa-solid fa-paper-plane"></i> Submit Review
-                        </button>
-                    </div>
+                    <div class="flex justify-end"><button type="button" onclick="submitCustomerReview()" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm active:scale-95 transition touch-press flex items-center gap-1.5"><i class="fa-solid fa-paper-plane"></i> Submit Review</button></div>
                 </div>
-
                 <div id="reviewsListContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
             </div>
         </section>
 
-        <!-- Clean Store Footer with About & Privacy Links -->
         <footer class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2 pb-4 text-center text-xs text-slate-500 space-y-2">
             <div class="flex items-center justify-center gap-4 font-semibold text-bakery-700">
-                <button onclick="switchMainView('about')" class="hover:underline">About Store & Location</button>
-                <span>•</span>
-                <button onclick="switchMainView('privacy')" class="hover:underline">Privacy Policy</button>
-                <span>•</span>
+                <button onclick="switchMainView('about')" class="hover:underline">About Store & Location</button><span>•</span>
+                <button onclick="switchMainView('privacy')" class="hover:underline">Privacy Policy</button><span>•</span>
                 <button onclick="openWhatsAppSupport()" class="hover:underline">WhatsApp Contact</button>
             </div>
             <p>© 2026 Sajiya's Cake • Fresh Custom Bakery</p>
         </footer>
     </div>
 
-    <!-- ===================================================== -->
-    <!-- VIEW 2: SEPARATE PARTY ACCESSORIES SECTION (WHITE UI) -->
-    <!-- ===================================================== -->
+    <!-- VIEW 2: ACCESSORIES -->
     <section id="view-accessories" class="hidden max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 space-y-6">
         <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-7 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-2 inline-flex items-center gap-1">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes
-                </button>
+                <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-2 inline-flex items-center gap-1"><i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes</button>
                 <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Party Accessories & Celebration Store</h2>
                 <p class="text-xs sm:text-sm text-slate-500 mt-1">Select candles, banners, party poppers & cake cutting sets to add to your Order Cart!</p>
             </div>
             <div class="flex items-center gap-2.5 shrink-0">
-                <button onclick="switchMainView('cart')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow transition touch-press">
-                    Review Cart (<span id="accViewCartCount">0</span>) →
-                </button>
+                <button onclick="switchMainView('cart')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow transition touch-press">Review Cart (<span id="accViewCartCount">0</span>) →</button>
             </div>
         </div>
-
         <div id="accessoriesGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5"></div>
     </section>
 
-    <!-- ===================================================== -->
-    <!-- VIEW 3: SEPARATE 3D OWN CAKE DESIGN STUDIO (NO PREFILL)-->
-    <!-- ===================================================== -->
+    <!-- VIEW 3: 3D STUDIO (NO PREFILL) -->
     <main id="view-studio" class="hidden max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-6">
         <div class="flex items-center justify-between flex-wrap gap-2 mb-5">
             <div>
-                <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1 inline-flex items-center gap-1">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes
-                </button>
+                <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1 inline-flex items-center gap-1"><i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes</button>
                 <h2 class="font-serif text-xl sm:text-3xl font-bold text-slate-900">3D Own Cake Design Studio</h2>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="freshResetCake()" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3.5 py-2 rounded-full transition touch-press">
-                    <i class="fa-solid fa-rotate-left mr-1"></i> Reset Studio
-                </button>
-                <button onclick="addCustomStudioCakeToCart()" class="text-xs font-bold bg-bakery-700 hover:bg-bakery-800 text-white px-4 py-2 rounded-full shadow transition touch-press">
-                    <i class="fa-solid fa-cart-plus mr-1"></i> Add Design to Cart
-                </button>
+                <button onclick="freshResetCake()" class="text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3.5 py-2 rounded-full transition touch-press"><i class="fa-solid fa-rotate-left mr-1"></i> Reset Studio</button>
+                <button onclick="addCustomStudioCakeToCart()" class="text-xs font-bold bg-bakery-700 hover:bg-bakery-800 text-white px-4 py-2 rounded-full shadow transition touch-press"><i class="fa-solid fa-cart-plus mr-1"></i> Add Design to Cart</button>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
-            <!-- LEFT COLUMN: Clean White Live 3D Cake Preview Card -->
             <div class="lg:col-span-5 lg:sticky lg:top-20 space-y-4 w-full min-w-0">
                 <div class="bg-white rounded-3xl border border-slate-200 shadow-lg overflow-hidden relative">
                     <div class="p-3.5 sm:p-4 pb-0 flex items-center justify-between flex-wrap gap-1.5">
                         <div class="flex items-center gap-1.5 flex-wrap">
-                            <span id="previewTierBadge" class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold bg-bakery-100 text-bakery-800 px-2.5 sm:px-3 py-1 rounded-full">
-                                <i class="fa-solid fa-layer-group text-bakery-600"></i> 1 Tier (0.5 kg)
-                            </span>
-                            <span id="previewDietBadge" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 sm:px-2.5 py-1 rounded-full">
-                                <span class="w-2 h-2 rounded-full bg-emerald-600"></span> Eggless
-                            </span>
+                            <span id="previewTierBadge" class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold bg-bakery-100 text-bakery-800 px-2.5 sm:px-3 py-1 rounded-full"><i class="fa-solid fa-layer-group text-bakery-600"></i> 1 Tier (0.5 kg)</span>
+                            <span id="previewDietBadge" class="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 sm:px-2.5 py-1 rounded-full"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> Eggless</span>
                         </div>
-                        <span id="previewFlavorBadge" class="text-[11px] sm:text-xs font-medium bg-amber-50 text-amber-900 border border-amber-200 px-2.5 sm:px-3 py-1 rounded-full truncate max-w-[160px] sm:max-w-none">
-                            Flavor: Vanilla Classic
-                        </span>
+                        <span id="previewFlavorBadge" class="text-[11px] sm:text-xs font-medium bg-amber-50 text-amber-900 border border-amber-200 px-2.5 sm:px-3 py-1 rounded-full truncate max-w-[160px] sm:max-w-none">Flavor: Vanilla Classic</span>
                     </div>
 
                     <div class="relative flex items-center justify-center px-3 py-3 min-h-[280px] sm:min-h-[380px] lg:min-h-[410px] bg-white">
                         <svg id="cakeSvg" xmlns="http://www.w3.org/2000/svg" width="400" height="430" viewBox="0 0 400 430" class="w-full max-w-[270px] sm:max-w-[340px] lg:max-w-[360px] h-auto drop-shadow-md select-none">
                             <defs>
-                                <linearGradient id="standGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#e2e8f0" />
-                                    <stop offset="50%" stop-color="#ffffff" />
-                                    <stop offset="100%" stop-color="#cbd5e1" />
-                                </linearGradient>
-                                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#fef08a" />
-                                    <stop offset="40%" stop-color="#eab308" />
-                                    <stop offset="80%" stop-color="#ca8a04" />
-                                    <stop offset="100%" stop-color="#fde047" />
-                                </linearGradient>
-                                <linearGradient id="cylinderShade" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#000000" stop-opacity="0.12" />
-                                    <stop offset="28%" stop-color="#ffffff" stop-opacity="0.22" />
-                                    <stop offset="65%" stop-color="#000000" stop-opacity="0.02" />
-                                    <stop offset="100%" stop-color="#000000" stop-opacity="0.18" />
-                                </linearGradient>
+                                <linearGradient id="standGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#e2e8f0" /><stop offset="50%" stop-color="#ffffff" /><stop offset="100%" stop-color="#cbd5e1" /></linearGradient>
+                                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fef08a" /><stop offset="40%" stop-color="#eab308" /><stop offset="80%" stop-color="#ca8a04" /><stop offset="100%" stop-color="#fde047" /></linearGradient>
+                                <linearGradient id="cylinderShade" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#000000" stop-opacity="0.12" /><stop offset="28%" stop-color="#ffffff" stop-opacity="0.22" /><stop offset="65%" stop-color="#000000" stop-opacity="0.02" /><stop offset="100%" stop-color="#000000" stop-opacity="0.18" /></linearGradient>
                             </defs>
-
                             <g id="cakeStand">
                                 <ellipse cx="200" cy="404" rx="115" ry="12" fill="rgba(74, 27, 45, 0.12)" />
                                 <path d="M150,398 C165,365 180,350 185,342 L215,342 C220,350 235,365 250,398 Z" fill="url(#standGrad)" stroke="#cbd5e1" stroke-width="1.5"/>
@@ -526,9 +417,7 @@
                                 <ellipse cx="200" cy="338" rx="162" ry="23" fill="url(#standGrad)" stroke="#e2e8f0" stroke-width="2"/>
                                 <ellipse cx="200" cy="336" rx="146" ry="19" fill="url(#goldGrad)" opacity="0.85"/>
                             </g>
-
                             <g id="cakeRenderRoot"></g>
-
                             <g id="messagePlaqueGroup" transform="translate(200, 344)">
                                 <rect x="-88" y="-13" width="176" height="25" rx="12" fill="#3d2314" stroke="url(#goldGrad)" stroke-width="2" />
                                 <text id="svgCakeMessage" x="0" y="4" text-anchor="middle" fill="#fef08a" font-family="'Pacifico', cursive" font-size="12.5"></text>
@@ -537,87 +426,46 @@
                     </div>
 
                     <div class="px-3.5 sm:px-4 py-2.5 sm:py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600 gap-2">
-                        <div class="flex items-center gap-2">
-                            <span class="font-semibold text-slate-800"><i class="fa-solid fa-palette mr-1 text-bakery-600"></i>Colors:</span>
-                            <div id="activeColorDots" class="flex items-center gap-1.5"></div>
-                        </div>
+                        <div class="flex items-center gap-2"><span class="font-semibold text-slate-800"><i class="fa-solid fa-palette mr-1 text-bakery-600"></i>Colors:</span><div id="activeColorDots" class="flex items-center gap-1.5"></div></div>
                         <span id="decorationCountBadge" class="font-medium text-bakery-700">0 Decors</span>
                     </div>
                 </div>
 
-                <!-- Live 3D Design Price Card (Desktop View) -->
                 <div class="hidden lg:block bg-white rounded-3xl border border-slate-200 p-5 shadow-md">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-                        <div>
-                            <h3 class="font-serif font-bold text-lg text-slate-900">Custom 3D Cake Estimate</h3>
-                            <p class="text-xs text-slate-500">Add this design to your cart for final delivery</p>
-                        </div>
+                        <div><h3 class="font-serif font-bold text-lg text-slate-900">Custom 3D Cake Estimate</h3><p class="text-xs text-slate-500">Add this design to your cart for final delivery</p></div>
                         <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-emerald-200">3D Builder</span>
                     </div>
-
                     <div id="billItemsList" class="space-y-2 text-sm max-h-52 overflow-y-auto pr-1"></div>
-
                     <div class="border-t border-dashed border-slate-200 mt-4 pt-3 flex items-center justify-between">
-                        <div>
-                            <span class="text-xs uppercase tracking-wider font-bold text-slate-400 block">Cake Price</span>
-                            <span id="desktopTotalPrice" class="text-2xl font-extrabold text-bakery-700">₹0</span>
-                        </div>
-                        <button onclick="addCustomStudioCakeToCart()" class="bg-bakery-700 hover:bg-bakery-800 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg transition touch-press flex items-center gap-2">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Add Cake to Cart</span>
-                        </button>
+                        <div><span class="text-xs uppercase tracking-wider font-bold text-slate-400 block">Cake Price</span><span id="desktopTotalPrice" class="text-2xl font-extrabold text-bakery-700">₹0</span></div>
+                        <button onclick="addCustomStudioCakeToCart()" class="bg-bakery-700 hover:bg-bakery-800 text-white font-semibold px-5 py-3 rounded-2xl shadow-lg transition touch-press flex items-center gap-2"><i class="fa-solid fa-cart-plus"></i><span>Add Cake to Cart</span></button>
                     </div>
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: Clean White Step-by-Step Customization Controls -->
             <div class="lg:col-span-7 space-y-5 sm:space-y-6 w-full min-w-0">
                 <div class="sticky top-[56px] sm:top-[64px] lg:static z-20 bg-white/95 backdrop-blur-md p-2 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                    <button onclick="scrollToSection('sec-tiers')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-bakery-700 text-white shadow-sm transition whitespace-nowrap">
-                        1. Tier & Pound
-                    </button>
-                    <button onclick="scrollToSection('sec-flavor')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">
-                        2. Flavor
-                    </button>
-                    <button onclick="scrollToSection('sec-colors')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">
-                        3. Colors & Drip
-                    </button>
-                    <button onclick="scrollToSection('sec-decor')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">
-                        4. Decorations
-                    </button>
-                    <button onclick="scrollToSection('sec-message')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">
-                        5. Name on Cake
-                    </button>
+                    <button onclick="scrollToSection('sec-tiers')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-bakery-700 text-white shadow-sm transition whitespace-nowrap">1. Tier & Pound</button>
+                    <button onclick="scrollToSection('sec-flavor')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">2. Flavor</button>
+                    <button onclick="scrollToSection('sec-colors')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">3. Colors & Drip</button>
+                    <button onclick="scrollToSection('sec-decor')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">4. Decorations</button>
+                    <button onclick="scrollToSection('sec-message')" class="step-tab flex-1 min-w-fit px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 transition whitespace-nowrap">5. Name on Cake</button>
                 </div>
 
-                <!-- SECTION 1: TIER & WEIGHT -->
                 <section id="sec-tiers" class="scroll-mt-32 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs">
                     <div class="flex items-center justify-between gap-2 mb-4">
                         <div class="flex items-center gap-2.5">
                             <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">1</span>
-                            <div>
-                                <h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Choose Cake Tiers & Pounds</h2>
-                                <p class="text-xs text-slate-500">1 Tier, 2 Tier ya 3 Tier cake size chunein</p>
-                            </div>
+                            <div><h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Choose Cake Tiers & Pounds</h2><p class="text-xs text-slate-500">1 Tier, 2 Tier ya 3 Tier cake size chunein</p></div>
                         </div>
-                        <span id="perPoundBadge" class="text-[11px] font-bold bg-bakery-100 text-bakery-800 px-2.5 py-1 rounded-lg shrink-0">
-                            ₹450 / Pound
-                        </span>
+                        <span id="perPoundBadge" class="text-[11px] font-bold bg-bakery-100 text-bakery-800 px-2.5 py-1 rounded-lg shrink-0">₹450 / Pound</span>
                     </div>
-
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="tierCardsContainer"></div>
-
                     <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div>
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">Select Cake Weight (Pound / Kg):</span>
-                            <div id="weightButtonsContainer" class="flex flex-wrap gap-2 mt-1.5"></div>
-                        </div>
-
+                        <div><span class="text-xs font-bold uppercase tracking-wider text-slate-500 block">Select Cake Weight (Pound / Kg):</span><div id="weightButtonsContainer" class="flex flex-wrap gap-2 mt-1.5"></div></div>
                         <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between sm:justify-start gap-3">
-                            <div>
-                                <span class="text-xs font-bold text-emerald-950 block">100% Eggless (Pure Veg)</span>
-                                <span id="egglessPriceLabel" class="text-[11px] text-emerald-700">+₹50 extra</span>
-                            </div>
+                            <div><span class="text-xs font-bold text-emerald-950 block">100% Eggless (Pure Veg)</span><span id="egglessPriceLabel" class="text-[11px] text-emerald-700">+₹50 extra</span></div>
                             <label class="relative inline-flex items-center cursor-pointer shrink-0">
                                 <input type="checkbox" id="egglessToggle" class="sr-only peer" checked onchange="toggleEggless(this.checked)">
                                 <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
@@ -626,90 +474,53 @@
                     </div>
                 </section>
 
-                <!-- SECTION 2: CAKE FLAVOR -->
                 <section id="sec-flavor" class="scroll-mt-32 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs">
                     <div class="flex items-center gap-2.5 mb-4">
                         <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">2</span>
-                        <div>
-                            <h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cake Flavor (Andar ka Swad)</h2>
-                            <p class="text-xs text-slate-500">Fresh sponge aur rich cream filling chunein</p>
-                        </div>
+                        <div><h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cake Flavor (Andar ka Swad)</h2><p class="text-xs text-slate-500">Fresh sponge aur rich cream filling chunein</p></div>
                     </div>
-
                     <div id="flavorGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                 </section>
 
-                <!-- SECTION 3: TIER COLORS & DRIP -->
                 <section id="sec-colors" class="scroll-mt-32 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs">
                     <div class="flex items-center justify-between flex-wrap gap-2 mb-4">
                         <div class="flex items-center gap-2.5">
                             <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">3</span>
-                            <div>
-                                <h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cream Colors & Drip Design</h2>
-                                <p class="text-xs text-slate-500">Har tier ka apna alag color ya ek jaisa color rakhein</p>
-                            </div>
+                            <div><h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cream Colors & Drip Design</h2><p class="text-xs text-slate-500">Har tier ka apna alag color ya ek jaisa color rakhein</p></div>
                         </div>
-                        <button onclick="applyBottomColorToAll()" id="sameColorBtn" class="hidden text-xs font-semibold text-bakery-700 bg-bakery-50 hover:bg-bakery-100 border border-bakery-200 px-3 py-1.5 rounded-xl transition">
-                            <i class="fa-solid fa-wand-sparkles mr-1"></i> Apply Tier 1 Color to All
-                        </button>
+                        <button onclick="applyBottomColorToAll()" id="sameColorBtn" class="hidden text-xs font-semibold text-bakery-700 bg-bakery-50 hover:bg-bakery-100 border border-bakery-200 px-3 py-1.5 rounded-xl transition"><i class="fa-solid fa-wand-sparkles mr-1"></i> Apply Tier 1 Color to All</button>
                     </div>
-
                     <div id="tierColorPickersContainer" class="space-y-4"></div>
-
                     <div class="mt-6 pt-5 border-t border-slate-100">
-                        <div class="mb-3">
-                            <h3 class="font-bold text-sm text-slate-900">Top Glaze / Chocolate Drip Effect</h3>
-                            <p id="dripSubLabel" class="text-xs text-slate-500">Cake ke upar se behne wali delicious glaze (+₹80)</p>
-                        </div>
+                        <div class="mb-3"><h3 class="font-bold text-sm text-slate-900">Top Glaze / Chocolate Drip Effect</h3><p id="dripSubLabel" class="text-xs text-slate-500">Cake ke upar se behne wali delicious glaze (+₹80)</p></div>
                         <div id="dripOptionsContainer" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5"></div>
                     </div>
                 </section>
 
-                <!-- SECTION 4: DECORATIONS & TOPPERS -->
                 <section id="sec-decor" class="scroll-mt-32 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs">
                     <div class="flex items-center justify-between gap-2 mb-4">
                         <div class="flex items-center gap-2.5">
                             <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">4</span>
-                            <div>
-                                <h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Decorations & Cake Toppers</h2>
-                                <p class="text-xs text-slate-500">Ek se zyada decorations select karein — sab live dikhenge!</p>
-                            </div>
+                            <div><h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Decorations & Cake Toppers</h2><p class="text-xs text-slate-500">Ek se zyada decorations select karein</p></div>
                         </div>
-                        <button type="button" onclick="clearDecorationsOnly()" class="text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1.5 rounded-xl transition shrink-0">
-                            Clear Decors
-                        </button>
+                        <button type="button" onclick="clearDecorationsOnly()" class="text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1.5 rounded-xl transition shrink-0">Clear Decors</button>
                     </div>
-
                     <div id="decorationsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-
                     <div class="mt-6 pt-5 border-t border-slate-100">
-                        <h3 class="font-bold text-sm text-slate-900 mb-1">Crown / Acrylic Topper (Cake ke Sabse Upar)</h3>
+                        <h3 class="font-bold text-sm text-slate-900 mb-1">Crown / Acrylic Topper</h3>
                         <p class="text-xs text-slate-500 mb-3">Cake ke top tier par lagne wala stylish topper chunein</p>
                         <div id="toppersGrid" class="grid grid-cols-2 sm:grid-cols-5 gap-2.5"></div>
                     </div>
                 </section>
 
-                <!-- SECTION 5: MESSAGE ON CAKE -->
                 <section id="sec-message" class="scroll-mt-32 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-xs space-y-4">
                     <div class="flex items-center gap-2.5">
                         <span class="w-8 h-8 rounded-xl bg-bakery-100 text-bakery-700 font-bold flex items-center justify-center text-sm shrink-0">5</span>
-                        <div>
-                            <h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cake Name Plaque</h2>
-                            <p class="text-xs text-slate-500">Cake plate par likhne ke liye naam chunein</p>
-                        </div>
+                        <div><h2 class="font-serif font-bold text-base sm:text-lg text-slate-900">Cake Name Plaque</h2><p class="text-xs text-slate-500">Cake plate par likhne ke liye naam chunein</p></div>
                     </div>
-
                     <div>
                         <div class="relative">
-                            <input
-                                type="text"
-                                id="cakeMessageInput"
-                                maxlength="24"
-                                value=""
-                                placeholder="e.g. Happy Birthday Aayat"
-                                oninput="updateMessage(this.value)"
-                                class="w-full px-4 py-3 pr-14 rounded-xl border border-slate-200 focus:border-bakery-600 focus:ring-2 focus:ring-bakery-200 outline-none text-base sm:text-sm font-medium"
-                            >
+                            <input type="text" id="cakeMessageInput" maxlength="24" value="" placeholder="e.g. Happy Birthday Aayat" oninput="updateMessage(this.value)" class="w-full px-4 py-3 pr-14 rounded-xl border border-slate-200 focus:border-bakery-600 focus:ring-2 focus:ring-bakery-200 outline-none text-base sm:text-sm font-medium">
                             <span id="charCount" class="absolute right-3 top-3.5 text-xs text-slate-400">0/24</span>
                         </div>
                         <div class="flex flex-wrap gap-1.5 mt-2">
@@ -719,31 +530,23 @@
                             <button type="button" onclick="setQuickMsg('Best Wishes')" class="text-[11px] bg-slate-50 active:scale-95 hover:bg-bakery-50 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">Best Wishes</button>
                         </div>
                     </div>
-
                     <button type="button" onclick="addCustomStudioCakeToCart()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3.5 rounded-2xl shadow-md flex items-center justify-center gap-2 transition active:scale-98 touch-press">
-                        <i class="fa-solid fa-cart-plus"></i>
-                        <span>Add Custom 3D Cake to Final Cart (<span id="btnStudioPrice">₹0</span>)</span>
+                        <i class="fa-solid fa-cart-plus"></i><span>Add Custom 3D Cake to Final Cart (<span id="btnStudioPrice">₹0</span>)</span>
                     </button>
                 </section>
             </div>
         </div>
     </main>
 
-    <!-- ===================================================== -->
-    <!-- VIEW 4: SEPARATE FINAL ORDER CART & DELIVERY REVIEW   -->
-    <!-- ===================================================== -->
+    <!-- VIEW 4: CART -->
     <section id="view-cart" class="hidden max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 space-y-6">
         <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-                <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1 inline-flex items-center gap-1">
-                    <i class="fa-solid fa-arrow-left"></i> Continue Shopping
-                </button>
+                <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1 inline-flex items-center gap-1"><i class="fa-solid fa-arrow-left"></i> Continue Shopping</button>
                 <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Your Final Order Cart & Delivery</h2>
                 <p class="text-xs sm:text-sm text-slate-500">Review all selected cakes & accessories, enter delivery address & place order</p>
             </div>
-            <button onclick="clearEntireCart()" class="text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3.5 py-2 rounded-full self-start sm:self-center touch-press">
-                <i class="fa-solid fa-trash mr-1"></i> Clear Cart
-            </button>
+            <button onclick="clearEntireCart()" class="text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3.5 py-2 rounded-full self-start sm:self-center touch-press"><i class="fa-solid fa-trash mr-1"></i> Clear Cart</button>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -752,41 +555,22 @@
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <h3 class="font-bold text-base text-slate-900">Selected Items (<span id="cartPageItemCount">0</span>)</h3>
                         <div class="flex gap-2">
-                            <button onclick="switchMainView('home')" class="text-xs font-semibold text-bakery-700 hover:underline">+ Pre-Made Cake</button>
-                            <span class="text-slate-300">|</span>
+                            <button onclick="switchMainView('home')" class="text-xs font-semibold text-bakery-700 hover:underline">+ Pre-Made Cake</button><span class="text-slate-300">|</span>
                             <button onclick="switchMainView('accessories')" class="text-xs font-semibold text-bakery-700 hover:underline">+ Accessories</button>
                         </div>
                     </div>
-
                     <div id="cartItemsContainer" class="space-y-3"></div>
                 </div>
             </div>
 
-            <!-- Right: Customer Delivery Details & Place Final Order -->
             <div class="lg:col-span-5 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-md space-y-4">
                 <h3 class="font-serif font-bold text-lg text-slate-900 border-b border-slate-100 pb-3">Delivery Details & Checkout</h3>
-
                 <div class="space-y-3">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Customer Full Name *</label>
-                        <input type="text" id="custName" placeholder="Enter your full name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Phone / WhatsApp Number *</label>
-                        <input type="tel" id="custPhone" placeholder="10-digit mobile number" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Address / Landmark *</label>
-                        <textarea id="custAddress" rows="2" placeholder="House no., Street, Area, Landmark..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></textarea>
-                    </div>
-
+                    <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Customer Full Name *</label><input type="text" id="custName" placeholder="Enter your full name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Phone / WhatsApp Number *</label><input type="tel" id="custPhone" placeholder="10-digit mobile number" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Address / Landmark *</label><textarea id="custAddress" rows="2" placeholder="House no., Street, Area, Landmark..." class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></textarea></div>
                     <div class="grid grid-cols-2 gap-2.5">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Date *</label>
-                            <input type="date" id="custDate" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-xs sm:text-sm bg-white">
-                        </div>
+                        <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Date *</label><input type="date" id="custDate" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-xs sm:text-sm bg-white"></div>
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Delivery Time Slot</label>
                             <select id="custTimeSlot" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-xs sm:text-sm bg-white">
@@ -797,7 +581,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Payment Mode</label>
                         <select id="custPaymentMode" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm bg-white">
@@ -806,84 +589,46 @@
                             <option value="Store Pickup">Store Pickup</option>
                         </select>
                     </div>
-
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Special Instructions (Optional)</label>
-                        <input type="text" id="custNotes" placeholder="e.g. Less sweet cream, call on arrival" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm">
-                    </div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Special Instructions (Optional)</label><input type="text" id="custNotes" placeholder="e.g. Less sweet cream" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-bakery-600 outline-none text-sm"></div>
                 </div>
 
                 <div class="border-t border-dashed border-slate-200 pt-3 space-y-1.5">
-                    <div class="flex justify-between text-xs text-slate-500">
-                        <span>Items Subtotal</span>
-                        <span id="cartSubtotalText" class="font-semibold text-slate-800">₹0</span>
-                    </div>
-                    <div class="flex justify-between text-xs text-emerald-700">
-                        <span>Delivery Charge</span>
-                        <span class="font-bold">FREE (Local)</span>
-                    </div>
-                    <div class="flex justify-between items-baseline pt-2 border-t border-slate-100">
-                        <span class="font-bold text-sm text-slate-800">Grand Total</span>
-                        <span id="cartGrandTotalText" class="text-2xl font-extrabold text-bakery-700">₹0</span>
-                    </div>
+                    <div class="flex justify-between text-xs text-slate-500"><span>Items Subtotal</span><span id="cartSubtotalText" class="font-semibold text-slate-800">₹0</span></div>
+                    <div class="flex justify-between text-xs text-emerald-700"><span>Delivery Charge</span><span class="font-bold">FREE (Local)</span></div>
+                    <div class="flex justify-between items-baseline pt-2 border-t border-slate-100"><span class="font-bold text-sm text-slate-800">Grand Total</span><span id="cartGrandTotalText" class="text-2xl font-extrabold text-bakery-700">₹0</span></div>
                 </div>
 
                 <button type="button" onclick="placeFinalCartOrder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm py-3.5 px-4 rounded-2xl shadow-lg flex items-center justify-center gap-2 transition active:scale-98 touch-press">
-                    <i class="fa-solid fa-check-circle text-lg"></i>
-                    <span>Place Order for Delivery & Receipt Image</span>
+                    <i class="fa-solid fa-check-circle text-lg"></i><span>Place Order for Delivery & Receipt Image</span>
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- ===================================================== -->
-    <!-- VIEW 5: ABOUT STORE & MULTI-PHOTO GALLERY + LOCATION  -->
-    <!-- ===================================================== -->
+    <!-- VIEW 5: ABOUT STORE -->
     <section id="view-about" class="hidden max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 pt-6 space-y-6">
         <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-8 shadow-xs space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
                 <div>
-                    <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1.5 inline-flex items-center gap-1">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes
-                    </button>
-                    <h2 id="aboutStoreTitle" class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">About Sajiya's Cake</h2>
+                    <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline mb-1.5 inline-flex items-center gap-1"><i class="fa-solid fa-arrow-left"></i> Back to Pre-Made Cakes</button>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">About Sajiya's Cake</h2>
                     <p id="aboutStoreHours" class="text-xs sm:text-sm font-semibold text-emerald-700 mt-1"><i class="fa-regular fa-clock mr-1"></i> Open Daily: 9:00 AM – 10:00 PM</p>
                 </div>
                 <div class="flex flex-wrap gap-2">
-                    <a id="aboutMapBtn" href="https://maps.google.com/?q=Rajgangpur,Odisha" target="_blank" rel="noopener" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow flex items-center gap-1.5 touch-press">
-                        <i class="fa-solid fa-location-dot"></i> Open Store Location in Maps
-                    </a>
-                    <button onclick="openWhatsAppSupport()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow flex items-center gap-1.5 touch-press">
-                        <i class="fa-brands fa-whatsapp"></i> Chat with Store
-                    </button>
+                    <a id="aboutMapBtn" href="https://maps.google.com/?q=Rajgangpur,Odisha" target="_blank" rel="noopener" class="bg-bakery-700 hover:bg-bakery-800 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow flex items-center gap-1.5 touch-press"><i class="fa-solid fa-location-dot"></i> Open Store Location in Maps</a>
+                    <button onclick="openWhatsAppSupport()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow flex items-center gap-1.5 touch-press"><i class="fa-brands fa-whatsapp"></i> Chat with Store</button>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 <div class="lg:col-span-6 space-y-4">
                     <h3 class="font-bold text-base text-slate-900">Our Story & Freshness Promise</h3>
-                    <p id="aboutStoreDescription" class="text-sm text-slate-600 leading-relaxed">
-                        Welcome to Sajiya's Cake — Rajgangpur's boutique custom cake studio. Every cake is freshly baked to order using 100% pure vegetarian ingredients, rich Belgian chocolate, and handcrafted cream artistry.
-                    </p>
-
+                    <p id="aboutStoreDescription" class="text-sm text-slate-600 leading-relaxed">Welcome to Sajiya's Cake — Rajgangpur's boutique custom cake studio. Every cake is freshly baked to order using 100% pure vegetarian ingredients, rich Belgian chocolate, and handcrafted cream artistry.</p>
                     <div class="bg-bakery-50 rounded-2xl p-4 border border-bakery-100 space-y-2 text-xs sm:text-sm">
-                        <div class="flex items-start gap-2.5">
-                            <i class="fa-solid fa-location-dot text-bakery-700 mt-1"></i>
-                            <div>
-                                <span class="font-bold text-slate-900 block">Store Address:</span>
-                                <span id="aboutStoreAddress" class="text-slate-600">Main Road, Near Station Chowk, Rajgangpur, Odisha 770017</span>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-2.5">
-                            <i class="fa-brands fa-whatsapp text-emerald-600 mt-1"></i>
-                            <div>
-                                <span class="font-bold text-slate-900 block">Order & Enquiry WhatsApp:</span>
-                                <span id="aboutStorePhone" class="text-slate-600">+91 78735 62312</span>
-                            </div>
-                        </div>
+                        <div class="flex items-start gap-2.5"><i class="fa-solid fa-location-dot text-bakery-700 mt-1"></i><div><span class="font-bold text-slate-900 block">Store Address:</span><span id="aboutStoreAddress" class="text-slate-600">Main Road, Near Station Chowk, Rajgangpur, Odisha 770017</span></div></div>
+                        <div class="flex items-start gap-2.5"><i class="fa-brands fa-whatsapp text-emerald-600 mt-1"></i><div><span class="font-bold text-slate-900 block">Order & Enquiry WhatsApp:</span><span id="aboutStorePhone" class="text-slate-600">+91 78735 62312</span></div></div>
                     </div>
                 </div>
-
                 <div class="lg:col-span-6 space-y-3">
                     <h3 class="font-bold text-base text-slate-900">Store Gallery & Kitchen Showcase</h3>
                     <div id="aboutStoreGalleryGrid" class="grid grid-cols-2 gap-3"></div>
@@ -892,17 +637,12 @@
         </div>
     </section>
 
-    <!-- ===================================================== -->
-    <!-- VIEW 6: PRIVACY POLICY SECTION                        -->
-    <!-- ===================================================== -->
+    <!-- VIEW 6: PRIVACY POLICY -->
     <section id="view-privacy" class="hidden max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 pt-6">
         <div class="bg-white rounded-3xl border border-slate-200 p-5 sm:p-8 shadow-xs space-y-4">
-            <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline inline-flex items-center gap-1">
-                <i class="fa-solid fa-arrow-left"></i> Back to Home
-            </button>
+            <button onclick="switchMainView('home')" class="text-xs font-bold text-bakery-700 hover:underline inline-flex items-center gap-1"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
             <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Privacy Policy</h2>
             <p class="text-xs text-slate-400">Last Updated: November 2026 • Sajiya's Cake Boutique & Studio</p>
-
             <div class="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
                 <p><strong>1. Information We Collect:</strong> When you place a custom cake or accessory order on Sajiya's Cake, we collect your Name, Phone/WhatsApp Number, Delivery Address, Delivery Date/Time, and custom cake specifications solely to prepare and deliver your order.</p>
                 <p><strong>2. Order Receipt Images & Cloud Storage:</strong> Generated order receipt cards and product media are stored securely on Cloudflare D1 and KV infrastructure to provide downloadable slips, order tracking, and WhatsApp order confirmation.</p>
@@ -912,161 +652,89 @@
         </div>
     </section>
 
-    <!-- FLOATING WHATSAPP QUICK CHAT BUTTON -->
-    <button onclick="openWhatsAppSupport()" aria-label="Chat on WhatsApp" class="fixed right-4 bottom-[84px] lg:bottom-6 z-30 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center text-2xl active:scale-90 transition touch-press">
-        <i class="fa-brands fa-whatsapp"></i>
-    </button>
+    <!-- FLOATING WHATSAPP -->
+    <button onclick="openWhatsAppSupport()" aria-label="Chat on WhatsApp" class="fixed right-4 bottom-[84px] lg:bottom-6 z-30 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/30 flex items-center justify-center text-2xl active:scale-90 transition touch-press"><i class="fa-brands fa-whatsapp"></i></button>
 
-    <!-- MOBILE STICKY 5-TAB NAVIGATION (NO FLOATING CART BAR) -->
+    <!-- MOBILE STICKY 5-TAB NAVIGATION -->
     <div class="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white border-t border-slate-200 shadow-[0_-6px_20px_rgba(74,27,45,0.08)] safe-bottom-nav">
         <div class="grid grid-cols-5 py-2 text-center text-[10px] font-semibold text-slate-500">
-            <button id="botNavHome" onclick="switchMainView('home')" class="flex flex-col items-center justify-center gap-0.5 text-bakery-700 touch-press">
-                <i class="fa-solid fa-house text-base"></i>
-                <span>Pre-Made</span>
-            </button>
-            <button id="botNavAccessories" onclick="switchMainView('accessories')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 touch-press">
-                <i class="fa-solid fa-gift text-base"></i>
-                <span>Accessories</span>
-            </button>
-            <button id="botNavStudio" onclick="switchMainView('studio')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 touch-press">
-                <i class="fa-solid fa-cake-candles text-base"></i>
-                <span>3D Studio</span>
-            </button>
+            <button id="botNavHome" onclick="switchMainView('home')" class="flex flex-col items-center justify-center gap-0.5 text-bakery-700 touch-press"><i class="fa-solid fa-house text-base"></i><span>Pre-Made</span></button>
+            <button id="botNavAccessories" onclick="switchMainView('accessories')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 touch-press"><i class="fa-solid fa-gift text-base"></i><span>Accessories</span></button>
+            <button id="botNavStudio" onclick="switchMainView('studio')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 touch-press"><i class="fa-solid fa-cake-candles text-base"></i><span>3D Studio</span></button>
             <button id="botNavCart" onclick="switchMainView('cart')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 touch-press relative">
-                <div class="relative">
-                    <i class="fa-solid fa-cart-shopping text-base"></i>
-                    <span id="mobileBotCartCount" class="absolute -top-1.5 -right-2.5 bg-bakery-700 text-white text-[9px] font-bold px-1 rounded-full">0</span>
-                </div>
+                <div class="relative"><i class="fa-solid fa-cart-shopping text-base"></i><span id="mobileBotCartCount" class="absolute -top-1.5 -right-2.5 bg-bakery-700 text-white text-[9px] font-bold px-1 rounded-full">0</span></div>
                 <span>Cart</span>
             </button>
-            <button id="botNavAbout" onclick="switchMainView('about')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 touch-press">
-                <i class="fa-solid fa-store text-base"></i>
-                <span>About</span>
-            </button>
+            <button id="botNavAbout" onclick="switchMainView('about')" class="flex flex-col items-center justify-center gap-0.5 hover:text-bakery-700 touch-press"><i class="fa-solid fa-store text-base"></i><span>About</span></button>
         </div>
     </div>
 
-    <!-- ===================================================== -->
-    <!-- ORDER CONFIRMATION & FULL RECEIPT IMAGE MODAL         -->
-    <!-- ===================================================== -->
+    <!-- ORDER RECEIPT MODAL -->
     <div id="orderModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/65 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
         <div id="printableSlip" class="bg-white rounded-3xl max-w-md w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
             <div class="bg-gradient-to-r from-bakery-700 to-bakery-900 text-white p-4 sm:p-5 relative">
-                <button onclick="closeOrderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 active:scale-90 hover:bg-white/30 flex items-center justify-center text-white transition">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <button onclick="closeOrderModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 active:scale-90 hover:bg-white/30 flex items-center justify-center text-white transition"><i class="fa-solid fa-xmark"></i></button>
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center text-xl shrink-0">
-                        <i class="fa-solid fa-cake-candles"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-serif font-bold text-lg sm:text-xl">Sajiya's Cake</h3>
-                        <p class="text-xs text-bakery-100">Final Order Receipt Image & Delivery Confirmation</p>
-                    </div>
+                    <div class="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-cake-candles"></i></div>
+                    <div><h3 class="font-serif font-bold text-lg sm:text-xl">Sajiya's Cake</h3><p class="text-xs text-bakery-100">Final Order Receipt Image & Delivery Confirmation</p></div>
                 </div>
             </div>
-
             <div class="p-4 sm:p-5 space-y-3.5">
                 <div class="bg-bakery-50 rounded-2xl border border-bakery-200 p-2.5 flex flex-col items-center">
                     <div class="w-full flex items-center justify-between mb-1.5 px-1 gap-2">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-bakery-800 truncate">
-                            <i class="fa-solid fa-image mr-1 text-bakery-700"></i> Final Cake & Cart Receipt
-                        </span>
-                        <button type="button" onclick="downloadCakeDesignImage()" class="text-[11px] font-bold bg-bakery-700 hover:bg-bakery-800 text-white px-3 py-1.5 rounded-full shadow-sm active:scale-95 transition flex items-center gap-1 shrink-0 touch-press">
-                            <i class="fa-solid fa-download"></i> Save / Download
-                        </button>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-bakery-800 truncate"><i class="fa-solid fa-image mr-1 text-bakery-700"></i> Final Cake & Cart Receipt</span>
+                        <button type="button" onclick="downloadCakeDesignImage()" class="text-[11px] font-bold bg-bakery-700 hover:bg-bakery-800 text-white px-3 py-1.5 rounded-full shadow-sm active:scale-95 transition flex items-center gap-1 shrink-0 touch-press"><i class="fa-solid fa-download"></i> Save / Download</button>
                     </div>
                     <img id="modalCakePreviewImg" alt="Final Custom Cake Order Receipt Image" class="w-full h-auto rounded-xl border border-bakery-200 object-contain shadow-xs" />
                 </div>
-
                 <div id="orderStatusToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium px-3 py-2 rounded-xl text-center"></div>
-
                 <div class="space-y-2">
-                    <button id="whatsappDirectBtn" onclick="submitAndSendWhatsApp()" class="w-full bg-emerald-600 active:scale-98 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-md flex items-center justify-center gap-2 transition touch-press">
-                        <i class="fa-brands fa-whatsapp text-lg"></i>
-                        <span>Auto-Save Image & Send to WhatsApp</span>
-                    </button>
-
+                    <button id="whatsappDirectBtn" onclick="submitAndSendWhatsApp()" class="w-full bg-emerald-600 active:scale-98 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3.5 px-4 rounded-2xl shadow-md flex items-center justify-center gap-2 transition touch-press"><i class="fa-brands fa-whatsapp text-lg"></i><span>Auto-Save Image & Send to WhatsApp</span></button>
                     <div class="grid grid-cols-2 gap-2">
-                        <button onclick="copyOrderForWhatsApp()" class="w-full bg-bakery-50 active:scale-98 hover:bg-bakery-100 text-bakery-800 border border-bakery-200 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition touch-press">
-                            <i class="fa-regular fa-copy"></i>
-                            <span>Copy Details & Link</span>
-                        </button>
-                        <button onclick="window.print()" class="w-full bg-slate-100 active:scale-98 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition touch-press">
-                            <i class="fa-solid fa-print"></i>
-                            <span>Print Slip</span>
-                        </button>
+                        <button onclick="copyOrderForWhatsApp()" class="w-full bg-bakery-50 active:scale-98 hover:bg-bakery-100 text-bakery-800 border border-bakery-200 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition touch-press"><i class="fa-regular fa-copy"></i><span>Copy Details & Link</span></button>
+                        <button onclick="window.print()" class="w-full bg-slate-100 active:scale-98 hover:bg-slate-200 text-slate-700 font-semibold text-xs py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 transition touch-press"><i class="fa-solid fa-print"></i><span>Print Slip</span></button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ===================================================== -->
-    <!-- ADMIN CONSOLE: DASHBOARD (VIEWS/SALES) & FULL EDIT    -->
-    <!-- ===================================================== -->
+    <!-- ADMIN CONSOLE -->
     <div id="adminModal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center bg-slate-900/70 backdrop-blur-sm px-3 modal-safe-area overflow-y-auto">
         <div class="bg-white rounded-3xl max-w-4xl w-full border border-bakery-200 shadow-2xl overflow-hidden my-auto">
             <div class="bg-bakery-900 text-white p-4 sm:p-5 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-amber-300 text-lg">
-                        <i class="fa-solid fa-user-shield"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-serif font-bold text-lg">Sajiya's Cake Admin Console</h3>
-                        <p class="text-xs text-bakery-200">Dashboard, Monthly Sales, Pre-Made Cakes, Accessories & Store</p>
-                    </div>
+                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-amber-300 text-lg"><i class="fa-solid fa-user-shield"></i></div>
+                    <div><h3 class="font-serif font-bold text-lg">Sajiya's Cake Admin Console</h3><p class="text-xs text-bakery-200">Dashboard, Monthly Sales, Pre-Made Cakes, Accessories & Store</p></div>
                 </div>
-                <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white touch-press">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
+                <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white touch-press"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- STEP A: ADMIN PIN LOGIN -->
             <div id="adminLoginView" class="p-6 space-y-4">
                 <div class="text-center max-w-xs mx-auto space-y-2">
-                    <div class="w-12 h-12 rounded-2xl bg-bakery-100 text-bakery-700 flex items-center justify-center mx-auto text-xl">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-bakery-100 text-bakery-700 flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-lock"></i></div>
                     <h4 class="font-bold text-base text-slate-800">Enter Admin PIN</h4>
                     <p class="text-xs text-slate-500">Enter your Admin PIN to access Dashboard & management</p>
                 </div>
                 <div class="max-w-xs mx-auto space-y-3">
                     <input type="password" id="adminPinInput" placeholder="••••" maxlength="12" onkeydown="if(event.key==='Enter') verifyAdminLogin()" class="w-full text-center tracking-widest text-lg font-bold px-4 py-3 rounded-xl border border-bakery-200 focus:border-bakery-700 outline-none">
                     <div id="adminLoginError" class="hidden text-xs text-rose-600 font-semibold text-center"></div>
-                    <button onclick="verifyAdminLogin()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow transition touch-press">
-                        Unlock Admin Console
-                    </button>
+                    <button onclick="verifyAdminLogin()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow transition touch-press">Unlock Admin Console</button>
                 </div>
             </div>
 
-            <!-- STEP B: ADMIN DASHBOARD (7 TABS) -->
             <div id="adminDashboardView" class="hidden p-4 sm:p-5 space-y-4">
                 <div class="flex gap-1.5 overflow-x-auto no-scrollbar border-b border-slate-200 pb-2">
-                    <button id="tabBtnDashboard" onclick="switchAdminTab('dashboard')" class="px-3 py-2 rounded-xl text-xs font-bold bg-bakery-700 text-white shrink-0 touch-press">
-                        <i class="fa-solid fa-chart-line mr-1"></i> Dashboard
-                    </button>
-                    <button id="tabBtnProducts" onclick="switchAdminTab('products')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press">
-                        <i class="fa-solid fa-cake-candles mr-1"></i> Pre-Made Cakes
-                    </button>
-                    <button id="tabBtnAccessories" onclick="switchAdminTab('accessories')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press">
-                        <i class="fa-solid fa-gift mr-1"></i> Accessories
-                    </button>
-                    <button id="tabBtnStore" onclick="switchAdminTab('store')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press">
-                        <i class="fa-solid fa-store mr-1"></i> Store & WhatsApp
-                    </button>
-                    <button id="tabBtnPricing" onclick="switchAdminTab('pricing')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press">
-                        <i class="fa-solid fa-tags mr-1"></i> 3D Price
-                    </button>
-                    <button id="tabBtnReviews" onclick="switchAdminTab('reviews')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press">
-                        <i class="fa-solid fa-star mr-1"></i> Reviews
-                    </button>
-                    <button id="tabBtnOrders" onclick="switchAdminTab('orders')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press">
-                        <i class="fa-solid fa-clipboard-list mr-1"></i> Orders
-                    </button>
+                    <button id="tabBtnDashboard" onclick="switchAdminTab('dashboard')" class="px-3 py-2 rounded-xl text-xs font-bold bg-bakery-700 text-white shrink-0 touch-press"><i class="fa-solid fa-chart-line mr-1"></i> Dashboard</button>
+                    <button id="tabBtnProducts" onclick="switchAdminTab('products')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press"><i class="fa-solid fa-cake-candles mr-1"></i> Pre-Made Cakes</button>
+                    <button id="tabBtnAccessories" onclick="switchAdminTab('accessories')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press"><i class="fa-solid fa-gift mr-1"></i> Accessories</button>
+                    <button id="tabBtnStore" onclick="switchAdminTab('store')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press"><i class="fa-solid fa-store mr-1"></i> Store & WhatsApp</button>
+                    <button id="tabBtnPricing" onclick="switchAdminTab('pricing')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press"><i class="fa-solid fa-tags mr-1"></i> 3D Price</button>
+                    <button id="tabBtnReviews" onclick="switchAdminTab('reviews')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press"><i class="fa-solid fa-star mr-1"></i> Reviews</button>
+                    <button id="tabBtnOrders" onclick="switchAdminTab('orders')" class="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 touch-press"><i class="fa-solid fa-clipboard-list mr-1"></i> Orders</button>
                 </div>
 
-                <!-- TAB 0: ANALYTICS DASHBOARD -->
+                <!-- DASHBOARD TAB -->
                 <div id="adminDashboardTab" class="space-y-4 max-h-[64vh] overflow-y-auto pr-1">
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         <div class="bg-bakery-50 p-4 rounded-2xl border border-bakery-200 space-y-1">
@@ -1090,7 +758,6 @@
                             <span class="text-[10px] text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full font-semibold">Active sessions</span>
                         </div>
                     </div>
-
                     <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
                         <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700">Quick Store Operations & Analytics</h4>
                         <p class="text-xs text-slate-500">Your store is running on high-performance Cloudflare Workers & D1 Database. All orders placed via WhatsApp or checkout are logged in real-time.</p>
@@ -1190,7 +857,7 @@
                     </div>
 
                     <div id="adminStoreToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold p-2.5 rounded-xl text-center"></div>
-                    <button type="button" onclick="saveAdminStoreSettings()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow-md transition touch-press flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Save Store Details, WhatsApp & PIN</button>
+                    <button type="button" onclick="saveAdminStoreSettings()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Save Store Details, WhatsApp & PIN</button>
                 </div>
 
                 <!-- TAB 4: 3D PRICE CHART -->
@@ -1214,7 +881,7 @@
                     <div><h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Flavor Extra Charges (₹)</h4><div id="adminFlavorInputs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div></div>
                     <div><h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Decorations & Toppers Price (₹)</h4><div id="adminDecorInputs" class="grid grid-cols-2 sm:grid-cols-3 gap-2"></div></div>
                     <div id="adminSaveToast" class="hidden bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold p-2.5 rounded-xl text-center"></div>
-                    <button type="button" onclick="saveAdminPriceChart()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow-md transition touch-press flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Save All 3D Prices to Cloud</button>
+                    <button type="button" onclick="saveAdminPriceChart()" class="w-full bg-bakery-700 hover:bg-bakery-800 text-white font-bold text-sm py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2"><i class="fa-solid fa-cloud-arrow-up"></i> Save All 3D Prices to Cloud</button>
                 </div>
 
                 <!-- TAB 5: REVIEWS -->
@@ -1319,7 +986,6 @@
             { id: 'crown', name: 'Royal Crown', label: 'CROWN' }
         ];
 
-        // 3D Studio starts completely clean with NO prefilled name/message
         let state = { tiers: 1, weightIndex: 0, eggless: true, flavorId: 'vanilla', tierColors: ['#FFFDF9', '#FFFDF9', '#FFFDF9'], dripId: 'none', decorations: [], topperId: 'none', cakeMessage: '' };
         let ORDER_CART = [];
         let activeMainView = 'home', activeCatalogCategory = 'all', catalogSearchTerm = '';
@@ -1341,12 +1007,12 @@
                 const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/public-data`);
                 const data = await res.json();
                 if (data.success) {
-                    if (data.storeSettings) STORE_SETTINGS = { ...STORE_SETTINGS, ...data.storeSettings };
-                    if (data.pricing) PRICING = { ...PRICING, ...data.pricing };
-                    if (Array.isArray(data.products) && data.products.length) CATALOG_PRODUCTS = data.products;
-                    if (Array.isArray(data.accessories) && data.accessories.length) CATALOG_ACCESSORIES = data.accessories;
+                    if (data.storeSettings && Object.keys(data.storeSettings).length) STORE_SETTINGS = { ...STORE_SETTINGS, ...data.storeSettings };
+                    if (data.pricing && Object.keys(data.pricing).length) PRICING = { ...PRICING, ...data.pricing };
+                    if (Array.isArray(data.products) && data.products.length > 0) CATALOG_PRODUCTS = data.products;
+                    if (Array.isArray(data.accessories) && data.accessories.length > 0) CATALOG_ACCESSORIES = data.accessories;
                     if (typeof data.deliveredCount === 'number') deliveredCount = data.deliveredCount;
-                    if (Array.isArray(data.reviews)) reviewsList = data.reviews;
+                    if (Array.isArray(data.reviews) && data.reviews.length > 0) reviewsList = data.reviews;
 
                     renderAboutStoreUI();
                     renderCatalogProducts();
@@ -1419,11 +1085,8 @@
             toast.classList.remove('hidden'); toast.classList.add('flex');
             setTimeout(() => { toast.classList.add('hidden'); toast.classList.remove('flex'); }, 3000);
             
-            // Generate mock APK download or trigger link
-            const apkBlob = new Blob(["Mock Sajiya's Cake Android APK binary"], { type: 'application/vnd.android.package-archive' });
-            const url = URL.createObjectURL(apkBlob);
-            const a = document.createElement('a'); a.href = url; a.download = "Sajiyas-Cake-v2.0.apk";
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            // Link to the GitHub Release APK asset directly
+            window.location.href = "https://github.com/Prabhu9114/sajiyascake/releases/download/v2.0.0/sajiyascake.apk";
         }
 
         async function trackCustomerOrder() {
@@ -2186,7 +1849,7 @@
             document.querySelectorAll('.admin-topper-price').forEach(inp => PRICING.toppers[inp.dataset.topper] = Number(inp.value) || 0);
             const newDeliveredVal = Number(document.getElementById('adminDeliveredOffsetInput').value) || 0; deliveredCount = newDeliveredVal;
             renderAllControls(); updateEverything(); renderDeliveredCounter();
-            const toast = document.getElementById('adminSaveToast'); toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...`; toast.classList.remove('hidden');
+            const toast = document.getElementById('adminSaveToast'); toast.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Saving...`; toast.classList.get ? toast.classList.remove('hidden') : null;
             try {
                 const res = await fetch(`${SAJIYAS_CAKE_CONFIG.apiBase}/api/admin/pricing`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` }, body: JSON.stringify({ pricing: PRICING, deliveredOffset: newDeliveredVal }) });
                 const data = await res.json();
