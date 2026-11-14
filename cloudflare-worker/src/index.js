@@ -55,22 +55,11 @@ export default {
         desc: '2 Tier Rose Berry & Vanilla Truffle with handcrafted Cream Roses & Gold Flakes',
         mediaType: 'preset',
         preset: { tiers: 2, weightIndex: 0, flavorId: 'truffle', tierColors: ['#FB7185', '#FFFDF9', '#F9A8D4'], dripId: 'whitechoco', decorations: ['roses', 'goldflakes'], topperId: 'anniversary', cakeMessage: 'Together Forever' }
-      },
-      {
-        id: 'prod-2',
-        name: 'Butterscotch Bliss',
-        category: "What's Trending",
-        price: 650,
-        tag: 'Trending',
-        desc: '1 Tier Golden Butterscotch Crunch with Caramel Drip & Rainbow Sprinkles',
-        mediaType: 'preset',
-        preset: { tiers: 1, weightIndex: 0, flavorId: 'butterscotch', tierColors: ['#FDE047', '#FFFDF9', '#FDE047'], dripId: 'caramel', decorations: ['sprinkles', 'cherries'], topperId: 'hbd', cakeMessage: 'Happy Birthday' }
       }
     ];
 
     const DEFAULT_ACCESSORIES = [
-      { id: 'acc-1', name: 'Sparkle Fountain Candle', price: 40, icon: 'fa-wand-sparkles', desc: 'Smokeless golden firework sparkle candle', imageUrl: '' },
-      { id: 'acc-2', name: 'Golden Number Candle', price: 35, icon: 'fa-1', desc: 'Metallic gold age digit candle', imageUrl: '' }
+      { id: 'acc-1', name: 'Sparkle Fountain Candle', price: 40, icon: 'fa-wand-sparkles', desc: 'Smokeless golden firework sparkle candle', imageUrl: '' }
     ];
 
     const DEFAULT_REVIEWS = [
@@ -93,7 +82,7 @@ export default {
       return (req.headers.get('Authorization') || '') === `Bearer ${activePin}`;
     };
 
-    // 0A. UPLOAD MEDIA
+    // UPLOAD MEDIA
     if (url.pathname === '/api/upload' && request.method === 'POST') {
       try {
         const contentType = request.headers.get('X-Content-Type') || 'image/png';
@@ -126,27 +115,27 @@ export default {
       });
     }
 
-    // 1. GET PUBLIC STORE DATA (Strictly pulling from KV first)
+    // GET PUBLIC STORE DATA (Strictly pulling from KV first)
     if (url.pathname === '/api/public-data' && request.method === 'GET') {
       try {
         let storeSettings = DEFAULT_STORE_SETTINGS;
-        const storedSettings = await env.SAJIYAS_CAKE_KV.get('store_settings', { type: 'json' });
+        const storedSettings = await env.SAJIYAS_CAKE_KV.get('store_settings', 'json');
         if (storedSettings) storeSettings = { ...DEFAULT_STORE_SETTINGS, ...storedSettings };
 
         let pricing = DEFAULT_PRICING;
-        const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config', { type: 'json' });
+        const storedPricing = await env.SAJIYAS_CAKE_KV.get('pricing_config', 'json');
         if (storedPricing) pricing = { ...DEFAULT_PRICING, ...storedPricing };
 
         let products = DEFAULT_PRODUCTS;
-        const storedProducts = await env.SAJIYAS_CAKE_KV.get('catalog_products', { type: 'json' });
+        const storedProducts = await env.SAJIYAS_CAKE_KV.get('catalog_products', 'json');
         if (storedProducts && Array.isArray(storedProducts)) products = storedProducts;
 
         let accessories = DEFAULT_ACCESSORIES;
-        const storedAccessories = await env.SAJIYAS_CAKE_KV.get('catalog_accessories', { type: 'json' });
+        const storedAccessories = await env.SAJIYAS_CAKE_KV.get('catalog_accessories', 'json');
         if (storedAccessories && Array.isArray(storedAccessories)) accessories = storedAccessories;
 
         let reviews = DEFAULT_REVIEWS;
-        const storedReviews = await env.SAJIYAS_CAKE_KV.get('customer_reviews', { type: 'json' });
+        const storedReviews = await env.SAJIYAS_CAKE_KV.get('customer_reviews', 'json');
         if (storedReviews && Array.isArray(storedReviews)) reviews = storedReviews;
 
         const baseDelivered = parseInt((await env.SAJIYAS_CAKE_KV.get('delivered_offset')) || '128', 10);
@@ -172,7 +161,7 @@ export default {
       }
     }
 
-    // 2. TRACK ORDER
+    // TRACK ORDER
     if (url.pathname === '/api/track-order' && request.method === 'GET') {
       const oid = (url.searchParams.get('orderId') || '').trim().toUpperCase();
       if (!oid) return jsonResponse({ success: false, error: 'Order ID required' }, 400);
@@ -184,11 +173,11 @@ export default {
       return jsonResponse({ success: true, order: row });
     }
 
-    // 3. REVIEWS
+    // REVIEWS
     if (url.pathname === '/api/reviews' && request.method === 'POST') {
       try {
         const body = await request.json();
-        const stored = await env.SAJIYAS_CAKE_KV.get('customer_reviews', { type: 'json' });
+        const stored = await env.SAJIYAS_CAKE_KV.get('customer_reviews', 'json');
         const reviews = Array.isArray(stored) ? stored : DEFAULT_REVIEWS;
         reviews.unshift({
           id: 'rev-' + Date.now(),
@@ -204,7 +193,7 @@ export default {
       }
     }
 
-    // 4. ADMIN LOGIN
+    // ADMIN LOGIN
     if (url.pathname === '/api/admin/login' && request.method === 'POST') {
       const { pin } = await request.json();
       const activePin = await getActiveAdminPin();
@@ -212,7 +201,7 @@ export default {
       return jsonResponse({ success: false, error: 'Invalid Admin PIN' }, 401);
     }
 
-    // 5. ADMIN SAVE STORE SETTINGS & PIN
+    // ADMIN SAVE STORE SETTINGS & PIN
     if (url.pathname === '/api/admin/store-settings' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { storeSettings, newPin } = await request.json();
@@ -221,7 +210,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 6. ADMIN SAVE PRODUCTS
+    // ADMIN SAVE PRODUCTS
     if (url.pathname === '/api/admin/products' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { products } = await request.json();
@@ -229,7 +218,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 7. ADMIN SAVE ACCESSORIES
+    // ADMIN SAVE ACCESSORIES
     if (url.pathname === '/api/admin/accessories' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { accessories } = await request.json();
@@ -237,7 +226,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 8. ADMIN SAVE REVIEWS
+    // ADMIN SAVE REVIEWS
     if (url.pathname === '/api/admin/reviews' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { reviews } = await request.json();
@@ -245,7 +234,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 9. ADMIN SAVE PRICING
+    // ADMIN SAVE PRICING
     if (url.pathname === '/api/admin/pricing' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { pricing, deliveredOffset } = await request.json();
@@ -254,7 +243,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 10. ADMIN ORDER STATUS
+    // ADMIN ORDER STATUS
     if (url.pathname === '/api/admin/order-status' && request.method === 'POST') {
       if (!(await isAuthorized(request))) return jsonResponse({ success: false, error: 'Unauthorized' }, 401);
       const { orderId, status } = await request.json();
@@ -262,7 +251,7 @@ export default {
       return jsonResponse({ success: true });
     }
 
-    // 11. ORDERS
+    // ORDERS
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       try {
         const data = await request.json();
